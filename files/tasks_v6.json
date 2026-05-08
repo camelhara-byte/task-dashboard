@@ -1,0 +1,1245 @@
+[
+  {
+    "name": "鎌ヶ谷Webサイトの切り替え",
+    "category": "マーケティング",
+    "status": "完了",
+    "size": "大",
+    "priority": "中",
+    "updateDate": "2026-04-14",
+    "month": 4,
+    "subtasks": [
+      "旧サイトアーカイブ化 ✓",
+      "新サイトへの動線確保 ✓",
+      "制作業者特定・連絡 ✓",
+      "ドメイン移管コード取得 ✓",
+      "オースコードを業者に共有 ✓",
+      "移管承認 ✓",
+      "解析タグ導入 ✓",
+      "HP切り替え完了・表示確認 ✓"
+    ],
+    "links": []
+  },
+  {
+    "name": "アカウント一覧/資料集作成",
+    "category": "システム・DX",
+    "status": "完了",
+    "size": "小",
+    "priority": "高",
+    "updateDate": "2026-03-09",
+    "month": 3,
+    "subtasks": [],
+    "links": [
+      {
+        "label": "アカウント一覧・資料集",
+        "url": "https://docs.google.com/spreadsheets/d/1m1fkmvkKJqL5gkJSbzvzLE1R97pDz72Fgd33ZFd4CKo/edit"
+      }
+    ]
+  },
+  {
+    "name": "歯科コンサル料金形態調査",
+    "category": "院内オペレーション",
+    "status": "完了",
+    "size": "小",
+    "priority": "低",
+    "updateDate": "2026-03-09",
+    "month": 3,
+    "subtasks": [],
+    "links": [
+      {
+        "label": "料金形態調査シート",
+        "url": "https://docs.google.com/spreadsheets/d/14naQ6MBXA-zmPE3_BQJvFS7eu0-O-j0NVojrzmP-gkc/edit"
+      }
+    ]
+  },
+  {
+    "name": "売上レセプト表更新",
+    "category": "院内オペレーション",
+    "status": "完了",
+    "size": "小",
+    "priority": "高",
+    "updateDate": "2026-03-11",
+    "month": 3,
+    "subtasks": [],
+    "links": [
+      {
+        "label": "売上レセプト表",
+        "url": "https://docs.google.com/spreadsheets/d/1y3sCcryM8rtVyCEna2S5e8NLPHGXC97rANloH-LmbBY/edit"
+      }
+    ]
+  },
+  {
+    "name": "Googleアカウント凍結解除",
+    "category": "システム・DX",
+    "status": "完了",
+    "size": "小",
+    "priority": "低",
+    "updateDate": "2026-04-27",
+    "month": 4,
+    "subtasks": [
+      "凍結解除申請 ✓",
+      "解除確認 ✓",
+      "復活確認・クローズ ✓"
+    ],
+    "links": []
+  },
+  {
+    "name": "AI歯科セミナー視聴",
+    "category": "マニュアル・教育",
+    "status": "完了",
+    "size": "小",
+    "priority": "低",
+    "updateDate": "2026-04-10",
+    "month": 4,
+    "subtasks": [],
+    "links": []
+  },
+  {
+    "name": "自動レジ助成金申請",
+    "category": "助成金・申請",
+    "status": "進行中",
+    "size": "中",
+    "priority": "中",
+    "updateDate": "2026-04-28",
+    "month": 4,
+    "subtasks": [
+      "必要書類準備・共有 ✓",
+      "MTGスケジュール調整 ✓",
+      "ZOOMミーティング ✓",
+      "議事録作成・共有 ✓",
+      "ビジコム担当者申し込み ✓",
+      "gBizIDプライム登録 →未",
+      "SECURITY ACTION登録 →未",
+      "デジwith登録 →未",
+      "インボイス枠申請 →未"
+    ],
+    "links": []
+  },
+  {
+    "name": "マニュアル制作進行",
+    "category": "マニュアル・教育",
+    "status": "完了",
+    "size": "大",
+    "priority": "高",
+    "updateDate": "2026-03-30",
+    "month": 3,
+    "subtasks": [
+      "旧マニュアル全部放り込む ✓",
+      "新構成でマッピング生成 ✓",
+      "Claudeで再生成 ✓",
+      "原稿正誤チェック・修正 ✓",
+      "全8部イラスト生成 ✓",
+      "インフォグラフィック挿入 ✓",
+      "印刷用体裁整理 ✓",
+      "試し印刷入稿 ✓",
+      "内容校正 ✓",
+      "配信 ✓"
+    ],
+    "links": []
+  },
+  {
+    "name": "Googleドライブ連携",
+    "category": "システム・DX",
+    "status": "完了",
+    "size": "小",
+    "priority": "高",
+    "updateDate": "2026-03-10",
+    "month": 3,
+    "subtasks": [],
+    "links": []
+  },
+  {
+    "name": "Googleカレンダー連携",
+    "category": "システム・DX",
+    "status": "完了",
+    "size": "小",
+    "priority": "中",
+    "updateDate": "2026-03-10",
+    "month": 3,
+    "subtasks": [],
+    "links": []
+  },
+  {
+    "name": "Note book LMマニュアル連携",
+    "category": "マニュアル・教育",
+    "status": "完了",
+    "size": "小",
+    "priority": "中",
+    "updateDate": "2026-03-10",
+    "month": 3,
+    "subtasks": [],
+    "links": []
+  },
+  {
+    "name": "企業型DC申請",
+    "category": "助成金・申請",
+    "status": "進行中",
+    "size": "大",
+    "priority": "中",
+    "updateDate": "2026-05-01",
+    "month": 5,
+    "subtasks": [
+      "ChatWorks登録・グループ参加 ✓",
+      "申し込みフォーム入力 ✓",
+      "就業規則確認・提出 ✓",
+      "育休・介護休暇規定作成 ✓",
+      "提携社労士面談 ✓",
+      "申請書類発送 ✓",
+      "従業員説明日設定（7/10）✓",
+      "保険証明書4月以降発行 →待ち",
+      "不足資料返送 →待ち",
+      "希望者取りまとめ →未"
+    ],
+    "links": []
+  },
+  {
+    "name": "井田先生のスケジュール可視化",
+    "category": "その他",
+    "status": "完了",
+    "size": "小",
+    "priority": null,
+    "updateDate": "2026-03-12",
+    "month": 3,
+    "subtasks": [
+      "各院予約システム連携 ✓",
+      "Googleカレンダーに診療予定入力 ✓"
+    ],
+    "links": []
+  },
+  {
+    "name": "原の入社書類関係",
+    "category": "労務・人事",
+    "status": "完了",
+    "size": "中",
+    "priority": "中",
+    "updateDate": "2026-03-30",
+    "month": 3,
+    "subtasks": [
+      "銀行口座開設（三井住友）✓",
+      "口座番号共有 ✓",
+      "契約書提出 ✓",
+      "源泉徴収提出 ✓",
+      "打刻登録 ✓",
+      "勤怠アプリ制作 ✓",
+      "交通費精算 ✓"
+    ],
+    "links": []
+  },
+  {
+    "name": "(株)キャメルWebサイト開設",
+    "category": "マーケティング",
+    "status": "未着手",
+    "size": "小",
+    "priority": null,
+    "updateDate": "2026-04-02",
+    "month": 4,
+    "subtasks": [],
+    "links": []
+  },
+  {
+    "name": "LINE Worksアイコン変更",
+    "category": "システム・DX",
+    "status": "完了",
+    "size": "小",
+    "priority": null,
+    "updateDate": "2026-03-10",
+    "month": 3,
+    "subtasks": [],
+    "links": []
+  },
+  {
+    "name": "会社基本情報シート作成",
+    "category": "システム・DX",
+    "status": "完了",
+    "size": "小",
+    "priority": null,
+    "updateDate": "2026-04-15",
+    "month": 4,
+    "subtasks": [],
+    "links": [
+      {
+        "label": "会社基本情報シート",
+        "url": "https://docs.google.com/spreadsheets/d/1m1fkmvkKJqL5gkJSbzvzLE1R97pDz72Fgd33ZFd4CKo/edit"
+      }
+    ]
+  },
+  {
+    "name": "【月次10日まで】売上レセプト表更新",
+    "category": "院内オペレーション",
+    "status": "未着手",
+    "size": "小",
+    "priority": null,
+    "updateDate": "2026-03-11",
+    "month": 3,
+    "subtasks": [
+      "保険別集計表（錦糸町）→未",
+      "保険別集計表（オアシス）→未",
+      "月次集計表（鎌ヶ谷）→未"
+    ],
+    "links": []
+  },
+  {
+    "name": "【月次】MTGスケジューリング",
+    "category": "その他",
+    "status": "未着手",
+    "size": "小",
+    "priority": null,
+    "updateDate": "2026-03-31",
+    "month": 3,
+    "subtasks": [],
+    "links": []
+  },
+  {
+    "name": "SNS周り現状把握",
+    "category": "マーケティング",
+    "status": "進行中",
+    "size": "小",
+    "priority": "中",
+    "updateDate": "2026-04-02",
+    "month": 4,
+    "subtasks": [
+      "運用ルール明文化 ✓",
+      "各SNSログイン情報確認 →未",
+      "実績数値（インサイト）抽出 →未",
+      "コンテンツ資産確認 →未",
+      "競合・市場調査 →未"
+    ],
+    "links": []
+  },
+  {
+    "name": "口コミ調査データベース化・分析",
+    "category": "マーケティング",
+    "status": "完了",
+    "size": "小",
+    "priority": null,
+    "updateDate": "2026-03-18",
+    "month": 3,
+    "subtasks": [
+      "各院口コミ一覧スクショ ✓",
+      "文章に変換し表化 ✓",
+      "NotebookLMで分析資料化 ✓"
+    ],
+    "links": [
+      {
+        "label": "口コミDB（スプレッドシート）",
+        "url": "https://docs.google.com/spreadsheets/d/1NoGk5SYvWbBnB9t35eBGgVo9Hzd2GTu_PlKdSZGfao8/edit"
+      }
+    ]
+  },
+  {
+    "name": "【全体MTG】議事録",
+    "category": "その他",
+    "status": "完了",
+    "size": "小",
+    "priority": null,
+    "updateDate": "2026-03-16",
+    "month": 3,
+    "subtasks": [],
+    "links": []
+  },
+  {
+    "name": "【院長MTG】議事録",
+    "category": "その他",
+    "status": "完了",
+    "size": "小",
+    "priority": null,
+    "updateDate": "2026-03-18",
+    "month": 3,
+    "subtasks": [],
+    "links": []
+  },
+  {
+    "name": "口コミ依頼シート制作",
+    "category": "マーケティング",
+    "status": "完了",
+    "size": "小",
+    "priority": null,
+    "updateDate": "2026-03-24",
+    "month": 3,
+    "subtasks": [
+      "MTGで制度告知 ✓",
+      "各院ポップ制作 ✓",
+      "キャンペーン・ポップ告知 ✓"
+    ],
+    "links": []
+  },
+  {
+    "name": "Google Workspace",
+    "category": "システム・DX",
+    "status": "完了",
+    "size": "小",
+    "priority": null,
+    "updateDate": "2026-04-02",
+    "month": 4,
+    "subtasks": [],
+    "links": []
+  },
+  {
+    "name": "インプラント手術承諾書改訂",
+    "category": "院内オペレーション",
+    "status": "完了",
+    "size": "小",
+    "priority": null,
+    "updateDate": "2026-03-24",
+    "month": 3,
+    "subtasks": [
+      "現行書面リフレッシュ ✓",
+      "井田先生チェック ✓",
+      "各院用に複製 ✓",
+      "LINE Worksで共有 ✓"
+    ],
+    "links": [
+      {
+        "label": "インプラント承諾書",
+        "url": "https://docs.google.com/document/d/1knEkIPR4DGwWOI1XZheWcXbzyZadmiaosjGVojRFjJI/edit"
+      }
+    ]
+  },
+  {
+    "name": "AIベクサムにcamelドメイン連携確認",
+    "category": "システム・DX",
+    "status": "未着手",
+    "size": "小",
+    "priority": null,
+    "updateDate": "2026-03-18",
+    "month": 3,
+    "subtasks": [],
+    "links": []
+  },
+  {
+    "name": "PLAUD設定",
+    "category": "システム・DX",
+    "status": "完了",
+    "size": "小",
+    "priority": null,
+    "updateDate": "2026-03-26",
+    "month": 3,
+    "subtasks": [],
+    "links": []
+  },
+  {
+    "name": "口コミ施策効果測定アプリ開発",
+    "category": "マーケティング",
+    "status": "進行中",
+    "size": "中",
+    "priority": null,
+    "updateDate": "2026-04-15",
+    "month": 4,
+    "subtasks": [
+      "叩き台作成 ✓",
+      "Web口コミ取得改修 →未",
+      "売上との相関関係分析 →未",
+      "ログ蓄積機能 →未"
+    ],
+    "links": []
+  },
+  {
+    "name": "マニュアル試し印刷",
+    "category": "マニュアル・教育",
+    "status": "待ち",
+    "size": "大",
+    "priority": "高",
+    "updateDate": "2026-04-10",
+    "month": 4,
+    "subtasks": [
+      "試し印刷用入稿データ作成 ✓",
+      "試し印刷入稿 ✓",
+      "業者データチェック ✓",
+      "出し戻し修正×4回 ✓",
+      "ラクスルに変更・試し入稿 ✓",
+      "A4→A5サイズ変更 ✓",
+      "表紙・裏表紙作成 ✓",
+      "納品 ✓",
+      "納品冊子確認 ✓",
+      "後払い納品書確認・入金 →未"
+    ],
+    "links": []
+  },
+  {
+    "name": "LINE WORKS名刺作成",
+    "category": "マーケティング",
+    "status": "未着手",
+    "size": "小",
+    "priority": null,
+    "updateDate": "2026-03-31",
+    "month": 3,
+    "subtasks": [],
+    "links": []
+  },
+  {
+    "name": "錦糸町修理伝票データ化",
+    "category": "院内オペレーション",
+    "status": "完了",
+    "size": "小",
+    "priority": null,
+    "updateDate": "2026-03-18",
+    "month": 3,
+    "subtasks": [
+      "伝票スキャン・データ化 ✓",
+      "スプレッドシート整理 ✓"
+    ],
+    "links": [
+      {
+        "label": "修理伝票データ",
+        "url": "https://docs.google.com/spreadsheets/d/1c12yo10cSHmYv859a5MWVhFAehvk3lsja6hKwL0DUsA/edit"
+      }
+    ]
+  },
+  {
+    "name": "マニュアルテスト修了証",
+    "category": "マニュアル・教育",
+    "status": "待ち",
+    "size": "小",
+    "priority": "低",
+    "updateDate": "2026-04-30",
+    "month": 4,
+    "subtasks": [],
+    "links": [
+      {
+        "label": "修了証データ",
+        "url": "https://drive.google.com/file/d/1vLENCT248oOjiCZme8AeqrXarmVai5Ba/view"
+      }
+    ]
+  },
+  {
+    "name": "マニュアル配信",
+    "category": "マニュアル・教育",
+    "status": "完了",
+    "size": "大",
+    "priority": "高",
+    "updateDate": "2026-03-25",
+    "month": 3,
+    "subtasks": [
+      "配信用データ整理・校正 ✓",
+      "リンクの張り替え ✓",
+      "動作確認 ✓",
+      "配信文作成 ✓",
+      "配信・運用開始 ✓",
+      "問い合わせ対応 →継続"
+    ],
+    "links": []
+  },
+  {
+    "name": "ジョブカン　スタッフ勤務地設定",
+    "category": "労務・人事",
+    "status": "完了",
+    "size": "小",
+    "priority": null,
+    "updateDate": "2026-03-26",
+    "month": 3,
+    "subtasks": [],
+    "links": []
+  },
+  {
+    "name": "適性検査受験",
+    "category": "労務・人事",
+    "status": "完了",
+    "size": "小",
+    "priority": null,
+    "updateDate": "2026-03-26",
+    "month": 3,
+    "subtasks": [],
+    "links": []
+  },
+  {
+    "name": "claude AI セットアップ",
+    "category": "システム・DX",
+    "status": "完了",
+    "size": "小",
+    "priority": null,
+    "updateDate": "2026-03-27",
+    "month": 3,
+    "subtasks": [],
+    "links": []
+  },
+  {
+    "name": "キャメル勤怠管理システム構築",
+    "category": "労務・人事",
+    "status": "完了",
+    "size": "大",
+    "priority": "中",
+    "updateDate": "2026-04-07",
+    "month": 4,
+    "subtasks": [
+      "アプリ土台生成 ✓",
+      "微調整 ✓",
+      "URL付与 ✓",
+      "オンライン運用改築・テスト ✓",
+      "ログのクラウド化 ✓",
+      "ローカルログ移行 ✓",
+      "交通費自動連動機能追加 ✓",
+      "祝日読み取り機能追加 ✓"
+    ],
+    "links": [
+      {
+        "label": "勤怠管理アプリ（本番）",
+        "url": "https://kintai-xi.vercel.app/"
+      }
+    ]
+  },
+  {
+    "name": "鎌ヶ谷課題抽出",
+    "category": "マーケティング",
+    "status": "進行中",
+    "size": "中",
+    "priority": null,
+    "updateDate": "2026-04-20",
+    "month": 4,
+    "subtasks": [
+      "HPリニューアル・移管 ✓",
+      "駐車場案内動画作成・配置 ✓",
+      "グループ間連携データ抽出 →未",
+      "SNSターゲット絞り込み →未"
+    ],
+    "links": [
+      {
+        "label": "課題抽出ドキュメント",
+        "url": "https://docs.google.com/document/d/13naIBF2F_qdSjWlkFsiHsCgXCpUWvmXee7dXug52Jr4/edit"
+      }
+    ]
+  },
+  {
+    "name": "キャメル就業規則書面作成",
+    "category": "労務・人事",
+    "status": "完了",
+    "size": "大",
+    "priority": "高",
+    "updateDate": "2026-04-09",
+    "month": 4,
+    "subtasks": [
+      "smiles就業規則集約 ✓",
+      "キャメル版に再編成 ✓",
+      "提出用体裁校正 ✓",
+      "井田先生チェック ✓",
+      "企業DC用提出 ✓",
+      "施行日確認・追記 ✓",
+      "育休・介護休暇規定追記 ✓"
+    ],
+    "links": [
+      {
+        "label": "就業規則ドキュメント",
+        "url": "https://docs.google.com/document/d/1kPe8Z-qUZREahF3j9sNWBqHpGKgcNAWp-3TwpYK0WZs/edit"
+      }
+    ]
+  },
+  {
+    "name": "【メモ】次年度マニュアル修正",
+    "category": "マニュアル・教育",
+    "status": "未着手",
+    "size": "小",
+    "priority": null,
+    "updateDate": "2026-03-31",
+    "month": 3,
+    "subtasks": [],
+    "links": []
+  },
+  {
+    "name": "デントネット予約システム再構築",
+    "category": "院内オペレーション",
+    "status": "未着手",
+    "size": "小",
+    "priority": null,
+    "updateDate": "2026-03-31",
+    "month": 3,
+    "subtasks": [],
+    "links": []
+  },
+  {
+    "name": "Webridge関係",
+    "category": "マーケティング",
+    "status": "未着手",
+    "size": "小",
+    "priority": null,
+    "updateDate": "2026-04-01",
+    "month": 4,
+    "subtasks": [],
+    "links": []
+  },
+  {
+    "name": "マネジメントアプリ入力",
+    "category": "院内オペレーション",
+    "status": "完了",
+    "size": "小",
+    "priority": null,
+    "updateDate": "2026-04-02",
+    "month": 4,
+    "subtasks": [
+      "3月保険表 医師別入力 ✓"
+    ],
+    "links": []
+  },
+  {
+    "name": "【3月】売上レセプト表更新",
+    "category": "その他",
+    "status": "完了",
+    "size": "小",
+    "priority": null,
+    "updateDate": "2026-04-02",
+    "month": 4,
+    "subtasks": [],
+    "links": []
+  },
+  {
+    "name": "各院googleアカウント連携",
+    "category": "システム・DX",
+    "status": "完了",
+    "size": "小",
+    "priority": null,
+    "updateDate": "2026-04-03",
+    "month": 4,
+    "subtasks": [],
+    "links": []
+  },
+  {
+    "name": "ジルコニアメニュー表制作",
+    "category": "マーケティング",
+    "status": "進行中",
+    "size": "小",
+    "priority": null,
+    "updateDate": "2026-04-23",
+    "month": 4,
+    "subtasks": [],
+    "links": []
+  },
+  {
+    "name": "4月院長会議 議事録作成・共有",
+    "category": "その他",
+    "status": "完了",
+    "size": "小",
+    "priority": null,
+    "updateDate": "2026-04-03",
+    "month": 4,
+    "subtasks": [],
+    "links": []
+  },
+  {
+    "name": "オアシスWebサイト改修",
+    "category": "マーケティング",
+    "status": "完了",
+    "size": "小",
+    "priority": null,
+    "updateDate": "2026-04-22",
+    "month": 4,
+    "subtasks": [
+      "参考サイトデザイン収集 ✓",
+      "AIでドラフト作成 ✓",
+      "業者依頼へ移行・クローズ ✓"
+    ],
+    "links": []
+  },
+  {
+    "name": "4月管理者会議議事録作成・共有",
+    "category": "その他",
+    "status": "完了",
+    "size": "小",
+    "priority": null,
+    "updateDate": "2026-04-06",
+    "month": 4,
+    "subtasks": [],
+    "links": []
+  },
+  {
+    "name": "自動レジ導入関連",
+    "category": "院内オペレーション",
+    "status": "進行中",
+    "size": "大",
+    "priority": null,
+    "updateDate": "2026-04-27",
+    "month": 4,
+    "subtasks": [
+      "担当者連絡連携 ✓",
+      "カード会社にPOS連動旨連絡 ✓",
+      "カード会社・レジメーカー連携 ✓",
+      "レセコン担当者問い合わせ対応 ✓",
+      "クレジット読み取り機連携 ✓",
+      "補助金採択7月予定 →待ち",
+      "デジタルAI補助金申請 →未",
+      "インボイス対応可否連絡 →未",
+      "5/11オアシスpaylight連動 →未",
+      "受付内装工事 →未"
+    ],
+    "links": []
+  },
+  {
+    "name": "次年度マニュアル修正　受付手順追加",
+    "category": "マニュアル・教育",
+    "status": "未着手",
+    "size": "小",
+    "priority": null,
+    "updateDate": "2026-04-07",
+    "month": 4,
+    "subtasks": [],
+    "links": []
+  },
+  {
+    "name": "4月全体MTG議事録",
+    "category": "その他",
+    "status": "完了",
+    "size": "小",
+    "priority": null,
+    "updateDate": "2026-04-09",
+    "month": 4,
+    "subtasks": [],
+    "links": []
+  },
+  {
+    "name": "鎌ヶ谷駐車場アクセス動画",
+    "category": "マーケティング",
+    "status": "完了",
+    "size": "中",
+    "priority": null,
+    "updateDate": "2026-04-21",
+    "month": 4,
+    "subtasks": [
+      "動画素材撮影 ✓",
+      "編集（文字入れ・速度・モザイク・ナレ）✓",
+      "Google Map掲載 ✓",
+      "HP掲載 ✓"
+    ],
+    "links": []
+  },
+  {
+    "name": "ehaTV　オアシス・錦糸町に導入",
+    "category": "マーケティング",
+    "status": "進行中",
+    "size": "大",
+    "priority": null,
+    "updateDate": "2026-04-27",
+    "month": 4,
+    "subtasks": [
+      "動画抽出 ✓",
+      "動画データ加工 ✓",
+      "錦糸町へ動画データ提供 ✓",
+      "錦糸町投影確認 ✓",
+      "待合TV外部動画非対応確認 ✓",
+      "TV注文 ✓",
+      "固定金具規格確認 ✓",
+      "追加器具注文 ✓",
+      "オアシスTV設置入れ替え →未",
+      "鎌ヶ谷データ抽出 →未",
+      "投影確認 →未"
+    ],
+    "links": []
+  },
+  {
+    "name": "【定例】坂下さんMTG調整",
+    "category": "その他",
+    "status": "完了",
+    "size": "小",
+    "priority": null,
+    "updateDate": "2026-04-10",
+    "month": 4,
+    "subtasks": [
+      "日程調整 ✓",
+      "会議対応 ✓",
+      "議事録共有 ✓"
+    ],
+    "links": []
+  },
+  {
+    "name": "リクルート関係",
+    "category": "労務・人事",
+    "status": "未着手",
+    "size": "小",
+    "priority": null,
+    "updateDate": "2026-04-27",
+    "month": 4,
+    "subtasks": [],
+    "links": []
+  },
+  {
+    "name": "【月例】坂下さんMTG対応",
+    "category": "その他",
+    "status": "完了",
+    "size": "小",
+    "priority": null,
+    "updateDate": "2026-04-15",
+    "month": 4,
+    "subtasks": [
+      "MTG日程調整 ✓",
+      "会議対応 ✓",
+      "議事録共有 ✓"
+    ],
+    "links": []
+  },
+  {
+    "name": "鎌ヶ谷HP解析導入",
+    "category": "マーケティング",
+    "status": "完了",
+    "size": "小",
+    "priority": null,
+    "updateDate": "2026-04-20",
+    "month": 4,
+    "subtasks": [
+      "HP全ページに解析タグ追加 ✓",
+      "テスト動作 ✓",
+      "Google Analytics初期設定 ✓"
+    ],
+    "links": []
+  },
+  {
+    "name": "新規助成金調査",
+    "category": "助成金・申請",
+    "status": "待ち",
+    "size": "小",
+    "priority": null,
+    "updateDate": "2026-04-15",
+    "month": 4,
+    "subtasks": [],
+    "links": []
+  },
+  {
+    "name": "デンタルAI会場探し",
+    "category": "その他",
+    "status": "待ち",
+    "size": "中",
+    "priority": null,
+    "updateDate": "2026-04-20",
+    "month": 4,
+    "subtasks": [
+      "大手町ファーストスクエア調査 →",
+      "fabbit会議室丸の内調査 →",
+      "TKP東京駅カンファレンスセンター調査 →",
+      "オフィス東京調査 →",
+      "コンファレンススクエアエムプラス調査 →"
+    ],
+    "links": []
+  },
+  {
+    "name": "ポータルサイト新人用マニュアルページ",
+    "category": "マニュアル・教育",
+    "status": "進行中",
+    "size": "中",
+    "priority": null,
+    "updateDate": "2026-04-30",
+    "month": 4,
+    "subtasks": [
+      "DA叩き台確認 ✓",
+      "共有 ✓",
+      "DA文言修正 ✓",
+      "受付実装済 ✓",
+      "たいせい先生連携設定 →未",
+      "実装 →未",
+      "DH選定（5月目処） →未"
+    ],
+    "links": []
+  },
+  {
+    "name": "冊子マニュアル入稿",
+    "category": "マニュアル・教育",
+    "status": "待ち",
+    "size": "大",
+    "priority": null,
+    "updateDate": "2026-05-01",
+    "month": 5,
+    "subtasks": [
+      "入稿用データ作成 ✓",
+      "表紙デザイン ✓",
+      "業者選定（ラクスル） ✓",
+      "部数確認（各6部） ✓",
+      "3種類入稿 ✓",
+      "入稿データ修正 ✓",
+      "データ確認 ✓",
+      "5/1錦糸町納品 ✓",
+      "5/11〜後払い請求書 →未"
+    ],
+    "links": []
+  },
+  {
+    "name": "オペスケジュール刷新",
+    "category": "院内オペレーション",
+    "status": "完了",
+    "size": "中",
+    "priority": null,
+    "updateDate": "2026-04-21",
+    "month": 4,
+    "subtasks": [
+      "デザイン制作 ✓",
+      "印刷 ✓",
+      "ラミネート ✓",
+      "設置 ✓"
+    ],
+    "links": []
+  },
+  {
+    "name": "デントネットデータ連携",
+    "category": "院内オペレーション",
+    "status": "進行中",
+    "size": "中",
+    "priority": null,
+    "updateDate": "2026-04-30",
+    "month": 4,
+    "subtasks": [
+      "マネジメントアプリ口コミ済みデータ ✓",
+      "LINE API テストケース ✓",
+      "議事録 ✓",
+      "サブカルテ連携 →未",
+      "SMS検討 →未"
+    ],
+    "links": []
+  },
+  {
+    "name": "錦糸町スタッフ表の整理",
+    "category": "労務・人事",
+    "status": "進行中",
+    "size": "中",
+    "priority": null,
+    "updateDate": "2026-05-01",
+    "month": 5,
+    "subtasks": [
+      "写真使用の旨周知 ✓",
+      "パネルデザイン ✓",
+      "写真データ取りまとめ ✓",
+      "写真データ入れ込み ✓",
+      "印刷用データ作成 ✓",
+      "シール印刷 ✓",
+      "アクセア問い合わせ ✓",
+      "5/12店舗相談 →未",
+      "パネル刷新 →未"
+    ],
+    "links": []
+  },
+  {
+    "name": "LINE WORKS 顔写真未設定者の設定",
+    "category": "システム・DX",
+    "status": "完了",
+    "size": "中",
+    "priority": null,
+    "updateDate": "2026-04-24",
+    "month": 4,
+    "subtasks": [
+      "未設定者へメンション ✓",
+      "対面での催促 ✓",
+      "松山さんデータ取得・設定 ✓",
+      "五十嵐さん設定 ✓"
+    ],
+    "links": []
+  },
+  {
+    "name": "訪問診療助成金",
+    "category": "助成金・申請",
+    "status": "待ち",
+    "size": "小",
+    "priority": null,
+    "updateDate": "2026-04-27",
+    "month": 4,
+    "subtasks": [
+      "申請意思連絡 ✓",
+      "詳細共有 ✓",
+      "提出書類収集 →未"
+    ],
+    "links": []
+  },
+  {
+    "name": "錦糸町テルミナのロゴ更新",
+    "category": "マーケティング",
+    "status": "完了",
+    "size": "小",
+    "priority": null,
+    "updateDate": "2026-04-21",
+    "month": 4,
+    "subtasks": [],
+    "links": []
+  },
+  {
+    "name": "SNS投稿準備",
+    "category": "マーケティング",
+    "status": "未着手",
+    "size": "小",
+    "priority": null,
+    "updateDate": "2026-04-21",
+    "month": 4,
+    "subtasks": [],
+    "links": []
+  },
+  {
+    "name": "オアシスHPリニューアル",
+    "category": "マーケティング",
+    "status": "未着手",
+    "size": "小",
+    "priority": null,
+    "updateDate": "2026-04-22",
+    "month": 4,
+    "subtasks": [],
+    "links": []
+  },
+  {
+    "name": "東京医薬看護求人票入力",
+    "category": "労務・人事",
+    "status": "進行中",
+    "size": "中",
+    "priority": null,
+    "updateDate": "2026-04-30",
+    "month": 4,
+    "subtasks": [
+      "ジョブメドレーから情報吸い出し ✓",
+      "指定フォーマット落とし込み ✓",
+      "求人フォーマット作成 ✓",
+      "修正 ✓",
+      "内容正誤確認 ✓",
+      "籠林さんにダブルチェック依頼 ✓",
+      "確認戻り・修正 →未",
+      "学校に返送 →未"
+    ],
+    "links": []
+  },
+  {
+    "name": "井田先生デンタルAI出張調整",
+    "category": "その他",
+    "status": "完了",
+    "size": "小",
+    "priority": null,
+    "updateDate": "2026-04-27",
+    "month": 4,
+    "subtasks": [
+      "予約確認 ✓",
+      "オアシス受付にて予約変更依頼 ✓"
+    ],
+    "links": []
+  },
+  {
+    "name": "自由診療料金表作成",
+    "category": "マーケティング",
+    "status": "進行中",
+    "size": "大",
+    "priority": null,
+    "updateDate": "2026-04-27",
+    "month": 4,
+    "subtasks": [
+      "現在データ発掘 ✓",
+      "最新表取得 ✓",
+      "井田先生チェック ✓",
+      "Claudeでデザイン出力 ✓",
+      "チェック反映・微修正 ✓",
+      "印刷・ラミネート・リング設置 ✓",
+      "錦糸町設置 ✓",
+      "オアシス設置 →未",
+      "鎌ヶ谷設置 →未"
+    ],
+    "links": []
+  },
+  {
+    "name": "デントネットに口コミ声掛けチェック追加",
+    "category": "マーケティング",
+    "status": "完了",
+    "size": "中",
+    "priority": null,
+    "updateDate": "2026-04-24",
+    "month": 4,
+    "subtasks": [
+      "報告フォームのデータ抽出 ✓",
+      "デントネットに共有 ✓",
+      "デントネット作業報告待ち ✓",
+      "アイコンの追加 ✓",
+      "資料化・周知 ✓"
+    ],
+    "links": []
+  },
+  {
+    "name": "錦糸町LINE応答メッセージメンテ",
+    "category": "マーケティング",
+    "status": "進行中",
+    "size": "中",
+    "priority": null,
+    "updateDate": "2026-04-27",
+    "month": 4,
+    "subtasks": [
+      "権限付与依頼 ✓",
+      "権限ログイン確認 ✓",
+      "過去投稿チェック →未",
+      "変更洗い出し →未",
+      "必要素材作成 →未",
+      "変更 →未"
+    ],
+    "links": []
+  },
+  {
+    "name": "ジョブメドレー文言統一",
+    "category": "労務・人事",
+    "status": "進行中",
+    "size": "中",
+    "priority": null,
+    "updateDate": "2026-05-01",
+    "month": 5,
+    "subtasks": [
+      "ログイン確認 ✓",
+      "修正：錦糸町DA ✓",
+      "修正：錦糸町DH ✓",
+      "修正：鎌ヶ谷DA →未",
+      "修正：鎌ヶ谷DH →未"
+    ],
+    "links": []
+  },
+  {
+    "name": "抜歯治療同意書→錦糸町用作成",
+    "category": "院内オペレーション",
+    "status": "完了",
+    "size": "小",
+    "priority": null,
+    "updateDate": "2026-04-24",
+    "month": 4,
+    "subtasks": [
+      "元データ取り寄せ ✓",
+      "文言変更・チェック ✓",
+      "リリース ✓"
+    ],
+    "links": []
+  },
+  {
+    "name": "GoogleマップGW休日入力",
+    "category": "マーケティング",
+    "status": "完了",
+    "size": "小",
+    "priority": null,
+    "updateDate": "2026-04-27",
+    "month": 4,
+    "subtasks": [
+      "各院営業時間・日程確認 ✓",
+      "各管理アカウントでスケジュール入力 ✓",
+      "反映確認 ✓"
+    ],
+    "links": []
+  },
+  {
+    "name": "千葉県医療物価高騰助成金申請",
+    "category": "助成金・申請",
+    "status": "進行中",
+    "size": "中",
+    "priority": null,
+    "updateDate": "2026-04-28",
+    "month": 4,
+    "subtasks": [
+      "申請必要書類確認 ✓",
+      "誓約書入力 ✓",
+      "押印 →未",
+      "役員名簿取得 →未",
+      "通帳コピー →未",
+      "支払結果通知書 →未"
+    ],
+    "links": []
+  },
+  {
+    "name": "【5月】院長会議",
+    "category": "その他",
+    "status": "完了",
+    "size": "小",
+    "priority": null,
+    "updateDate": "2026-05-07",
+    "month": 5,
+    "subtasks": [
+      "議題共有 ✓",
+      "議事録 ✓"
+    ],
+    "links": []
+  },
+  {
+    "name": "タスク整理・移行・成果物の可視化",
+    "category": "その他",
+    "status": "進行中",
+    "size": "小",
+    "priority": null,
+    "updateDate": "2026-05-07",
+    "month": 5,
+    "subtasks": [],
+    "links": []
+  }
+]

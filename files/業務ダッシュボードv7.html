@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>業務ダッシュボード｜キャメルグループ事務局</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f4f6fb;--sf:#fff;--sf2:#f8f9fd;--bd:#e4e9f2;
+  --tx:#14213d;--mid:#4a5568;--mt:#8a96b0;
+  --ac:#3b5bdb;--ac-bg:#eff2ff;--ac-bd:#bac8ff;
+  --dn:#2f9e44;--dn-bg:#ebfbee;--dn-bd:#b2f2bb;
+  --pg:#e67700;--pg-bg:#fff9db;--pg-bd:#ffec99;
+  --wt:#5c6680;--wt-bg:#f1f3f5;--wt-bd:#ced4da;
+  --td:#c92a2a;--td-bg:#fff5f5;--td-bd:#ffc9c9;
+  --mkt:#c2255c;--mkt-bg:#fce7f3;
+  --edu:#099268;--edu-bg:#d3f9d8;
+  --sub:#e67700;--sub-bg:#fff3bf;
+  --ops:#d9480f;--ops-bg:#ffedd5;
+  --hr:#7048e8;--hr-bg:#ede9fe;
+  --dx:#1971c2;--dx-bg:#dbeafe;
+  --etc:#5c6680;--etc-bg:#f1f3f5;
+  --r:10px;--rs:6px;
+  --sh:0 1px 3px rgba(0,0,0,.07),0 4px 12px rgba(0,0,0,.04);
+  --shm:0 4px 20px rgba(0,0,0,.10),0 1px 4px rgba(0,0,0,.06);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--tx);font-family:"Noto Sans JP",sans-serif;font-size:14px;line-height:1.6}
+.mono{font-family:"JetBrains Mono",monospace}
+a{color:inherit;text-decoration:none}
+
+.hd{background:var(--sf);border-bottom:1px solid var(--bd);box-shadow:0 1px 6px rgba(0,0,0,.05);position:sticky;top:0;z-index:200}
+.hd-in{max-width:1320px;margin:0 auto;padding:0 28px;height:58px;display:flex;align-items:center;justify-content:space-between}
+.hd-l{display:flex;align-items:center;gap:12px}
+.logo{width:34px;height:34px;background:linear-gradient(135deg,var(--ac),#7950f2);border-radius:9px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:15px;box-shadow:0 2px 8px rgba(59,91,219,.3);flex-shrink:0}
+.hd-title{font-size:15px;font-weight:700}
+.hd-sub{font-size:11px;color:var(--mt)}
+.chips{display:flex;gap:8px}
+.chip{background:var(--sf2);border:1px solid var(--bd);border-radius:20px;padding:3px 11px;font-size:11px;color:var(--mid);display:flex;align-items:center;gap:5px}
+.dot{width:6px;height:6px;border-radius:50%}
+.dd{background:var(--dn)}.dp{background:var(--pg)}.dt{background:var(--td)}
+
+.tb{background:var(--sf);border-bottom:1px solid var(--bd);position:sticky;top:58px;z-index:100}
+.tb-in{max-width:1320px;margin:0 auto;padding:0 28px;display:flex}
+.tab{padding:13px 24px;background:transparent;border:none;border-bottom:2px solid transparent;color:var(--mt);font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;transition:all .15s;white-space:nowrap}
+.tab:hover{color:var(--tx)}
+.tab.on{color:var(--ac);border-bottom-color:var(--ac);font-weight:700}
+
+.wrap{max-width:1320px;margin:0 auto;padding:28px 28px 80px}
+.sec{display:none;animation:fi .2s}
+.sec.on{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.stitle{font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--bd)}
+
+.tag{display:inline-flex;align-items:center;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700}
+.t-mkt{background:var(--mkt-bg);color:var(--mkt)}.t-edu{background:var(--edu-bg);color:var(--edu)}
+.t-sub{background:var(--sub-bg);color:var(--sub)}.t-ops{background:var(--ops-bg);color:var(--ops)}
+.t-hr{background:var(--hr-bg);color:var(--hr)}.t-dx{background:var(--dx-bg);color:var(--dx)}.t-etc{background:var(--etc-bg);color:var(--etc)}
+.sz-大{background:#fee2e2;color:var(--td);border:1px solid var(--td-bd)}
+.sz-中{background:var(--pg-bg);color:var(--pg);border:1px solid var(--pg-bd)}
+.sz-小{background:var(--sf2);color:var(--mt);border:1px solid var(--bd)}
+.sp{display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:10px;font-size:11px;font-weight:600}
+.sp::before{content:"";width:5px;height:5px;border-radius:50%}
+.sp-完了{background:var(--dn-bg);color:var(--dn)}.sp-完了::before{background:var(--dn)}
+.sp-進行中{background:var(--pg-bg);color:var(--pg)}.sp-進行中::before{background:var(--pg)}
+.sp-未着手{background:var(--td-bg);color:var(--td)}.sp-未着手::before{background:var(--td)}
+.sp-待ち{background:var(--wt-bg);color:var(--wt)}.sp-待ち::before{background:var(--wt)}
+
+/* Active */
+.ag{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px}
+.acard{background:var(--sf);border:1px solid var(--bd);border-left:3px solid var(--pg);border-radius:var(--rs);padding:14px;box-shadow:var(--sh);cursor:pointer;transition:all .15s}
+.acard:hover{box-shadow:var(--shm);transform:translateY(-1px)}
+.atags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:7px}
+.aname{font-size:13px;font-weight:700;margin-bottom:8px;line-height:1.4}
+.pb-wrap{margin-bottom:7px}
+.pb-row{display:flex;justify-content:space-between;font-size:11px;color:var(--mt);font-family:"JetBrains Mono",monospace;margin-bottom:3px}
+.pbar{height:5px;background:var(--bd);border-radius:3px;overflow:hidden}
+.pfill{height:100%;background:var(--pg);border-radius:3px}
+.anext{font-size:11px;color:var(--ac);font-weight:600;display:flex;gap:5px;margin-top:7px;border-top:1px solid var(--sf2);padding-top:7px}
+.anext::before{content:"→";flex-shrink:0}
+.adate{font-size:10px;color:var(--mt);margin-top:5px;font-family:"JetBrains Mono",monospace}
+
+.sg{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-bottom:28px}
+.wcard{background:var(--sf);border:1px solid var(--wt-bd);border-left:3px solid var(--wt);border-radius:var(--rs);padding:12px 14px;cursor:pointer;transition:all .15s}
+.tcard{background:var(--sf);border:1px solid var(--bd);border-left:3px solid var(--td);border-radius:var(--rs);padding:12px 14px;cursor:pointer;transition:all .15s}
+.wcard:hover,.tcard:hover{box-shadow:var(--shm)}
+.cname{font-size:13px;font-weight:600;margin-bottom:6px}
+.ctags{display:flex;gap:5px;flex-wrap:wrap}
+
+/* Overview */
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:26px}
+.kpi{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:18px 20px;box-shadow:var(--sh);position:relative;overflow:hidden}
+.kpi::after{content:"";position:absolute;bottom:0;left:0;right:0;height:3px}
+.kpi-p::after{background:var(--pg)}.kpi-t::after{background:var(--td)}.kpi-d::after{background:var(--dn)}
+.klbl{font-size:10px;font-weight:700;color:var(--mt);text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px}
+.knum{font-family:"JetBrains Mono",monospace;font-size:40px;font-weight:700;line-height:1;margin-bottom:6px}
+.kpi-p .knum{color:var(--pg)}.kpi-t .knum{color:var(--td)}.kpi-d .knum{color:var(--dn)}
+.ksub{font-size:11px;color:var(--mt);display:flex;gap:10px;flex-wrap:wrap}
+.ksub strong{color:var(--mid);font-weight:600}
+
+.cs{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;margin-bottom:26px}
+.cc{background:var(--sf);border:1px solid var(--bd);border-radius:var(--rs);padding:12px 8px;text-align:center;border-top:3px solid var(--bd);box-shadow:var(--sh);cursor:pointer;transition:all .15s}
+.cc:hover{box-shadow:var(--shm);transform:translateY(-2px)}
+.c-mkt{border-top-color:var(--mkt)}.c-edu{border-top-color:var(--edu)}.c-sub{border-top-color:var(--sub)}
+.c-ops{border-top-color:var(--ops)}.c-hr{border-top-color:var(--hr)}.c-dx{border-top-color:var(--dx)}.c-etc{border-top-color:var(--etc)}
+.cc-lbl{font-size:9px;color:var(--mt);margin-bottom:5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cc-n{font-family:"JetBrains Mono",monospace;font-size:20px;font-weight:700;margin-bottom:4px}
+.cbw{height:4px;background:var(--bd);border-radius:2px;overflow:hidden;display:flex}
+.cbd{background:var(--dn)}.cbp{background:var(--pg)}.cbt{background:var(--td)}
+.cc-rate{font-size:10px;color:var(--mt);margin-top:4px}
+
+/* Table */
+.tbl{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead{background:var(--sf2);border-bottom:1px solid var(--bd)}
+th{text-align:left;padding:10px 14px;font-size:10px;font-weight:700;color:var(--mt);text-transform:uppercase;letter-spacing:.1em}
+td{padding:10px 14px;vertical-align:middle}
+tbody tr{cursor:pointer;border-bottom:1px solid rgba(0,0,0,.04)}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{filter:brightness(.97)}
+tr.r-prog{background:#fffbf0}
+tr.r-wait{background:#f9fafb}
+tr.r-todo{background:#fff8f8}
+tr.r-done{background:#f6fef8}
+
+/* Month log */
+.ml{display:flex;flex-direction:column;gap:36px}
+.m-hd{display:flex;align-items:baseline;gap:14px;margin-bottom:10px}
+.m-title{font-size:20px;font-weight:900}
+.m-cnt{font-size:12px;color:var(--mt)}
+.m-div{height:3px;background:linear-gradient(90deg,var(--ac),transparent);border-radius:2px;margin-bottom:18px}
+.m-kpis{display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap}
+.mkpi{background:var(--sf);border:1px solid var(--bd);border-radius:var(--rs);padding:10px 16px;min-width:76px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.mkpi .mn{font-family:"JetBrains Mono",monospace;font-size:22px;font-weight:700;color:var(--dn);display:block}
+.mkpi .ml2{font-size:10px;color:var(--mt);text-transform:uppercase;letter-spacing:.06em}
+.msub{font-size:12px;font-weight:700;color:var(--mid);margin-bottom:10px}
+.dg{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;margin-bottom:14px}
+.dcard{background:var(--sf);border:1px solid var(--dn-bd);border-left:3px solid var(--dn);border-radius:var(--rs);padding:12px 14px;cursor:pointer;transition:all .15s}
+.dcard:hover{box-shadow:var(--shm);transform:translateY(-1px)}
+.dname{font-size:13px;font-weight:700;margin-bottom:6px}
+.dtags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:6px}
+.dlink{display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--ac);font-weight:600;background:var(--ac-bg);border:1px solid var(--ac-bd);border-radius:4px;padding:2px 8px;margin-top:4px;text-decoration:none;transition:all .15s}
+.dlink:hover{background:var(--ac);color:#fff}
+.spills{display:flex;flex-wrap:wrap;gap:6px}
+.spill{background:var(--sf2);border:1px solid var(--bd);border-radius:16px;padding:3px 10px;font-size:11px;color:var(--mid);cursor:pointer;transition:all .15s}
+.spill:hover{border-color:var(--dn-bd);background:var(--dn-bg)}
+.ppills{display:flex;flex-wrap:wrap;gap:6px}
+.ppill{background:var(--pg-bg);border:1px solid var(--pg-bd);border-radius:16px;padding:3px 10px;font-size:11px;color:var(--pg);cursor:pointer}
+
+/* Modal */
+.mbg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.32);z-index:1000;backdrop-filter:blur(3px)}
+.mbg.on{display:flex;align-items:center;justify-content:center}
+.modal{background:var(--sf);border-radius:14px;padding:26px;max-width:540px;width:calc(100% - 36px);max-height:82vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.16);animation:fi .2s}
+.mc{float:right;background:none;border:none;font-size:22px;cursor:pointer;color:var(--mt);line-height:1}
+.mc:hover{color:var(--tx)}
+.modal h2{font-size:16px;font-weight:700;margin-bottom:12px;padding-right:26px;line-height:1.4}
+.mtags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.mrow{display:flex;padding:8px 0;border-bottom:1px solid var(--sf2)}
+.mrow:last-child{border:none}
+.mkey{width:80px;font-size:10px;color:var(--mt);font-weight:700;text-transform:uppercase;letter-spacing:.07em;flex-shrink:0;padding-top:2px}
+.mval{flex:1;font-size:13px}
+.sl{display:flex;flex-direction:column;gap:5px;margin-top:8px}
+.si{display:flex;align-items:flex-start;gap:8px;padding:7px 9px;border-radius:6px;font-size:12px;line-height:1.4}
+.si.sd{background:var(--dn-bg);border:1px solid var(--dn-bd);color:var(--dn)}
+.si.su{background:var(--sf2);border:1px solid var(--bd);color:var(--mid)}
+.si.sw{background:var(--wt-bg);border:1px solid var(--wt-bd);color:var(--wt)}
+.si-ic{flex-shrink:0;width:14px}
+
+@media(max-width:1000px){.kpis{grid-template-columns:1fr 1fr 1fr}.ag{grid-template-columns:1fr 1fr}.cs{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:640px){
+  .wrap,.hd-in,.tb-in{padding-left:16px;padding-right:16px}
+  .kpis{grid-template-columns:1fr 1fr;gap:10px}.knum{font-size:28px}
+  .ag{grid-template-columns:1fr}.cs{grid-template-columns:repeat(2,1fr)}.chips{display:none}
+}
+
+/* Link management */
+.link-add-btn{display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--ac);background:var(--ac-bg);border:1px dashed var(--ac-bd);border-radius:4px;padding:3px 9px;cursor:pointer;transition:all .15s;font-family:inherit;margin-top:4px}
+.link-add-btn:hover{background:var(--ac);color:#fff;border-style:solid}
+.link-form{background:var(--sf2);border:1px solid var(--ac-bd);border-radius:8px;padding:14px;margin-top:10px}
+.link-form-title{font-size:12px;font-weight:700;color:var(--ac);margin-bottom:10px}
+.link-form input{width:100%;background:var(--sf);border:1px solid var(--bd);border-radius:6px;padding:8px 10px;font-family:inherit;font-size:12px;color:var(--tx);margin-bottom:8px;display:block}
+.link-form input:focus{outline:none;border-color:var(--ac)}
+.link-form input::placeholder{color:var(--mt)}
+.link-form-btns{display:flex;gap:8px;justify-content:flex-end}
+.btn-save{background:var(--ac);color:#fff;border:none;border-radius:6px;padding:6px 14px;font-family:inherit;font-size:12px;cursor:pointer;font-weight:600}
+.btn-save:hover{opacity:.85}
+.btn-cancel{background:var(--sf2);color:var(--mid);border:1px solid var(--bd);border-radius:6px;padding:6px 14px;font-family:inherit;font-size:12px;cursor:pointer}
+.user-link{display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--ac);font-weight:600;background:var(--ac-bg);border:1px solid var(--ac-bd);border-radius:4px;padding:2px 8px;text-decoration:none;transition:all .15s}
+.user-link:hover{background:var(--ac);color:#fff}
+.link-del{background:none;border:none;color:var(--mt);cursor:pointer;font-size:13px;padding:0 2px;line-height:1;transition:all .15s}
+.link-del:hover{color:var(--td)}
+.user-links-wrap{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;align-items:center}
+
+</style>
+</head>
+<body>
+
+<header class="hd">
+  <div class="hd-in">
+    <div class="hd-l">
+      <div class="logo">C</div>
+      <div>
+        <div class="hd-title">業務ダッシュボード</div>
+        <div class="hd-sub">キャメルグループ事務局 · 2026年3〜5月 · 担当：原</div>
+      </div>
+    </div>
+    <div class="chips">
+      <div class="chip"><span class="dot dd"></span>完了 <strong id="hd-d">—</strong></div>
+      <div class="chip"><span class="dot dp"></span>進行中 <strong id="hd-p">—</strong></div>
+      <div class="chip"><span class="dot dt"></span>予定 <strong id="hd-t">—</strong></div>
+    </div>
+  </div>
+</header>
+
+<div class="tb">
+  <div class="tb-in">
+    <button class="tab on" data-t="log">📅 月別ログ</button>
+    <button class="tab" data-t="active">⚡ アクティブ</button>
+    <button class="tab" data-t="overview">📊 概要</button>
+  </div>
+</div>
+
+<div class="wrap">
+
+<section class="sec on" id="sec-log">
+  <div class="ml" id="ml"></div>
+</section>
+
+<section class="sec" id="sec-active">
+  <div class="stitle">⚡ 進行中（最終更新 新しい順）</div>
+  <div class="ag" id="ag"></div>
+  <div class="stitle">⏳ 対応待ち・依頼中</div>
+  <div class="sg" id="wg"></div>
+  <div class="stitle">📋 今後着手予定</div>
+  <div class="sg" id="tg"></div>
+</section>
+
+<section class="sec" id="sec-overview">
+  <div class="kpis">
+    <div class="kpi kpi-p">
+      <div class="klbl">🔄 進行中</div>
+      <div class="knum" id="kP">—</div>
+      <div class="ksub">大 <strong id="kPb">—</strong> ／ 中 <strong id="kPm">—</strong> ／ 小 <strong id="kPs">—</strong></div>
+    </div>
+    <div class="kpi kpi-t">
+      <div class="klbl">📋 未着手・待ち</div>
+      <div class="knum" id="kT">—</div>
+      <div class="ksub">未着手 <strong id="kTn">—</strong> ／ 待ち <strong id="kWn">—</strong></div>
+    </div>
+    <div class="kpi kpi-d">
+      <div class="klbl">✅ 完了</div>
+      <div class="knum" id="kD">—</div>
+      <div class="ksub">達成率 <strong id="kR">—</strong></div>
+    </div>
+  </div>
+  <div class="stitle">業務領域別 進捗</div>
+  <div class="cs" id="cs"></div>
+  <div class="stitle">全タスク一覧</div>
+  <div class="tbl"><table>
+    <thead><tr><th>領域</th><th>規模</th><th>タスク名</th><th>ステータス</th><th>進捗</th><th>更新日</th></tr></thead>
+    <tbody id="tbl"></tbody>
+  </table></div>
+</section>
+
+</div>
+
+<div class="mbg" id="mbg">
+  <div class="modal" id="modal"></div>
+</div>
+
+<script>
+var T = [{"name": "鎌ヶ谷Webサイトの切り替え", "category": "マーケティング", "status": "完了", "size": "大", "priority": "中", "updateDate": "2026-04-14", "month": 4, "subtasks": ["旧サイトアーカイブ化 ✓", "新サイトへの動線確保 ✓", "制作業者特定・連絡 ✓", "ドメイン移管コード取得 ✓", "オースコードを業者に共有 ✓", "移管承認 ✓", "解析タグ導入 ✓", "HP切り替え完了・表示確認 ✓"], "links": []}, {"name": "アカウント一覧/資料集作成", "category": "システム・DX", "status": "完了", "size": "小", "priority": "高", "updateDate": "2026-03-09", "month": 3, "subtasks": [], "links": [{"label": "アカウント一覧・資料集", "url": "https://docs.google.com/spreadsheets/d/1m1fkmvkKJqL5gkJSbzvzLE1R97pDz72Fgd33ZFd4CKo/edit"}]}, {"name": "歯科コンサル料金形態調査", "category": "院内オペレーション", "status": "完了", "size": "小", "priority": "低", "updateDate": "2026-03-09", "month": 3, "subtasks": [], "links": [{"label": "料金形態調査シート", "url": "https://docs.google.com/spreadsheets/d/14naQ6MBXA-zmPE3_BQJvFS7eu0-O-j0NVojrzmP-gkc/edit"}]}, {"name": "売上レセプト表更新", "category": "院内オペレーション", "status": "完了", "size": "小", "priority": "高", "updateDate": "2026-03-11", "month": 3, "subtasks": [], "links": [{"label": "売上レセプト表", "url": "https://docs.google.com/spreadsheets/d/1y3sCcryM8rtVyCEna2S5e8NLPHGXC97rANloH-LmbBY/edit"}]}, {"name": "Googleアカウント凍結解除", "category": "システム・DX", "status": "完了", "size": "小", "priority": "低", "updateDate": "2026-04-27", "month": 4, "subtasks": ["凍結解除申請 ✓", "解除確認 ✓", "復活確認・クローズ ✓"], "links": []}, {"name": "AI歯科セミナー視聴", "category": "マニュアル・教育", "status": "完了", "size": "小", "priority": "低", "updateDate": "2026-04-10", "month": 4, "subtasks": [], "links": []}, {"name": "自動レジ助成金申請", "category": "助成金・申請", "status": "進行中", "size": "中", "priority": "中", "updateDate": "2026-04-28", "month": 4, "subtasks": ["必要書類準備・共有 ✓", "MTGスケジュール調整 ✓", "ZOOMミーティング ✓", "議事録作成・共有 ✓", "ビジコム担当者申し込み ✓", "gBizIDプライム登録 →未", "SECURITY ACTION登録 →未", "デジwith登録 →未", "インボイス枠申請 →未"], "links": []}, {"name": "マニュアル制作進行", "category": "マニュアル・教育", "status": "完了", "size": "大", "priority": "高", "updateDate": "2026-03-30", "month": 3, "subtasks": ["旧マニュアル全部放り込む ✓", "新構成でマッピング生成 ✓", "Claudeで再生成 ✓", "原稿正誤チェック・修正 ✓", "全8部イラスト生成 ✓", "インフォグラフィック挿入 ✓", "印刷用体裁整理 ✓", "試し印刷入稿 ✓", "内容校正 ✓", "配信 ✓"], "links": []}, {"name": "Googleドライブ連携", "category": "システム・DX", "status": "完了", "size": "小", "priority": "高", "updateDate": "2026-03-10", "month": 3, "subtasks": [], "links": []}, {"name": "Googleカレンダー連携", "category": "システム・DX", "status": "完了", "size": "小", "priority": "中", "updateDate": "2026-03-10", "month": 3, "subtasks": [], "links": []}, {"name": "Note book LMマニュアル連携", "category": "マニュアル・教育", "status": "完了", "size": "小", "priority": "中", "updateDate": "2026-03-10", "month": 3, "subtasks": [], "links": []}, {"name": "企業型DC申請", "category": "助成金・申請", "status": "進行中", "size": "大", "priority": "中", "updateDate": "2026-05-01", "month": 5, "subtasks": ["ChatWorks登録・グループ参加 ✓", "申し込みフォーム入力 ✓", "就業規則確認・提出 ✓", "育休・介護休暇規定作成 ✓", "提携社労士面談 ✓", "申請書類発送 ✓", "従業員説明日設定（7/10）✓", "保険証明書4月以降発行 →待ち", "不足資料返送 →待ち", "希望者取りまとめ →未"], "links": []}, {"name": "井田先生のスケジュール可視化", "category": "その他", "status": "完了", "size": "小", "priority": null, "updateDate": "2026-03-12", "month": 3, "subtasks": ["各院予約システム連携 ✓", "Googleカレンダーに診療予定入力 ✓"], "links": []}, {"name": "原の入社書類関係", "category": "労務・人事", "status": "完了", "size": "中", "priority": "中", "updateDate": "2026-03-30", "month": 3, "subtasks": ["銀行口座開設（三井住友）✓", "口座番号共有 ✓", "契約書提出 ✓", "源泉徴収提出 ✓", "打刻登録 ✓", "勤怠アプリ制作 ✓", "交通費精算 ✓"], "links": []}, {"name": "(株)キャメルWebサイト開設", "category": "マーケティング", "status": "未着手", "size": "小", "priority": null, "updateDate": "2026-04-02", "month": 4, "subtasks": [], "links": []}, {"name": "LINE Worksアイコン変更", "category": "システム・DX", "status": "完了", "size": "小", "priority": null, "updateDate": "2026-03-10", "month": 3, "subtasks": [], "links": []}, {"name": "会社基本情報シート作成", "category": "システム・DX", "status": "完了", "size": "小", "priority": null, "updateDate": "2026-04-15", "month": 4, "subtasks": [], "links": [{"label": "会社基本情報シート", "url": "https://docs.google.com/spreadsheets/d/1m1fkmvkKJqL5gkJSbzvzLE1R97pDz72Fgd33ZFd4CKo/edit"}]}, {"name": "【月次10日まで】売上レセプト表更新", "category": "院内オペレーション", "status": "未着手", "size": "小", "priority": null, "updateDate": "2026-03-11", "month": 3, "subtasks": ["保険別集計表（錦糸町）→未", "保険別集計表（オアシス）→未", "月次集計表（鎌ヶ谷）→未"], "links": []}, {"name": "【月次】MTGスケジューリング", "category": "その他", "status": "未着手", "size": "小", "priority": null, "updateDate": "2026-03-31", "month": 3, "subtasks": [], "links": []}, {"name": "SNS周り現状把握", "category": "マーケティング", "status": "進行中", "size": "小", "priority": "中", "updateDate": "2026-04-02", "month": 4, "subtasks": ["運用ルール明文化 ✓", "各SNSログイン情報確認 →未", "実績数値（インサイト）抽出 →未", "コンテンツ資産確認 →未", "競合・市場調査 →未"], "links": []}, {"name": "口コミ調査データベース化・分析", "category": "マーケティング", "status": "完了", "size": "小", "priority": null, "updateDate": "2026-03-18", "month": 3, "subtasks": ["各院口コミ一覧スクショ ✓", "文章に変換し表化 ✓", "NotebookLMで分析資料化 ✓"], "links": [{"label": "口コミDB（スプレッドシート）", "url": "https://docs.google.com/spreadsheets/d/1NoGk5SYvWbBnB9t35eBGgVo9Hzd2GTu_PlKdSZGfao8/edit"}]}, {"name": "【全体MTG】議事録", "category": "その他", "status": "完了", "size": "小", "priority": null, "updateDate": "2026-03-16", "month": 3, "subtasks": [], "links": []}, {"name": "【院長MTG】議事録", "category": "その他", "status": "完了", "size": "小", "priority": null, "updateDate": "2026-03-18", "month": 3, "subtasks": [], "links": []}, {"name": "口コミ依頼シート制作", "category": "マーケティング", "status": "完了", "size": "小", "priority": null, "updateDate": "2026-03-24", "month": 3, "subtasks": ["MTGで制度告知 ✓", "各院ポップ制作 ✓", "キャンペーン・ポップ告知 ✓"], "links": []}, {"name": "Google Workspace", "category": "システム・DX", "status": "完了", "size": "小", "priority": null, "updateDate": "2026-04-02", "month": 4, "subtasks": [], "links": []}, {"name": "インプラント手術承諾書改訂", "category": "院内オペレーション", "status": "完了", "size": "小", "priority": null, "updateDate": "2026-03-24", "month": 3, "subtasks": ["現行書面リフレッシュ ✓", "井田先生チェック ✓", "各院用に複製 ✓", "LINE Worksで共有 ✓"], "links": [{"label": "インプラント承諾書", "url": "https://docs.google.com/document/d/1knEkIPR4DGwWOI1XZheWcXbzyZadmiaosjGVojRFjJI/edit"}]}, {"name": "AIベクサムにcamelドメイン連携確認", "category": "システム・DX", "status": "未着手", "size": "小", "priority": null, "updateDate": "2026-03-18", "month": 3, "subtasks": [], "links": []}, {"name": "PLAUD設定", "category": "システム・DX", "status": "完了", "size": "小", "priority": null, "updateDate": "2026-03-26", "month": 3, "subtasks": [], "links": []}, {"name": "口コミ施策効果測定アプリ開発", "category": "マーケティング", "status": "進行中", "size": "中", "priority": null, "updateDate": "2026-04-15", "month": 4, "subtasks": ["叩き台作成 ✓", "Web口コミ取得改修 →未", "売上との相関関係分析 →未", "ログ蓄積機能 →未"], "links": []}, {"name": "マニュアル試し印刷", "category": "マニュアル・教育", "status": "待ち", "size": "大", "priority": "高", "updateDate": "2026-04-10", "month": 4, "subtasks": ["試し印刷用入稿データ作成 ✓", "試し印刷入稿 ✓", "業者データチェック ✓", "出し戻し修正×4回 ✓", "ラクスルに変更・試し入稿 ✓", "A4→A5サイズ変更 ✓", "表紙・裏表紙作成 ✓", "納品 ✓", "納品冊子確認 ✓", "後払い納品書確認・入金 →未"], "links": []}, {"name": "LINE WORKS名刺作成", "category": "マーケティング", "status": "未着手", "size": "小", "priority": null, "updateDate": "2026-03-31", "month": 3, "subtasks": [], "links": []}, {"name": "錦糸町修理伝票データ化", "category": "院内オペレーション", "status": "完了", "size": "小", "priority": null, "updateDate": "2026-03-18", "month": 3, "subtasks": ["伝票スキャン・データ化 ✓", "スプレッドシート整理 ✓"], "links": [{"label": "修理伝票データ", "url": "https://docs.google.com/spreadsheets/d/1c12yo10cSHmYv859a5MWVhFAehvk3lsja6hKwL0DUsA/edit"}]}, {"name": "マニュアルテスト修了証", "category": "マニュアル・教育", "status": "待ち", "size": "小", "priority": "低", "updateDate": "2026-04-30", "month": 4, "subtasks": [], "links": [{"label": "修了証データ", "url": "https://drive.google.com/file/d/1vLENCT248oOjiCZme8AeqrXarmVai5Ba/view"}]}, {"name": "マニュアル配信", "category": "マニュアル・教育", "status": "完了", "size": "大", "priority": "高", "updateDate": "2026-03-25", "month": 3, "subtasks": ["配信用データ整理・校正 ✓", "リンクの張り替え ✓", "動作確認 ✓", "配信文作成 ✓", "配信・運用開始 ✓", "問い合わせ対応 →継続"], "links": []}, {"name": "ジョブカン　スタッフ勤務地設定", "category": "労務・人事", "status": "完了", "size": "小", "priority": null, "updateDate": "2026-03-26", "month": 3, "subtasks": [], "links": []}, {"name": "適性検査受験", "category": "労務・人事", "status": "完了", "size": "小", "priority": null, "updateDate": "2026-03-26", "month": 3, "subtasks": [], "links": []}, {"name": "claude AI セットアップ", "category": "システム・DX", "status": "完了", "size": "小", "priority": null, "updateDate": "2026-03-27", "month": 3, "subtasks": [], "links": []}, {"name": "キャメル勤怠管理システム構築", "category": "労務・人事", "status": "完了", "size": "大", "priority": "中", "updateDate": "2026-04-07", "month": 4, "subtasks": ["アプリ土台生成 ✓", "微調整 ✓", "URL付与 ✓", "オンライン運用改築・テスト ✓", "ログのクラウド化 ✓", "ローカルログ移行 ✓", "交通費自動連動機能追加 ✓", "祝日読み取り機能追加 ✓"], "links": [{"label": "勤怠管理アプリ（本番）", "url": "https://kintai-xi.vercel.app/"}]}, {"name": "鎌ヶ谷課題抽出", "category": "マーケティング", "status": "進行中", "size": "中", "priority": null, "updateDate": "2026-04-20", "month": 4, "subtasks": ["HPリニューアル・移管 ✓", "駐車場案内動画作成・配置 ✓", "グループ間連携データ抽出 →未", "SNSターゲット絞り込み →未"], "links": [{"label": "課題抽出ドキュメント", "url": "https://docs.google.com/document/d/13naIBF2F_qdSjWlkFsiHsCgXCpUWvmXee7dXug52Jr4/edit"}]}, {"name": "キャメル就業規則書面作成", "category": "労務・人事", "status": "完了", "size": "大", "priority": "高", "updateDate": "2026-04-09", "month": 4, "subtasks": ["smiles就業規則集約 ✓", "キャメル版に再編成 ✓", "提出用体裁校正 ✓", "井田先生チェック ✓", "企業DC用提出 ✓", "施行日確認・追記 ✓", "育休・介護休暇規定追記 ✓"], "links": [{"label": "就業規則ドキュメント", "url": "https://docs.google.com/document/d/1kPe8Z-qUZREahF3j9sNWBqHpGKgcNAWp-3TwpYK0WZs/edit"}]}, {"name": "【メモ】次年度マニュアル修正", "category": "マニュアル・教育", "status": "未着手", "size": "小", "priority": null, "updateDate": "2026-03-31", "month": 3, "subtasks": [], "links": []}, {"name": "デントネット予約システム再構築", "category": "院内オペレーション", "status": "未着手", "size": "小", "priority": null, "updateDate": "2026-03-31", "month": 3, "subtasks": [], "links": []}, {"name": "Webridge関係", "category": "マーケティング", "status": "未着手", "size": "小", "priority": null, "updateDate": "2026-04-01", "month": 4, "subtasks": [], "links": []}, {"name": "マネジメントアプリ入力", "category": "院内オペレーション", "status": "完了", "size": "小", "priority": null, "updateDate": "2026-04-02", "month": 4, "subtasks": ["3月保険表 医師別入力 ✓"], "links": []}, {"name": "【3月】売上レセプト表更新", "category": "その他", "status": "完了", "size": "小", "priority": null, "updateDate": "2026-04-02", "month": 4, "subtasks": [], "links": []}, {"name": "各院googleアカウント連携", "category": "システム・DX", "status": "完了", "size": "小", "priority": null, "updateDate": "2026-04-03", "month": 4, "subtasks": [], "links": []}, {"name": "ジルコニアメニュー表制作", "category": "マーケティング", "status": "進行中", "size": "小", "priority": null, "updateDate": "2026-04-23", "month": 4, "subtasks": [], "links": []}, {"name": "4月院長会議 議事録作成・共有", "category": "その他", "status": "完了", "size": "小", "priority": null, "updateDate": "2026-04-03", "month": 4, "subtasks": [], "links": []}, {"name": "オアシスWebサイト改修", "category": "マーケティング", "status": "完了", "size": "小", "priority": null, "updateDate": "2026-04-22", "month": 4, "subtasks": ["参考サイトデザイン収集 ✓", "AIでドラフト作成 ✓", "業者依頼へ移行・クローズ ✓"], "links": []}, {"name": "4月管理者会議議事録作成・共有", "category": "その他", "status": "完了", "size": "小", "priority": null, "updateDate": "2026-04-06", "month": 4, "subtasks": [], "links": []}, {"name": "自動レジ導入関連", "category": "院内オペレーション", "status": "進行中", "size": "大", "priority": null, "updateDate": "2026-04-27", "month": 4, "subtasks": ["担当者連絡連携 ✓", "カード会社にPOS連動旨連絡 ✓", "カード会社・レジメーカー連携 ✓", "レセコン担当者問い合わせ対応 ✓", "クレジット読み取り機連携 ✓", "補助金採択7月予定 →待ち", "デジタルAI補助金申請 →未", "インボイス対応可否連絡 →未", "5/11オアシスpaylight連動 →未", "受付内装工事 →未"], "links": []}, {"name": "次年度マニュアル修正　受付手順追加", "category": "マニュアル・教育", "status": "未着手", "size": "小", "priority": null, "updateDate": "2026-04-07", "month": 4, "subtasks": [], "links": []}, {"name": "4月全体MTG議事録", "category": "その他", "status": "完了", "size": "小", "priority": null, "updateDate": "2026-04-09", "month": 4, "subtasks": [], "links": []}, {"name": "鎌ヶ谷駐車場アクセス動画", "category": "マーケティング", "status": "完了", "size": "中", "priority": null, "updateDate": "2026-04-21", "month": 4, "subtasks": ["動画素材撮影 ✓", "編集（文字入れ・速度・モザイク・ナレ）✓", "Google Map掲載 ✓", "HP掲載 ✓"], "links": []}, {"name": "ehaTV　オアシス・錦糸町に導入", "category": "マーケティング", "status": "進行中", "size": "大", "priority": null, "updateDate": "2026-04-27", "month": 4, "subtasks": ["動画抽出 ✓", "動画データ加工 ✓", "錦糸町へ動画データ提供 ✓", "錦糸町投影確認 ✓", "待合TV外部動画非対応確認 ✓", "TV注文 ✓", "固定金具規格確認 ✓", "追加器具注文 ✓", "オアシスTV設置入れ替え →未", "鎌ヶ谷データ抽出 →未", "投影確認 →未"], "links": []}, {"name": "【定例】坂下さんMTG調整", "category": "その他", "status": "完了", "size": "小", "priority": null, "updateDate": "2026-04-10", "month": 4, "subtasks": ["日程調整 ✓", "会議対応 ✓", "議事録共有 ✓"], "links": []}, {"name": "リクルート関係", "category": "労務・人事", "status": "未着手", "size": "小", "priority": null, "updateDate": "2026-04-27", "month": 4, "subtasks": [], "links": []}, {"name": "【月例】坂下さんMTG対応", "category": "その他", "status": "完了", "size": "小", "priority": null, "updateDate": "2026-04-15", "month": 4, "subtasks": ["MTG日程調整 ✓", "会議対応 ✓", "議事録共有 ✓"], "links": []}, {"name": "鎌ヶ谷HP解析導入", "category": "マーケティング", "status": "完了", "size": "小", "priority": null, "updateDate": "2026-04-20", "month": 4, "subtasks": ["HP全ページに解析タグ追加 ✓", "テスト動作 ✓", "Google Analytics初期設定 ✓"], "links": []}, {"name": "新規助成金調査", "category": "助成金・申請", "status": "待ち", "size": "小", "priority": null, "updateDate": "2026-04-15", "month": 4, "subtasks": [], "links": []}, {"name": "デンタルAI会場探し", "category": "その他", "status": "待ち", "size": "中", "priority": null, "updateDate": "2026-04-20", "month": 4, "subtasks": ["大手町ファーストスクエア調査 →", "fabbit会議室丸の内調査 →", "TKP東京駅カンファレンスセンター調査 →", "オフィス東京調査 →", "コンファレンススクエアエムプラス調査 →"], "links": []}, {"name": "ポータルサイト新人用マニュアルページ", "category": "マニュアル・教育", "status": "進行中", "size": "中", "priority": null, "updateDate": "2026-04-30", "month": 4, "subtasks": ["DA叩き台確認 ✓", "共有 ✓", "DA文言修正 ✓", "受付実装済 ✓", "たいせい先生連携設定 →未", "実装 →未", "DH選定（5月目処） →未"], "links": []}, {"name": "冊子マニュアル入稿", "category": "マニュアル・教育", "status": "待ち", "size": "大", "priority": null, "updateDate": "2026-05-01", "month": 5, "subtasks": ["入稿用データ作成 ✓", "表紙デザイン ✓", "業者選定（ラクスル） ✓", "部数確認（各6部） ✓", "3種類入稿 ✓", "入稿データ修正 ✓", "データ確認 ✓", "5/1錦糸町納品 ✓", "5/11〜後払い請求書 →未"], "links": []}, {"name": "オペスケジュール刷新", "category": "院内オペレーション", "status": "完了", "size": "中", "priority": null, "updateDate": "2026-04-21", "month": 4, "subtasks": ["デザイン制作 ✓", "印刷 ✓", "ラミネート ✓", "設置 ✓"], "links": []}, {"name": "デントネットデータ連携", "category": "院内オペレーション", "status": "進行中", "size": "中", "priority": null, "updateDate": "2026-04-30", "month": 4, "subtasks": ["マネジメントアプリ口コミ済みデータ ✓", "LINE API テストケース ✓", "議事録 ✓", "サブカルテ連携 →未", "SMS検討 →未"], "links": []}, {"name": "錦糸町スタッフ表の整理", "category": "労務・人事", "status": "進行中", "size": "中", "priority": null, "updateDate": "2026-05-01", "month": 5, "subtasks": ["写真使用の旨周知 ✓", "パネルデザイン ✓", "写真データ取りまとめ ✓", "写真データ入れ込み ✓", "印刷用データ作成 ✓", "シール印刷 ✓", "アクセア問い合わせ ✓", "5/12店舗相談 →未", "パネル刷新 →未"], "links": []}, {"name": "LINE WORKS 顔写真未設定者の設定", "category": "システム・DX", "status": "完了", "size": "中", "priority": null, "updateDate": "2026-04-24", "month": 4, "subtasks": ["未設定者へメンション ✓", "対面での催促 ✓", "松山さんデータ取得・設定 ✓", "五十嵐さん設定 ✓"], "links": []}, {"name": "訪問診療助成金", "category": "助成金・申請", "status": "待ち", "size": "小", "priority": null, "updateDate": "2026-04-27", "month": 4, "subtasks": ["申請意思連絡 ✓", "詳細共有 ✓", "提出書類収集 →未"], "links": []}, {"name": "錦糸町テルミナのロゴ更新", "category": "マーケティング", "status": "完了", "size": "小", "priority": null, "updateDate": "2026-04-21", "month": 4, "subtasks": [], "links": []}, {"name": "SNS投稿準備", "category": "マーケティング", "status": "未着手", "size": "小", "priority": null, "updateDate": "2026-04-21", "month": 4, "subtasks": [], "links": []}, {"name": "オアシスHPリニューアル", "category": "マーケティング", "status": "未着手", "size": "小", "priority": null, "updateDate": "2026-04-22", "month": 4, "subtasks": [], "links": []}, {"name": "東京医薬看護求人票入力", "category": "労務・人事", "status": "進行中", "size": "中", "priority": null, "updateDate": "2026-04-30", "month": 4, "subtasks": ["ジョブメドレーから情報吸い出し ✓", "指定フォーマット落とし込み ✓", "求人フォーマット作成 ✓", "修正 ✓", "内容正誤確認 ✓", "籠林さんにダブルチェック依頼 ✓", "確認戻り・修正 →未", "学校に返送 →未"], "links": []}, {"name": "井田先生デンタルAI出張調整", "category": "その他", "status": "完了", "size": "小", "priority": null, "updateDate": "2026-04-27", "month": 4, "subtasks": ["予約確認 ✓", "オアシス受付にて予約変更依頼 ✓"], "links": []}, {"name": "自由診療料金表作成", "category": "マーケティング", "status": "進行中", "size": "大", "priority": null, "updateDate": "2026-04-27", "month": 4, "subtasks": ["現在データ発掘 ✓", "最新表取得 ✓", "井田先生チェック ✓", "Claudeでデザイン出力 ✓", "チェック反映・微修正 ✓", "印刷・ラミネート・リング設置 ✓", "錦糸町設置 ✓", "オアシス設置 →未", "鎌ヶ谷設置 →未"], "links": []}, {"name": "デントネットに口コミ声掛けチェック追加", "category": "マーケティング", "status": "完了", "size": "中", "priority": null, "updateDate": "2026-04-24", "month": 4, "subtasks": ["報告フォームのデータ抽出 ✓", "デントネットに共有 ✓", "デントネット作業報告待ち ✓", "アイコンの追加 ✓", "資料化・周知 ✓"], "links": []}, {"name": "錦糸町LINE応答メッセージメンテ", "category": "マーケティング", "status": "進行中", "size": "中", "priority": null, "updateDate": "2026-04-27", "month": 4, "subtasks": ["権限付与依頼 ✓", "権限ログイン確認 ✓", "過去投稿チェック →未", "変更洗い出し →未", "必要素材作成 →未", "変更 →未"], "links": []}, {"name": "ジョブメドレー文言統一", "category": "労務・人事", "status": "進行中", "size": "中", "priority": null, "updateDate": "2026-05-01", "month": 5, "subtasks": ["ログイン確認 ✓", "修正：錦糸町DA ✓", "修正：錦糸町DH ✓", "修正：鎌ヶ谷DA →未", "修正：鎌ヶ谷DH →未"], "links": []}, {"name": "抜歯治療同意書→錦糸町用作成", "category": "院内オペレーション", "status": "完了", "size": "小", "priority": null, "updateDate": "2026-04-24", "month": 4, "subtasks": ["元データ取り寄せ ✓", "文言変更・チェック ✓", "リリース ✓"], "links": []}, {"name": "GoogleマップGW休日入力", "category": "マーケティング", "status": "完了", "size": "小", "priority": null, "updateDate": "2026-04-27", "month": 4, "subtasks": ["各院営業時間・日程確認 ✓", "各管理アカウントでスケジュール入力 ✓", "反映確認 ✓"], "links": []}, {"name": "千葉県医療物価高騰助成金申請", "category": "助成金・申請", "status": "進行中", "size": "中", "priority": null, "updateDate": "2026-04-28", "month": 4, "subtasks": ["申請必要書類確認 ✓", "誓約書入力 ✓", "押印 →未", "役員名簿取得 →未", "通帳コピー →未", "支払結果通知書 →未"], "links": []}, {"name": "【5月】院長会議", "category": "その他", "status": "完了", "size": "小", "priority": null, "updateDate": "2026-05-07", "month": 5, "subtasks": ["議題共有 ✓", "議事録 ✓"], "links": []}, {"name": "タスク整理・移行・成果物の可視化", "category": "その他", "status": "進行中", "size": "小", "priority": null, "updateDate": "2026-05-07", "month": 5, "subtasks": [], "links": []}];
+
+var CO=["マーケティング","マニュアル・教育","助成金・申請","院内オペレーション","労務・人事","システム・DX","その他"];
+var CK={"マーケティング":"mkt","マニュアル・教育":"edu","助成金・申請":"sub","院内オペレーション":"ops","労務・人事":"hr","システム・DX":"dx","その他":"etc"};
+var CL={"マーケティング":"⭐ マーケ","マニュアル・教育":"📋 マニュアル","助成金・申請":"💰 助成金","院内オペレーション":"🏥 院内OP","労務・人事":"👥 労務HR","システム・DX":"💻 システム","その他":"📁 その他"};
+var SZ={"大":0,"中":1,"小":2};
+var ST={"進行中":0,"待ち":1,"未着手":2,"完了":3};
+
+function esc(s){return String(s||"").replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+function cn(arr,s){return arr.filter(function(t){return t.status===s;}).length;}
+function calcPct(t){
+  if(!t.subtasks||!t.subtasks.length) return -1;
+  var d=t.subtasks.filter(function(s){return s.indexOf("✓")>=0;}).length;
+  return Math.round(d/t.subtasks.length*100);
+}
+function calcDone(t){return t.subtasks?t.subtasks.filter(function(s){return s.indexOf("✓")>=0;}).length:0;}
+function calcNext(t){
+  if(!t.subtasks) return "";
+  for(var i=0;i<t.subtasks.length;i++){
+    var s=t.subtasks[i];
+    if(s.indexOf("→")>=0&&s.indexOf("✓")<0){
+      return s.replace(/→未|→待ち|→継続|→/g,"").trim();
+    }
+  }
+  return "";
+}
+function ctag(c){return '<span class="tag t-'+(CK[c]||"etc")+'">'+esc(CL[c]||c)+"</span>";}
+function sztag(s){return '<span class="tag sz-'+esc(s)+'">'+esc(s)+"</span>";}
+function set(id,v){var e=document.getElementById(id);if(e)e.textContent=v;}
+
+// KPI
+var dN=cn(T,"完了"),pN=cn(T,"進行中"),tN=cn(T,"未着手"),wN=cn(T,"待ち");
+set("hd-d",dN);set("hd-p",pN);set("hd-t",tN+wN);
+set("kP",pN);set("kPb",T.filter(function(t){return t.size==="大"&&t.status==="進行中";}).length);
+set("kPm",T.filter(function(t){return t.size==="中"&&t.status==="進行中";}).length);
+set("kPs",T.filter(function(t){return t.size==="小"&&t.status==="進行中";}).length);
+set("kT",tN+wN);set("kTn",tN);set("kWn",wN);
+set("kD",dN);set("kR",Math.round(dN/T.length*100)+"%");
+
+// Tabs
+document.querySelectorAll(".tab").forEach(function(b){
+  b.addEventListener("click",function(){
+    document.querySelectorAll(".tab").forEach(function(x){x.classList.remove("on");});
+    document.querySelectorAll(".sec").forEach(function(x){x.classList.remove("on");});
+    b.classList.add("on");
+    document.getElementById("sec-"+b.dataset.t).classList.add("on");
+  });
+});
+
+// Modal
+document.getElementById("mbg").addEventListener("click",function(e){if(e.target===this)closeM();});
+function closeM(){document.getElementById("mbg").classList.remove("on");}
+document.addEventListener("keydown",function(e){if(e.key==="Escape")closeM();});
+function openCard(el){var n=el.getAttribute("data-name");if(n)showM(n);}
+
+function showM(name){
+  var t=null;
+  for(var i=0;i<T.length;i++){if(T[i].name===name){t=T[i];break;}}
+  if(!t)return;
+  var p=calcPct(t),dn=calcDone(t);
+  var subHTML="";
+  if(t.subtasks&&t.subtasks.length){
+    var bar=p>=0?'<div class="mono" style="font-size:15px;font-weight:700;margin-bottom:8px;">'+dn+"/"+t.subtasks.length+" 完了 ("+p+"%)</div>":'';
+    var items=t.subtasks.map(function(s){
+      var id2=s.indexOf("✓")>=0;
+      var iw=!id2&&(s.indexOf("待ち")>=0||s.indexOf("継続")>=0);
+      var cls=id2?"sd":iw?"sw":"su";
+      var ic=id2?"✓":iw?"⏳":"○";
+      var lbl=s.replace(/✓|→未|→待ち|→継続|→/g,"").trim();
+      return '<div class="si '+cls+'"><span class="si-ic">'+ic+"</span><span>"+esc(lbl)+"</span></div>";
+    }).join("");
+    subHTML='<div class="mrow"><div class="mkey">工程</div><div class="mval">'+bar+'<div class="sl">'+items+"</div></div></div>";
+  }
+  document.getElementById("modal").innerHTML=
+    '<button class="mc" onclick="closeM()">×</button>'+
+    "<h2>"+esc(t.name)+"</h2>"+
+    '<div class="mtags">'+ctag(t.category)+" "+sztag(t.size)+' <span class="sp sp-'+t.status+'">'+t.status+"</span></div>"+
+    subHTML+
+    '<div class="mrow"><div class="mkey">アウトプット</div><div class="mval">'+
+      '<div id="modal-links"></div>'+
+      '<div id="modal-link-form"></div>'+
+      '<button class="link-add-btn" onclick="showLinkForm('+JSON.stringify(name)+')">＋ リンクを追加</button>'+
+    "</div></div>"+
+    (t.updateDate?'<div class="mrow"><div class="mkey">更新日</div><div class="mval mono">'+esc(t.updateDate)+"</div></div>":"");
+  document.getElementById("mbg").classList.add("on");
+  renderModalLinks(name);
+}
+
+// ── ACTIVE（更新日 新しい順）──
+var progT=T.filter(function(t){return t.status==="進行中";}).sort(function(a,b){
+  if(a.updateDate&&b.updateDate) return b.updateDate.localeCompare(a.updateDate);
+  return a.updateDate?-1:1;
+});
+document.getElementById("ag").innerHTML=progT.map(function(t){
+  var p=calcPct(t),dn=calcDone(t),na=calcNext(t);
+  return '<div class="acard" data-name="'+esc(t.name)+'" onclick="openCard(this)">'+
+    '<div class="atags">'+ctag(t.category)+" "+sztag(t.size)+"</div>"+
+    '<div class="aname">'+esc(t.name)+"</div>"+
+    (p>=0?'<div class="pb-wrap"><div class="pb-row"><span>工程進捗</span><span>'+dn+"/"+t.subtasks.length+" ("+p+"%)</span></div>"+
+      '<div class="pbar"><div class="pfill" style="width:'+p+'%"></div></div></div>':"")+
+    (na?'<div class="anext">'+esc(na)+"</div>":"")+
+    (t.updateDate?'<div class="adate">更新 '+esc(t.updateDate)+"</div>":"")+
+    "</div>";
+}).join("");
+
+var waitT=T.filter(function(t){return t.status==="待ち";});
+document.getElementById("wg").innerHTML=waitT.length?waitT.map(function(t){
+  return '<div class="wcard" data-name="'+esc(t.name)+'" onclick="openCard(this)">'+
+    '<div class="cname">⏳ '+esc(t.name)+"</div>"+
+    '<div class="ctags">'+ctag(t.category)+" "+sztag(t.size)+"</div></div>";
+}).join(''):'<p style="color:var(--mt);font-size:12px;padding:8px 0;">なし</p>';
+
+var todoT=T.filter(function(t){return t.status==="未着手";}).sort(function(a,b){
+  return CO.indexOf(a.category)-CO.indexOf(b.category);
+});
+document.getElementById("tg").innerHTML=todoT.map(function(t){
+  return '<div class="tcard" data-name="'+esc(t.name)+'" onclick="openCard(this)">'+
+    '<div class="cname">'+esc(t.name)+"</div>"+
+    '<div class="ctags">'+ctag(t.category)+" "+sztag(t.size)+"</div></div>";
+}).join("");
+
+// ── OVERVIEW cat strip ──
+document.getElementById("cs").innerHTML=CO.map(function(c){
+  var arr=T.filter(function(t){return t.category===c;});
+  var d=cn(arr,"完了"),p=cn(arr,"進行中"),to=arr.length-d-p;
+  var rate=arr.length?Math.round(d/arr.length*100):0;
+  return '<div class="cc c-'+(CK[c]||"etc")+'" data-cat="'+esc(c)+'" onclick="filterCat(this)">'+
+    '<div class="cc-lbl">'+esc(CL[c]||c)+"</div>"+
+    '<div class="cc-n">'+arr.length+"</div>"+
+    '<div class="cbw">'+
+      '<div class="cbd" style="width:'+(arr.length?d/arr.length*100:0)+'%"></div>'+
+      '<div class="cbp" style="width:'+(arr.length?p/arr.length*100:0)+'%"></div>'+
+      '<div class="cbt" style="width:'+(arr.length?to/arr.length*100:0)+'%"></div>'+
+    "</div>"+
+    '<div class="cc-rate">完了 '+rate+"%</div></div>";
+}).join("");
+
+var curCat=null;
+function filterCat(el){
+  var c=el.getAttribute("data-cat");
+  document.querySelectorAll(".cc").forEach(function(x){x.style.outline="none";});
+  if(curCat===c){curCat=null;renderTbl(T);}
+  else{curCat=c;el.style.outline="2px solid var(--ac)";renderTbl(T.filter(function(t){return t.category===c;}));}
+}
+
+function renderTbl(arr){
+  var sorted=arr.slice().sort(function(a,b){
+    if(ST[a.status]!==ST[b.status]) return ST[a.status]-ST[b.status];
+    if(SZ[a.size]!==SZ[b.size]) return SZ[a.size]-SZ[b.size];
+    return 0;
+  });
+  var RC={"進行中":"r-prog","待ち":"r-wait","未着手":"r-todo","完了":"r-done"};
+  document.getElementById("tbl").innerHTML=sorted.map(function(t){
+    var p=calcPct(t),dn=calcDone(t);
+    var ps=p>=0?dn+"/"+t.subtasks.length+" ("+p+"%)":"—";
+    return '<tr class="'+(RC[t.status]||"")+'" data-name="'+esc(t.name)+'" onclick="openCard(this)">'+
+      "<td>"+ctag(t.category)+"</td>"+
+      "<td>"+sztag(t.size)+"</td>"+
+      '<td style="font-weight:600;">'+esc(t.name)+"</td>"+
+      '<td><span class="sp sp-'+t.status+'">'+t.status+"</span></td>"+
+      '<td class="mono" style="font-size:11px;color:var(--mt);">'+ps+"</td>"+
+      '<td class="mono" style="font-size:11px;color:var(--mt);">'+esc(t.updateDate||"—")+"</td>"+
+      "</tr>";
+  }).join("");
+}
+renderTbl(T);
+
+// ── MONTH LOG ──
+var months=[{m:5,emoji:"✨",lbl:"2026年5月"},{m:4,emoji:"🌿",lbl:"2026年4月"},{m:3,emoji:"🌸",lbl:"2026年3月"}];
+document.getElementById("ml").innerHTML=months.map(function(mo){
+  var mt=T.filter(function(t){return t.month===mo.m;});
+  var mDone=mt.filter(function(t){return t.status==="完了";});
+  var mProg=mt.filter(function(t){return t.status==="進行中";});
+  var bigMed=mDone.filter(function(t){return t.size==="大"||t.size==="中";});
+  var small=mDone.filter(function(t){return t.size==="小";});
+  // 工程✓数：完了タスクのサブタスクのみカウント
+  var steps=mDone.reduce(function(s,t){
+    return s+(t.subtasks?t.subtasks.filter(function(x){return x.indexOf("✓")>=0;}).length:0);
+  },0);
+
+  var dcards=bigMed.map(function(t){
+    var linkH=t.url?'<a href="'+esc(t.url)+'" target="_blank" class="dlink" onclick="event.stopPropagation()">🔗 成果物を見る</a>':"";
+    return '<div class="dcard" data-name="'+esc(t.name)+'" onclick="openCard(this)">'+
+      '<div class="dname">✅ '+esc(t.name)+"</div>"+
+      '<div class="dtags">'+ctag(t.category)+" "+sztag(t.size)+"</div>"+
+      linkH+"</div>";
+  }).join("");
+
+  var spills=small.map(function(t){
+    return '<span class="spill" data-name="'+esc(t.name)+'" onclick="openCard(this)">✓ '+esc(t.name)+"</span>";
+  }).join("");
+
+  var ppills=mProg.length?
+    '<div style="margin-top:18px;"><div class="msub">🔄 '+mo.lbl+'に着手（進行中）</div>'+
+    '<div class="ppills">'+mProg.map(function(t){
+      return '<span class="ppill" data-name="'+esc(t.name)+'" onclick="openCard(this)">▶ '+esc(t.name)+"</span>";
+    }).join("")+"</div></div>":"";
+
+  return "<div>"+
+    '<div class="m-hd"><div class="m-title">'+mo.emoji+" "+mo.lbl+"</div>"+
+    '<div class="m-cnt">'+mt.length+"件更新</div></div>"+
+    '<div class="m-div"></div>'+
+    '<div class="m-kpis">'+
+      '<div class="mkpi"><span class="mn">'+mDone.length+'</span><div class="ml2">完了件数</div></div>'+
+      (bigMed.length?'<div class="mkpi"><span class="mn">'+bigMed.length+'</span><div class="ml2">大中案件</div></div>':"")+
+      (steps?'<div class="mkpi"><span class="mn">'+steps+'</span><div class="ml2">完了工程数</div></div>':"")+
+    "</div>"+
+    (bigMed.length?'<div class="msub">🏆 完成した案件（大・中）</div><div class="dg">'+dcards+"</div>":"")+
+    (small.length?'<div class="msub" style="margin-top:12px;">⚡ 完了した小タスク（'+small.length+"件）</div>"+
+      '<div class="spills">'+spills+"</div>":"")+
+    ppills+"</div>";
+}).join("");
+
+// ── USER LINKS (localStorage) ──
+var LS_KEY = "camel_links_v1";
+
+function getStoredLinks(){
+  try{
+    var raw = localStorage.getItem(LS_KEY);
+    return raw ? JSON.parse(raw) : {};
+  }catch(e){ return {}; }
+}
+function saveStoredLinks(obj){
+  try{ localStorage.setItem(LS_KEY, JSON.stringify(obj)); }catch(e){}
+}
+function addUserLink(taskName, label, url){
+  var all = getStoredLinks();
+  if(!all[taskName]) all[taskName] = [];
+  all[taskName].push({label: label||"アウトプット", url: url, id: Date.now()});
+  saveStoredLinks(all);
+}
+function deleteUserLink(taskName, linkId){
+  var all = getStoredLinks();
+  if(all[taskName]){
+    all[taskName] = all[taskName].filter(function(lk){ return lk.id !== linkId; });
+    if(!all[taskName].length) delete all[taskName];
+  }
+  saveStoredLinks(all);
+}
+function getUserLinks(taskName){
+  var all = getStoredLinks();
+  return all[taskName] || [];
+}
+
+// モーダル内のリンク部分を再描画
+function renderModalLinks(taskName){
+  var t = null;
+  for(var i=0;i<T.length;i++){if(T[i].name===taskName){t=T[i];break;}}
+  if(!t) return;
+
+  // 組み込みリンク
+  var builtIn = (t.links||[]).map(function(lk){
+    return '<a href="'+esc(lk.url)+'" target="_blank" class="user-link">📊 '+esc(lk.label||"アウトプットを確認")+"</a>";
+  }).join("");
+
+  // ユーザー追加リンク
+  var userLinks = getUserLinks(taskName);
+  var userHTML = userLinks.map(function(lk){
+    return '<span style="display:inline-flex;align-items:center;gap:2px;">'+
+      '<a href="'+esc(lk.url)+'" target="_blank" class="user-link">📊 '+esc(lk.label)+"</a>"+
+      '<button class="link-del" onclick="handleDeleteLink('+JSON.stringify(taskName)+','+lk.id+')" title="削除">×</button>'+
+      "</span>";
+  }).join("");
+
+  var linksArea = document.getElementById("modal-links");
+  if(!linksArea) return;
+
+  linksArea.innerHTML = (builtIn||userHTML)?
+    '<div class="user-links-wrap">'+builtIn+userHTML+"</div>" : "";
+}
+
+function handleDeleteLink(taskName, linkId){
+  deleteUserLink(taskName, linkId);
+  renderModalLinks(taskName);
+}
+
+function showLinkForm(taskName){
+  var formArea = document.getElementById("modal-link-form");
+  if(!formArea) return;
+  formArea.innerHTML =
+    '<div class="link-form">'+
+    '<div class="link-form-title">➕ アウトプットリンクを追加</div>'+
+    '<input id="lf-label" type="text" placeholder="ラベル（例：就業規則ドキュメント）" maxlength="40">'+
+    '<input id="lf-url" type="url" placeholder="URL（https://...）">'+
+    '<div class="link-form-btns">'+
+    '<button class="btn-cancel" onclick="hideLinkForm()">キャンセル</button>'+
+    '<button class="btn-save" onclick="handleSaveLink('+JSON.stringify(taskName)+')">保存</button>'+
+    "</div></div>";
+  document.getElementById("lf-label").focus();
+}
+function hideLinkForm(){
+  var f = document.getElementById("modal-link-form");
+  if(f) f.innerHTML="";
+}
+function handleSaveLink(taskName){
+  var label = (document.getElementById("lf-label")||{}).value||"";
+  var url   = (document.getElementById("lf-url")||{}).value||"";
+  if(!url || !url.startsWith("http")){ alert("URLを正しく入力してください"); return; }
+  if(!label) label = "アウトプット";
+  addUserLink(taskName, label, url);
+  hideLinkForm();
+  renderModalLinks(taskName);
+}
+
+</script>
+</body>
+</html>
