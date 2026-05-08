@@ -642,9 +642,30 @@ if(updEl){
   }
 }
 function doSync(){
-  if(confirm("GitHub Actionsのページを開きます。\n「ワークフローを実行する」をクリックするとNotionのデータが更新されます。")){
-    window.open("https://github.com/camelhara-byte/task-dashboard/actions/workflows/deploy.yml","_blank");
-  }
+  var btn=document.querySelector('.sync-btn');
+  var orig=btn?btn.textContent:'';
+  if(btn){btn.textContent='⏳ 同期中...';btn.disabled=true;}
+  fetch('https://api.github.com/repos/camelhara-byte/task-dashboard/actions/workflows/deploy.yml/dispatches',{
+    method:'POST',
+    headers:{
+      'Authorization':'Bearer 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',
+      'Accept':'application/vnd.github+json',
+      'X-GitHub-Api-Version':'2022-11-28'
+    },
+    body:JSON.stringify({ref:'main'})
+  }).then(function(res){
+    if(btn){
+      if(res.status===204){
+        btn.textContent='✅ 同期開始！約1分後に反映されます';
+        setTimeout(function(){btn.textContent=orig;btn.disabled=false;},5000);
+      }else{
+        btn.textContent='❌ エラー ('+res.status+')';
+        setTimeout(function(){btn.textContent=orig;btn.disabled=false;},4000);
+      }
+    }
+  }).catch(function(){
+    if(btn){btn.textContent='❌ ネットワークエラー';setTimeout(function(){btn.textContent=orig;btn.disabled=false;},4000);}
+  });
 }
 
 </script>
