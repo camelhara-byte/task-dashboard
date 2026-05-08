@@ -208,6 +208,10 @@ tr.r-done{background:#f6fef8}
 .prog-section-title{font-size:13px;font-weight:700;color:var(--mid)}
 .prog-section-count{background:var(--pg-bg);color:var(--pg);border:1px solid var(--pg-bd);border-radius:10px;padding:1px 8px;font-size:11px;font-weight:700}
 
+/* Link save feedback */
+.link-saved-msg{font-size:12px;color:var(--ac);padding:6px 0;font-weight:600;}
+.link-saved-err{color:#c00;}
+
 /* Subtask section divider in modal */
 .s-divider{font-size:10px;font-weight:700;color:var(--mt);text-transform:uppercase;letter-spacing:.08em;margin:10px 0 6px;display:flex;align-items:center;gap:6px}
 .s-divider::after{content:"";flex:1;height:1px;background:var(--bd)}
@@ -401,8 +405,10 @@ function showM(name){
   renderModalLinks(name);
 }
 
-// ── USER LINKS (localStorage) ──
-var LS_KEY = "camel_links_v1";
+// ── USER LINKS (shared via GitHub repo) ──
+var UL = USER_LINKS_PLACEHOLDER;
+var _pendingAdds = {};   // {taskName: [{label,url,id}]} — 楽観的即時表示用
+var _pendingDels = {};   // {taskName: [id, ...]}       — 楽観的即時非表示用
 
 // ── ACTIVE（今日優先 → 更新日 新しい順）──
 var today=new Date().toISOString().slice(0,10);
@@ -527,10 +533,9 @@ document.getElementById("ml").innerHTML=months.map(function(mo){
     return s+(t.subtasks?t.subtasks.filter(function(x){return x.indexOf("✓")>=0;}).length:0);
   },0);
 
-  var _storedAll=getStoredLinks();
   var dcards=bigMed.map(function(t){
     var firstLink=(t.links&&t.links.length)?t.links[0]:null;
-    if(!firstLink){var ul=_storedAll[t.name];if(ul&&ul.length)firstLink=ul[0];}
+    if(!firstLink){var ul=UL[t.name];if(ul&&ul.length)firstLink=ul[0];}
     var linkH=firstLink?'<a href="'+esc(firstLink.url)+'" target="_blank" class="dlink" onclick="event.stopPropagation()">🔗 アウトプットを確認</a>':"";
     return '<div class="dcard" data-name="'+esc(t.name)+'" onclick="openCard(this)">'+
       '<div class="dname">✅ '+esc(t.name)+"</div>"+
@@ -563,32 +568,25 @@ document.getElementById("ml").innerHTML=months.map(function(mo){
     ppills+"</div>";
 }).join("");
 
-function getStoredLinks(){
-  try{
-    var raw = localStorage.getItem(LS_KEY);
-    return raw ? JSON.parse(raw) : {};
-  }catch(e){ return {}; }
+function getUserLinksDisplay(taskName){
+  var base = (UL[taskName]||[]).filter(function(lk){
+    return !(_pendingDels[taskName] && _pendingDels[taskName].indexOf(lk.id)>=0);
+  });
+  return base.concat(_pendingAdds[taskName]||[]);
 }
-function saveStoredLinks(obj){
-  try{ localStorage.setItem(LS_KEY, JSON.stringify(obj)); }catch(e){}
-}
-function addUserLink(taskName, label, url){
-  var all = getStoredLinks();
-  if(!all[taskName]) all[taskName] = [];
-  all[taskName].push({label: label||"アウトプット", url: url, id: Date.now()});
-  saveStoredLinks(all);
-}
-function deleteUserLink(taskName, linkId){
-  var all = getStoredLinks();
-  if(all[taskName]){
-    all[taskName] = all[taskName].filter(function(lk){ return lk.id !== linkId; });
-    if(!all[taskName].length) delete all[taskName];
-  }
-  saveStoredLinks(all);
-}
-function getUserLinks(taskName){
-  var all = getStoredLinks();
-  return all[taskName] || [];
+
+function _callLinkWorkflow(inputs, onSuccess, onError){
+  fetch('https://api.github.com/repos/camelhara-byte/task-dashboard/actions/workflows/add_link.yml/dispatches',{
+    method:'POST',
+    headers:{
+      'Authorization':'Bearer SYNC_TOKEN_PLACEHOLDER',
+      'Accept':'application/vnd.github+json',
+      'X-GitHub-Api-Version':'2022-11-28'
+    },
+    body:JSON.stringify({ref:'main', inputs:inputs})
+  }).then(function(res){
+    if(res.status===204){ onSuccess(); } else { onError('HTTP '+res.status); }
+  }).catch(function(){ onError('ネットワークエラー'); });
 }
 
 // モーダル内のリンク部分を再描画
@@ -603,11 +601,11 @@ function renderModalLinks(taskName){
   }).join("");
 
   // ユーザー追加リンク
-  var userLinks = getUserLinks(taskName);
+  var userLinks = getUserLinksDisplay(taskName);
   var userHTML = userLinks.map(function(lk){
     return '<span style="display:inline-flex;align-items:center;gap:2px;">'+
       '<a href="'+esc(lk.url)+'" target="_blank" class="user-link">📊 '+esc(lk.label)+"</a>"+
-      '<button class="link-del" onclick="handleDeleteLink('+JSON.stringify(taskName)+','+lk.id+')" title="削除">×</button>'+
+      '<button class="link-del" data-task="'+esc(taskName)+'" data-id="'+lk.id+'" onclick="handleDeleteLink(this.dataset.task,parseInt(this.dataset.id))" title="削除">×</button>'+
       "</span>";
   }).join("");
 
@@ -619,8 +617,21 @@ function renderModalLinks(taskName){
 }
 
 function handleDeleteLink(taskName, linkId){
-  deleteUserLink(taskName, linkId);
+  if(!confirm("このリンクを削除しますか？\n反映まで約1〜2分かかります。")) return;
+  // 楽観的即時非表示
+  if(!_pendingDels[taskName]) _pendingDels[taskName]=[];
+  _pendingDels[taskName].push(linkId);
   renderModalLinks(taskName);
+  _callLinkWorkflow(
+    {action:'delete', task_name:taskName, link_id:String(linkId), label:'', url:''},
+    function(){}, // 成功: 次の同期で確定
+    function(err){
+      // ロールバック
+      _pendingDels[taskName]=(_pendingDels[taskName]||[]).filter(function(id){return id!==linkId;});
+      renderModalLinks(taskName);
+      alert("削除エラー: "+err);
+    }
+  );
 }
 
 function showLinkForm(taskName){
@@ -646,23 +657,41 @@ function handleSaveLink(taskName){
   var url   = (document.getElementById("lf-url")||{}).value||"";
   if(!url || !url.startsWith("http")){ alert("URLを正しく入力してください"); return; }
   if(!label) label = "アウトプット";
-  addUserLink(taskName, label, url);
+
+  // 楽観的即時表示
+  var newLink = {label:label, url:url, id:Date.now()};
+  if(!_pendingAdds[taskName]) _pendingAdds[taskName]=[];
+  _pendingAdds[taskName].push(newLink);
   hideLinkForm();
   renderModalLinks(taskName);
-  // カードに即時反映
-  var stored = getStoredLinks()[taskName];
-  if(stored && stored.length){
-    var firstUrl = stored[0].url;
-    document.querySelectorAll('.dcard[data-name="'+esc(taskName)+'"]').forEach(function(card){
-      if(!card.querySelector('.dlink')){
-        var a = document.createElement('a');
-        a.href = firstUrl; a.target = '_blank'; a.className = 'dlink';
-        a.addEventListener('click', function(e){ e.stopPropagation(); });
-        a.textContent = '🔗 アウトプットを確認';
-        card.appendChild(a);
-      }
-    });
-  }
+
+  // 保存中メッセージ
+  var formArea = document.getElementById("modal-link-form");
+  if(formArea) formArea.innerHTML='<div class="link-saved-msg">⏳ 保存中... 約1〜2分後に全員に反映されます</div>';
+
+  // dcardにも即時リンクボタン追加
+  document.querySelectorAll('.dcard[data-name="'+esc(taskName)+'"]').forEach(function(card){
+    if(!card.querySelector('.dlink')){
+      var a=document.createElement('a');
+      a.href=url; a.target='_blank'; a.className='dlink';
+      a.addEventListener('click',function(e){e.stopPropagation();});
+      a.textContent='🔗 アウトプットを確認';
+      card.appendChild(a);
+    }
+  });
+
+  _callLinkWorkflow(
+    {action:'add', task_name:taskName, label:label, url:url, link_id:''},
+    function(){
+      if(formArea) formArea.innerHTML='<div class="link-saved-msg">✅ 保存完了！約1〜2分後に全員に反映されます</div>';
+    },
+    function(err){
+      // ロールバック
+      _pendingAdds[taskName]=(_pendingAdds[taskName]||[]).filter(function(lk){return lk.id!==newLink.id;});
+      renderModalLinks(taskName);
+      if(formArea) formArea.innerHTML='<div class="link-saved-msg link-saved-err">❌ 保存エラー: '+esc(err)+'</div>';
+    }
+  );
 }
 
 // ── ヘッダー: 最終同期日時 + 同期ボタン ──

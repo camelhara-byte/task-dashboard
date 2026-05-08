@@ -15,11 +15,14 @@ from pathlib import Path
 
 HTML_SRC = "業務ダッシュボードv7.html"
 TASKS_JSON = "tasks.json"
+USER_LINKS_JSON = "user_links.json"
 HTML_OUT = "index.html"
 PLACEHOLDER = "TASKS_PLACEHOLDER"
 VAR_T_PATTERN = re.compile(r"var\s+T\s*=\s*\[.*?\];", re.DOTALL)
+VAR_UL_PATTERN = re.compile(r"var\s+UL\s*=\s*\{.*?\};", re.DOTALL)
 BUILD_TS_PLACEHOLDER = '"BUILD_TIMESTAMP"'
 SYNC_TOKEN_PLACEHOLDER = "SYNC_TOKEN_PLACEHOLDER"
+USER_LINKS_PLACEHOLDER = "USER_LINKS_PLACEHOLDER"
 
 
 def main():
@@ -50,6 +53,20 @@ def main():
         )
         mode = "var T pattern"
 
+    # Inject user_links.json as UL variable
+    user_links_path = Path(USER_LINKS_JSON)
+    user_links = {}
+    if user_links_path.exists():
+        with user_links_path.open("r", encoding="utf-8") as f:
+            user_links = json.load(f)
+    user_links_json = json.dumps(user_links, ensure_ascii=False)
+    if USER_LINKS_PLACEHOLDER in html_out:
+        html_out = html_out.replace(USER_LINKS_PLACEHOLDER, user_links_json)
+    elif VAR_UL_PATTERN.search(html_out):
+        html_out = VAR_UL_PATTERN.sub(
+            "var UL = " + user_links_json + ";", html_out, count=1
+        )
+
     jst = timezone(timedelta(hours=9))
     build_ts = datetime.now(jst).strftime("%Y-%m-%d %H:%M JST")
     html_out = html_out.replace(BUILD_TS_PLACEHOLDER, f'"{build_ts}"')
@@ -58,7 +75,7 @@ def main():
     html_out = html_out.replace(SYNC_TOKEN_PLACEHOLDER, sync_token)
 
     Path(HTML_OUT).write_text(html_out, encoding="utf-8")
-    print(f"Wrote {HTML_OUT} ({len(tasks)} tasks, replaced via {mode}, built at {build_ts})")
+    print(f"Wrote {HTML_OUT} ({len(tasks)} tasks, {len(user_links)} linked tasks, replaced via {mode}, built at {build_ts})")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,101 @@
+name: Add or Remove User Link
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'add or delete'
+        required: true
+        default: add
+        type: string
+      task_name:
+        description: 'Task name'
+        required: true
+        type: string
+      label:
+        description: 'Link label (for add)'
+        required: false
+        default: ''
+        type: string
+      url:
+        description: 'Link URL (for add)'
+        required: false
+        default: ''
+        type: string
+      link_id:
+        description: 'Link ID as string (for delete)'
+        required: false
+        default: ''
+        type: string
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  update-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Update user_links.json
+        env:
+          ACTION: ${{ inputs.action }}
+          TASK_NAME: ${{ inputs.task_name }}
+          LABEL: ${{ inputs.label }}
+          URL: ${{ inputs.url }}
+          LINK_ID: ${{ inputs.link_id }}
+        run: python update_links.py
+
+      - name: Commit user_links.json
+        run: |
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git add user_links.json
+          git diff --staged --quiet || git commit -m "chore: update user links [${{ inputs.action }}] ${{ inputs.task_name }}"
+          git push
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Fetch Notion data
+        env:
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+        run: python fetch_notion.py
+
+      - name: Build index.html
+        env:
+          SYNC_TOKEN: ${{ secrets.SYNC_TOKEN }}
+        run: python build.py
+
+      - name: Prepare site directory
+        run: |
+          mkdir -p _site
+          cp index.html _site/index.html
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: update-and-deploy
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
