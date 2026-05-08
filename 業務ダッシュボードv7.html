@@ -505,8 +505,10 @@ document.getElementById("ml").innerHTML=months.map(function(mo){
     return s+(t.subtasks?t.subtasks.filter(function(x){return x.indexOf("✓")>=0;}).length:0);
   },0);
 
+  var _storedAll=getStoredLinks();
   var dcards=bigMed.map(function(t){
     var firstLink=(t.links&&t.links.length)?t.links[0]:null;
+    if(!firstLink){var ul=_storedAll[t.name];if(ul&&ul.length)firstLink=ul[0];}
     var linkH=firstLink?'<a href="'+esc(firstLink.url)+'" target="_blank" class="dlink" onclick="event.stopPropagation()">🔗 アウトプットを確認</a>':"";
     return '<div class="dcard" data-name="'+esc(t.name)+'" onclick="openCard(this)">'+
       '<div class="dname">✅ '+esc(t.name)+"</div>"+
