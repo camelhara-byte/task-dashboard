@@ -7,6 +7,7 @@
 """
 
 import json
+import os
 import re
 import sys
 from datetime import datetime, timezone, timedelta
@@ -18,6 +19,7 @@ HTML_OUT = "index.html"
 PLACEHOLDER = "TASKS_PLACEHOLDER"
 VAR_T_PATTERN = re.compile(r"var\s+T\s*=\s*\[.*?\];", re.DOTALL)
 BUILD_TS_PLACEHOLDER = '"BUILD_TIMESTAMP"'
+SYNC_TOKEN_PLACEHOLDER = "SYNC_TOKEN_PLACEHOLDER"
 
 
 def main():
@@ -51,6 +53,9 @@ def main():
     jst = timezone(timedelta(hours=9))
     build_ts = datetime.now(jst).strftime("%Y-%m-%d %H:%M JST")
     html_out = html_out.replace(BUILD_TS_PLACEHOLDER, f'"{build_ts}"')
+
+    sync_token = os.environ.get("SYNC_TOKEN", "")
+    html_out = html_out.replace(SYNC_TOKEN_PLACEHOLDER, sync_token)
 
     Path(HTML_OUT).write_text(html_out, encoding="utf-8")
     print(f"Wrote {HTML_OUT} ({len(tasks)} tasks, replaced via {mode}, built at {build_ts})")
