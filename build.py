@@ -9,6 +9,7 @@
 import json
 import re
 import sys
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
 HTML_SRC = "業務ダッシュボードv7.html"
@@ -16,6 +17,7 @@ TASKS_JSON = "tasks.json"
 HTML_OUT = "index.html"
 PLACEHOLDER = "TASKS_PLACEHOLDER"
 VAR_T_PATTERN = re.compile(r"var\s+T\s*=\s*\[.*?\];", re.DOTALL)
+BUILD_TS_PLACEHOLDER = '"BUILD_TIMESTAMP"'
 
 
 def main():
@@ -46,8 +48,12 @@ def main():
         )
         mode = "var T pattern"
 
+    jst = timezone(timedelta(hours=9))
+    build_ts = datetime.now(jst).strftime("%Y-%m-%d %H:%M JST")
+    html_out = html_out.replace(BUILD_TS_PLACEHOLDER, f'"{build_ts}"')
+
     Path(HTML_OUT).write_text(html_out, encoding="utf-8")
-    print(f"Wrote {HTML_OUT} ({len(tasks)} tasks, replaced via {mode})")
+    print(f"Wrote {HTML_OUT} ({len(tasks)} tasks, replaced via {mode}, built at {build_ts})")
 
 
 if __name__ == "__main__":

@@ -160,8 +160,8 @@ tr.r-done{background:#f6fef8}
 .mrow:last-child{border:none}
 .mkey{width:80px;font-size:10px;color:var(--mt);font-weight:700;text-transform:uppercase;letter-spacing:.07em;flex-shrink:0;padding-top:2px}
 .mval{flex:1;font-size:13px}
-.sl{display:flex;flex-direction:column;gap:5px;margin-top:8px}
-.si{display:flex;align-items:flex-start;gap:8px;padding:7px 9px;border-radius:6px;font-size:12px;line-height:1.4}
+.sl{display:flex;flex-direction:column;gap:7px;margin-top:8px}
+.si{display:flex;align-items:flex-start;gap:8px;padding:9px 11px;border-radius:6px;font-size:13px;line-height:1.5}
 .si.sd{background:var(--dn-bg);border:1px solid var(--dn-bd);color:var(--dn)}
 .si.su{background:var(--sf2);border:1px solid var(--bd);color:var(--mid)}
 .si.sw{background:var(--wt-bg);border:1px solid var(--wt-bd);color:var(--wt)}
@@ -192,6 +192,24 @@ tr.r-done{background:#f6fef8}
 .link-del:hover{color:var(--td)}
 .user-links-wrap{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;align-items:center}
 
+/* Sync button */
+.sync-btn{background:var(--ac-bg);border:1px solid var(--ac-bd);border-radius:6px;padding:4px 12px;font-size:11px;color:var(--ac);cursor:pointer;font-family:inherit;font-weight:600;transition:all .15s}
+.sync-btn:hover{background:var(--ac);color:#fff;border-color:var(--ac)}
+
+/* Today highlights */
+.today-badge{display:inline-flex;align-items:center;gap:3px;background:#fce7f3;color:#c2255c;border:1px solid #f9a8d4;border-radius:10px;padding:1px 7px;font-size:10px;font-weight:700}
+.acard.is-today{border-left-color:#c2255c;box-shadow:0 0 0 2px rgba(194,37,92,.10),var(--sh)}
+.today-hd{background:linear-gradient(90deg,#fff0f6,var(--bg));border:1px solid #f9a8d4;border-left:3px solid #c2255c;border-radius:var(--rs);padding:12px 16px;margin-bottom:20px}
+.today-hd-title{font-size:12px;font-weight:700;color:#c2255c;margin-bottom:8px;text-transform:uppercase;letter-spacing:.06em}
+.today-pills{display:flex;flex-wrap:wrap;gap:6px}
+.today-pill{background:#fff;border:1px solid #f9a8d4;border-radius:12px;padding:3px 10px;font-size:12px;color:#c2255c;cursor:pointer;transition:all .15s;font-weight:500}
+.today-pill:hover{background:#fce7f3}
+
+/* Subtask section divider in modal */
+.s-divider{font-size:10px;font-weight:700;color:var(--mt);text-transform:uppercase;letter-spacing:.08em;margin:10px 0 6px;display:flex;align-items:center;gap:6px}
+.s-divider::after{content:"";flex:1;height:1px;background:var(--bd)}
+.si.sd{opacity:.75}
+
 </style>
 </head>
 <body>
@@ -209,6 +227,10 @@ tr.r-done{background:#f6fef8}
       <div class="chip"><span class="dot dd"></span>完了 <strong id="hd-d">—</strong></div>
       <div class="chip"><span class="dot dp"></span>進行中 <strong id="hd-p">—</strong></div>
       <div class="chip"><span class="dot dt"></span>予定 <strong id="hd-t">—</strong></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
+      <span id="hd-upd" style="font-size:11px;color:var(--mt);white-space:nowrap"></span>
+      <button class="sync-btn" onclick="doSync()" title="GitHub Actionsでワークフローを実行してNotionデータを更新">🔄 同期</button>
     </div>
   </div>
 </header>
@@ -228,6 +250,7 @@ tr.r-done{background:#f6fef8}
 </section>
 
 <section class="sec" id="sec-active">
+  <div id="today-section"></div>
   <div class="stitle">⚡ 進行中（最終更新 新しい順）</div>
   <div class="ag" id="ag"></div>
   <div class="stitle">⏳ 対応待ち・依頼中</div>
@@ -332,16 +355,30 @@ function showM(name){
   var p=calcPct(t),dn=calcDone(t);
   var subHTML="";
   if(t.subtasks&&t.subtasks.length){
-    var bar=p>=0?'<div class="mono" style="font-size:15px;font-weight:700;margin-bottom:8px;">'+dn+"/"+t.subtasks.length+" 完了 ("+p+"%)</div>":'';
-    var items=t.subtasks.map(function(s){
-      var id2=s.indexOf("✓")>=0;
-      var iw=!id2&&(s.indexOf("待ち")>=0||s.indexOf("継続")>=0);
-      var cls=id2?"sd":iw?"sw":"su";
-      var ic=id2?"✓":iw?"⏳":"○";
-      var lbl=s.replace(/✓|→未|→待ち|→継続|→/g,"").trim();
-      return '<div class="si '+cls+'"><span class="si-ic">'+ic+"</span><span>"+esc(lbl)+"</span></div>";
-    }).join("");
-    subHTML='<div class="mrow"><div class="mkey">工程</div><div class="mval">'+bar+'<div class="sl">'+items+"</div></div></div>";
+    var pending=t.subtasks.filter(function(s){return s.indexOf("✓")<0;});
+    var done=t.subtasks.filter(function(s){return s.indexOf("✓")>=0;});
+    var bar=p>=0?'<div class="mono" style="font-size:14px;font-weight:700;margin-bottom:8px;color:var(--mid)">'+dn+"/"+t.subtasks.length+' 完了 <span style="font-weight:400;font-size:11px;color:var(--mt)">('+p+'%)</span></div>':'';
+    var prog=p>=0?'<div class="pbar" style="height:6px;margin-bottom:14px"><div class="pfill" style="width:'+p+'%"></div></div>':'';
+    var pendHTML="";
+    if(pending.length){
+      pendHTML='<div class="s-divider">残り '+pending.length+'件</div>'+
+        pending.map(function(s){
+          var iw=s.indexOf("待ち")>=0||s.indexOf("継続")>=0;
+          var cls=iw?"sw":"su";
+          var ic=iw?"⏳":"→";
+          var lbl=s.replace(/→未|→待ち|→継続|→/g,"").trim();
+          return '<div class="si '+cls+'"><span class="si-ic">'+ic+"</span><span>"+esc(lbl)+"</span></div>";
+        }).join("");
+    }
+    var doneHTML="";
+    if(done.length){
+      doneHTML='<div class="s-divider" style="margin-top:14px">完了 '+done.length+'件</div>'+
+        done.map(function(s){
+          var lbl=s.replace(/✓/g,"").trim();
+          return '<div class="si sd"><span class="si-ic">✓</span><span>'+esc(lbl)+"</span></div>";
+        }).join("");
+    }
+    subHTML='<div class="mrow"><div class="mkey">工程</div><div class="mval">'+bar+prog+'<div class="sl">'+pendHTML+doneHTML+"</div></div></div>";
   }
   document.getElementById("modal").innerHTML=
     '<button class="mc" onclick="closeM()">×</button>'+
@@ -351,22 +388,40 @@ function showM(name){
     '<div class="mrow"><div class="mkey">アウトプット</div><div class="mval">'+
       '<div id="modal-links"></div>'+
       '<div id="modal-link-form"></div>'+
-      '<button class="link-add-btn" onclick="showLinkForm('+JSON.stringify(name)+')">＋ リンクを追加</button>'+
+      '<button class="link-add-btn" data-task="'+esc(name)+'" onclick="showLinkForm(this.dataset.task)">＋ リンクを追加</button>'+
     "</div></div>"+
     (t.updateDate?'<div class="mrow"><div class="mkey">更新日</div><div class="mval mono">'+esc(t.updateDate)+"</div></div>":"");
   document.getElementById("mbg").classList.add("on");
   renderModalLinks(name);
 }
 
-// ── ACTIVE（更新日 新しい順）──
+// ── ACTIVE（今日優先 → 更新日 新しい順）──
+var today=new Date().toISOString().slice(0,10);
 var progT=T.filter(function(t){return t.status==="進行中";}).sort(function(a,b){
-  if(a.updateDate&&b.updateDate) return b.updateDate.localeCompare(a.updateDate);
+  var at=a.updateDate===today?0:1,bt=b.updateDate===today?0:1;
+  if(at!==bt)return at-bt;
+  if(a.updateDate&&b.updateDate)return b.updateDate.localeCompare(a.updateDate);
   return a.updateDate?-1:1;
 });
+
+// 本日対応中セクション
+var todayTasks=progT.filter(function(t){return t.updateDate===today;});
+var tsec=document.getElementById("today-section");
+if(tsec){
+  if(todayTasks.length){
+    tsec.innerHTML='<div class="today-hd">'+
+      '<div class="today-hd-title">📌 本日（'+today+'）対応中 — '+todayTasks.length+'件</div>'+
+      '<div class="today-pills">'+todayTasks.map(function(t){
+        return '<span class="today-pill" data-name="'+esc(t.name)+'" onclick="openCard(this)">'+esc(t.name)+'</span>';
+      }).join("")+'</div></div>';
+  }else{tsec.innerHTML="";}
+}
+
 document.getElementById("ag").innerHTML=progT.map(function(t){
   var p=calcPct(t),dn=calcDone(t),na=calcNext(t);
-  return '<div class="acard" data-name="'+esc(t.name)+'" onclick="openCard(this)">'+
-    '<div class="atags">'+ctag(t.category)+" "+sztag(t.size)+"</div>"+
+  var isT=t.updateDate===today;
+  return '<div class="acard'+(isT?" is-today":"")+'" data-name="'+esc(t.name)+'" onclick="openCard(this)">'+
+    '<div class="atags">'+ctag(t.category)+" "+sztag(t.size)+(isT?' <span class="today-badge">📌 本日</span>':"")+' </div>'+
     '<div class="aname">'+esc(t.name)+"</div>"+
     (p>=0?'<div class="pb-wrap"><div class="pb-row"><span>工程進捗</span><span>'+dn+"/"+t.subtasks.length+" ("+p+"%)</span></div>"+
       '<div class="pbar"><div class="pfill" style="width:'+p+'%"></div></div></div>':"")+
@@ -573,6 +628,23 @@ function handleSaveLink(taskName){
   addUserLink(taskName, label, url);
   hideLinkForm();
   renderModalLinks(taskName);
+}
+
+// ── ヘッダー: 最終同期日時 + 同期ボタン ──
+var BUILD_TS="BUILD_TIMESTAMP";
+var maxDate=T.reduce(function(max,t){return(t.updateDate||"")>max?t.updateDate:max;},"");
+var updEl=document.getElementById("hd-upd");
+if(updEl){
+  if(BUILD_TS!=="BUILD_TIMESTAMP"){
+    updEl.textContent="同期: "+BUILD_TS;
+  }else if(maxDate){
+    updEl.textContent="データ更新: "+maxDate;
+  }
+}
+function doSync(){
+  if(confirm("GitHub Actionsのページを開きます。\n「ワークフローを実行する」をクリックするとNotionのデータが更新されます。")){
+    window.open("https://github.com/camelhara-byte/task-dashboard/actions/workflows/deploy.yml","_blank");
+  }
 }
 
 </script>
