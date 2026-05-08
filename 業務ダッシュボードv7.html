@@ -451,7 +451,8 @@ document.getElementById("ml").innerHTML=months.map(function(mo){
   },0);
 
   var dcards=bigMed.map(function(t){
-    var linkH=t.url?'<a href="'+esc(t.url)+'" target="_blank" class="dlink" onclick="event.stopPropagation()">🔗 成果物を見る</a>':"";
+    var firstLink=(t.links&&t.links.length)?t.links[0]:null;
+    var linkH=firstLink?'<a href="'+esc(firstLink.url)+'" target="_blank" class="dlink" onclick="event.stopPropagation()">🔗 アウトプットを確認</a>':"";
     return '<div class="dcard" data-name="'+esc(t.name)+'" onclick="openCard(this)">'+
       '<div class="dname">✅ '+esc(t.name)+"</div>"+
       '<div class="dtags">'+ctag(t.category)+" "+sztag(t.size)+"</div>"+

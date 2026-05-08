@@ -303,7 +303,7 @@ def transform_page(api_key, page):
         "month": month,
         "subtasks": subtasks,
         "links": links,
-        "url": url_field or page.get("url", ""),
+        "url": url_field or "",
     }
 
 
