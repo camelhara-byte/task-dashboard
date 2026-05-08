@@ -411,9 +411,18 @@ if(tsec){
   if(todayTasks.length){
     tsec.innerHTML='<div class="today-hd">'+
       '<div class="today-hd-title">📌 本日（'+today+'）対応中 — '+todayTasks.length+'件</div>'+
-      '<div class="today-pills">'+todayTasks.map(function(t){
-        return '<span class="today-pill" data-name="'+esc(t.name)+'" onclick="openCard(this)">'+esc(t.name)+'</span>';
-      }).join("")+'</div></div>';
+      '</div>'+
+      '<div class="ag">'+todayTasks.map(function(t){
+        var p=calcPct(t),dn=calcDone(t),na=calcNext(t);
+        return '<div class="acard is-today" data-name="'+esc(t.name)+'" onclick="openCard(this)">'+
+          '<div class="atags">'+ctag(t.category)+" "+sztag(t.size)+' <span class="today-badge">📌 本日</span></div>'+
+          '<div class="aname">'+esc(t.name)+"</div>"+
+          (p>=0?'<div class="pb-wrap"><div class="pb-row"><span>工程進捗</span><span>'+dn+"/"+t.subtasks.length+" ("+p+"%)</span></div>"+
+            '<div class="pbar"><div class="pfill" style="width:'+p+'%"></div></div></div>':"")+
+          (na?'<div class="anext">'+esc(na)+"</div>":"")+
+          (t.updateDate?'<div class="adate">更新 '+esc(t.updateDate)+"</div>":"")+
+          "</div>";
+      }).join("")+'</div>';
   }else{tsec.innerHTML="";}
 }
 
@@ -630,6 +639,20 @@ function handleSaveLink(taskName){
   addUserLink(taskName, label, url);
   hideLinkForm();
   renderModalLinks(taskName);
+  // カードに即時反映
+  var stored = getStoredLinks()[taskName];
+  if(stored && stored.length){
+    var firstUrl = stored[0].url;
+    document.querySelectorAll('.dcard[data-name="'+esc(taskName)+'"]').forEach(function(card){
+      if(!card.querySelector('.dlink')){
+        var a = document.createElement('a');
+        a.href = firstUrl; a.target = '_blank'; a.className = 'dlink';
+        a.addEventListener('click', function(e){ e.stopPropagation(); });
+        a.textContent = '🔗 アウトプットを確認';
+        card.appendChild(a);
+      }
+    });
+  }
 }
 
 // ── ヘッダー: 最終同期日時 + 同期ボタン ──
