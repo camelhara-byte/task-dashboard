@@ -33,13 +33,14 @@ permissions:
   pages: write
   id-token: write
 
-concurrency:
-  group: pages
-  cancel-in-progress: true
-
 jobs:
-  update-and-deploy:
+  # Step 1: user_links.json を更新してコミット（キャンセルしない）
+  commit-link:
     runs-on: ubuntu-latest
+    concurrency:
+      group: link-commit   # pages グループとは独立
+      cancel-in-progress: false   # 複数保存が重なっても順番に実行
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -58,13 +59,32 @@ jobs:
           LINK_ID: ${{ inputs.link_id }}
         run: python update_links.py
 
-      - name: Commit user_links.json
+      - name: Commit and push
         run: |
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
           git add user_links.json
           git diff --staged --quiet || git commit -m "chore: update user links [${{ inputs.action }}] ${{ inputs.task_name }}"
           git push
+
+  # Step 2: Notion 取得 → ビルド → デプロイ（最新の1件だけ実行）
+  build:
+    needs: commit-link
+    runs-on: ubuntu-latest
+    concurrency:
+      group: pages
+      cancel-in-progress: true
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main   # commit-link が push した最新を取得
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
 
       - name: Install dependencies
         run: pip install -r requirements.txt
@@ -90,8 +110,11 @@ jobs:
           path: _site
 
   deploy:
-    needs: update-and-deploy
+    needs: build
     runs-on: ubuntu-latest
+    concurrency:
+      group: pages
+      cancel-in-progress: true
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
