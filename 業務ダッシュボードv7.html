@@ -612,7 +612,7 @@ function showLinkForm(taskName){
     '<input id="lf-url" type="url" placeholder="URL（https://...）">'+
     '<div class="link-form-btns">'+
     '<button class="btn-cancel" onclick="hideLinkForm()">キャンセル</button>'+
-    '<button class="btn-save" onclick="handleSaveLink('+JSON.stringify(taskName)+')">保存</button>'+
+    '<button class="btn-save" data-task="'+esc(taskName)+'" onclick="handleSaveLink(this.dataset.task)">保存</button>'+
     "</div></div>";
   document.getElementById("lf-label").focus();
 }
