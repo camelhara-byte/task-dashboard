@@ -1,6 +1,13 @@
 name: Build and Deploy Dashboard
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - '業務ダッシュボードv7.html'
+      - 'build.py'
+      - 'fetch_notion.py'
+      - 'requirements.txt'
   schedule:
     - cron: '0 20 * * *'   # 毎日 20:00 UTC = 日本時間 朝5:00
   workflow_dispatch:
