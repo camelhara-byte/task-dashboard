@@ -546,57 +546,59 @@ function renderTbl(arr){
 }
 renderTbl(T);
 
-// ── GANTT ──
+// ── GANTT（進行中のみ）──
 (function(){
-  var gS=new Date("2026-03-01"),gE=new Date("2026-08-01");
+  var gS=new Date("2026-04-01"),gE=new Date("2026-07-01");
   var total=(gE-gS)/864e5;
-  var active=T.filter(function(t){return t.status!=="完了";});
-  active.sort(function(a,b){
-    var s={進行中:0,待ち:1,未着手:2};
-    return ((s[a.status]||9)-(s[b.status]||9))||((a.month||0)-(b.month||0));
+  // 進行中のみ、最終更新が新しい順
+  var progs=T.filter(function(t){return t.status==="進行中";}).sort(function(a,b){
+    return (b.updateDate||"").localeCompare(a.updateDate||"");
   });
   var now=new Date();
-  var tPct=((now-gS)/864e5/total*100).toFixed(2);
+  var tPct=Math.max(0,Math.min(100,(now-gS)/864e5/total*100)).toFixed(2);
   var dur={大:28,中:14,小:7};
   var months=[];
   for(var mm=new Date(gS);mm<gE;mm=new Date(mm.getFullYear(),mm.getMonth()+1,1))months.push(new Date(mm));
+  function fmtDate(d){return (d.getMonth()+1)+"/"+(d.getDate());}
 
-  var h='<div class="gantt-hd"><b>📅 タイムライン</b><span class="gantt-hd-note">規模から期間を推定 · <span style="color:#c2255c;font-weight:700">|</span> 今日</span></div>';
+  var h='<div class="gantt-hd"><b>📅 進行中タイムライン</b><span class="gantt-hd-note">'+progs.length+'件 · 規模から終了を推定 · <span style="color:#c2255c;font-weight:700">|</span> 今日</span></div>';
   h+='<div class="gantt-body">';
 
-  // axis row
+  // axis
   h+='<div class="gantt-row gantt-axis"><div class="gantt-lbl"></div><div class="gantt-bars">';
   h+='<div class="gantt-today-line" style="left:'+tPct+'%"></div>';
   months.forEach(function(m){
-    var p=((m-gS)/864e5/total*100).toFixed(2);
-    h+='<div class="gantt-mline" style="left:'+p+'%"></div>';
-    h+='<div class="gantt-mlbl" style="left:'+p+'%">'+(m.getMonth()+1)+'月</div>';
+    var p=((m-gS)/864e5/total*100).toFixed(1);
+    h+='<div class="gantt-mline" style="left:'+p+'%"></div><div class="gantt-mlbl" style="left:'+p+'%">'+(m.getMonth()+1)+'月</div>';
   });
   h+='</div></div>';
 
-  // task rows
-  active.forEach(function(t){
+  progs.forEach(function(t){
     var ms=new Date("2026-"+(t.month<10?"0":"")+t.month+"-01");
-    var de=dur[t.size]||7;
+    // 開始をupdateDateと比較して早い方を使う
+    if(t.updateDate&&new Date(t.updateDate)<ms)ms=new Date(t.updateDate);
+    var de=dur[t.size]||14;
     var me=new Date(ms.getTime()+de*864e5);
-    if(t.status==="進行中"&&t.updateDate){
-      var ud=new Date(t.updateDate);
-      if(ud>me)me=new Date(ud.getTime()+7*864e5);
-    }
+    // updateDateが推定終了を超えている場合は延長（まだ続いている）
+    if(t.updateDate){var ud=new Date(t.updateDate);if(ud>me)me=new Date(ud.getTime()+de*864e5);}
     var lp=Math.max(0,(ms-gS)/864e5/total*100);
     var rp=Math.min(100,(me-gS)/864e5/total*100);
-    var wp=Math.max(1,rp-lp);
+    var wp=Math.max(2,rp-lp);
     var pc=calcPct(t);
-    var bc={進行中:"gp",待ち:"gw",未着手:"gt"}[t.status]||"gt";
+    var pTxt=pc>=0?" "+pc+"%":"";
+    var endLbl=fmtDate(me)+"頃";
     h+='<div class="gantt-row" onclick="showM(\''+esc(t.name)+'\')">';
     h+='<div class="gantt-lbl"><div class="gantt-lbl-n" title="'+esc(t.name)+'">'+esc(t.name)+'</div>';
-    h+='<div style="display:flex;gap:3px;flex-wrap:wrap">'+ctag(t.category)+(t.size?'<span class="tag sz-'+esc(t.size)+'">'+esc(t.size)+'</span>':'')+'</div></div>';
+    h+='<div style="display:flex;gap:3px;margin-top:2px">'+ctag(t.category)+'</div></div>';
     h+='<div class="gantt-bars">';
     h+='<div class="gantt-today-line" style="left:'+tPct+'%"></div>';
-    months.forEach(function(m){h+='<div class="gantt-mline" style="left:'+((m-gS)/864e5/total*100).toFixed(2)+'%"></div>';});
-    h+='<div class="gantt-bar '+bc+'" style="left:'+lp.toFixed(1)+'%;width:'+wp.toFixed(1)+'%">';
+    months.forEach(function(m){h+='<div class="gantt-mline" style="left:'+((m-gS)/864e5/total*100).toFixed(1)+'%"></div>';});
+    h+='<div class="gantt-bar gp" style="left:'+lp.toFixed(1)+'%;width:'+wp.toFixed(1)+'%">';
     if(pc>=0)h+='<div class="gantt-pfill" style="width:'+pc+'%"></div>';
-    h+='</div></div></div>';
+    h+='</div>';
+    // 終了予定ラベル（バー右端の外側）
+    if(rp<96)h+='<div style="position:absolute;left:'+(lp+wp).toFixed(1)+'%;top:50%;transform:translateY(-50%);font-size:9px;color:var(--mt);white-space:nowrap;padding-left:4px">'+endLbl+pTxt+'</div>';
+    h+='</div></div>';
   });
   h+='</div>';
   document.getElementById("gantt-wrap").innerHTML=h;
