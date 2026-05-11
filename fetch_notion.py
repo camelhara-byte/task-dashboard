@@ -274,6 +274,10 @@ def transform_page(api_key, page):
         let = page.get("last_edited_time", "")
         update_date = let[:10] if let else None
 
+    due_date = get_date_start(
+        find_property(properties, "期限", "Due Date", "Due date", "締切", "締切日", "deadline")
+    )
+
     url_field = get_url(find_property(properties, "URL", "Url", "リンク"))
 
     subtasks = extract_subtasks(api_key, page["id"])
@@ -300,6 +304,7 @@ def transform_page(api_key, page):
         "size": size,
         "priority": raw_priority,
         "updateDate": update_date,
+        "dueDate": due_date,
         "month": month,
         "subtasks": subtasks,
         "links": links,

@@ -601,17 +601,27 @@ renderTbl(T);
 
   progs.forEach(function(t){
     var pc=calcPct(t);
-    var rem=t.subtasks?t.subtasks.filter(function(s){return s.indexOf("→")>=0&&s.indexOf("✓")<0;}).length:0;
-    var estRem=Math.max(5,rem*3);
-    if(!t.subtasks||!t.subtasks.length)estRem=dur[t.size]||14;
-    var ud=t.updateDate?new Date(t.updateDate):now;
-    var endDate=new Date(ud.getTime()+estRem*864e5);
+    var endDate;
+    var isEstimated=false;
+    if(t.dueDate){
+      endDate=new Date(t.dueDate);
+    } else {
+      // 期限未設定：残サブタスクから推定
+      isEstimated=true;
+      var rem=t.subtasks?t.subtasks.filter(function(s){return s.indexOf("→")>=0&&s.indexOf("✓")<0;}).length:0;
+      var estRem=Math.max(5,rem*3);
+      if(!t.subtasks||!t.subtasks.length)estRem=dur[t.size]||14;
+      var ud=t.updateDate?new Date(t.updateDate):now;
+      endDate=new Date(ud.getTime()+estRem*864e5);
+    }
     var rp=(endDate-gS)/864e5/total*100;
     var wp=Math.max(6,Math.min(100,rp));
     var overflows=endDate>=gE;
-    var endLbl=fmt(endDate)+(overflows?" →":"頃");
+    var isPast=endDate<now&&t.status==="進行中";  // 期限超過
+    var endLbl=fmt(endDate)+(isEstimated?"頃":(isPast?" 超過":" 期限"));
     var pTxt=pc>=0?"  "+pc+"%":"";
-    var barColor=overflows?"background:linear-gradient(135deg,#c92a2a,#e03131)":"";
+    var barColor=isPast?"background:linear-gradient(135deg,#c92a2a,#e03131)"
+      :(overflows?"background:linear-gradient(135deg,#e67700,#f59f00)":"");
 
     h+='<div class="gantt-row" onclick="showM(\''+esc(t.name)+'\')">';
     h+='<div class="gantt-lbl"><div class="gantt-lbl-n" title="'+esc(t.name)+'">'+esc(t.name)+'</div>'
