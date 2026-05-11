@@ -559,58 +559,72 @@ function renderTbl(arr){
 }
 renderTbl(T);
 
-// ── GANTT（進行中のみ）──
+// ── GANTT（進行中のみ・今月1ヶ月表示）──
 (function(){
-  var gS=new Date("2026-04-01"),gE=new Date("2026-07-01");
+  var now=new Date();
+  var gS=new Date(now.getFullYear(),now.getMonth(),1);          // 今月1日
+  var gE=new Date(now.getFullYear(),now.getMonth()+1,1);        // 来月1日
   var total=(gE-gS)/864e5;
-  // 進行中のみ、最終更新が新しい順
+  var tPct=Math.max(0,Math.min(100,(now-gS)/864e5/total*100)).toFixed(1);
+  var dur={大:21,中:14,小:7};
+  function fmt(d){return (d.getMonth()+1)+"/"+(d.getDate());}
+
+  // 進行中のみ・更新日新しい順
   var progs=T.filter(function(t){return t.status==="進行中";}).sort(function(a,b){
     return (b.updateDate||"").localeCompare(a.updateDate||"");
   });
-  var now=new Date();
-  var tPct=Math.max(0,Math.min(100,(now-gS)/864e5/total*100)).toFixed(2);
-  var dur={大:28,中:14,小:7};
-  var months=[];
-  for(var mm=new Date(gS);mm<gE;mm=new Date(mm.getFullYear(),mm.getMonth()+1,1))months.push(new Date(mm));
-  function fmtDate(d){return (d.getMonth()+1)+"/"+(d.getDate());}
 
-  var h='<div class="gantt-hd"><b>📅 進行中タイムライン</b><span class="gantt-hd-note">'+progs.length+'件 · 規模から終了を推定 · <span style="color:#c2255c;font-weight:700">|</span> 今日</span></div>';
+  // 週区切り（月曜日）
+  var ticks=[];
+  for(var d=new Date(gS);d<gE;d=new Date(d.getTime()+7*864e5)){
+    if(d>gS)ticks.push(new Date(d));  // 月初は省略
+  }
+
+  var h='<div class="gantt-hd"><b>📅 タイムライン（今月）</b>'
+    +'<span class="gantt-hd-note">進行中 '+progs.length+'件 · <span style="color:#c2255c;font-weight:700;font-size:13px">|</span> 今日</span></div>';
   h+='<div class="gantt-body">';
 
-  // axis
-  h+='<div class="gantt-row gantt-axis"><div class="gantt-lbl"></div><div class="gantt-bars">';
+  // 軸
+  h+='<div class="gantt-row gantt-axis"><div class="gantt-lbl" style="font-size:10px;color:var(--mt);justify-content:center;font-weight:700">'
+    +now.getFullYear()+'/'+(now.getMonth()+1)+'</div><div class="gantt-bars">';
   h+='<div class="gantt-today-line" style="left:'+tPct+'%"></div>';
-  months.forEach(function(m){
-    var p=((m-gS)/864e5/total*100).toFixed(1);
-    h+='<div class="gantt-mline" style="left:'+p+'%"></div><div class="gantt-mlbl" style="left:'+p+'%">'+(m.getMonth()+1)+'月</div>';
+  // 月初ラベル
+  h+='<div class="gantt-mlbl" style="left:0%">'+fmt(gS)+'</div>';
+  ticks.forEach(function(d){
+    var p=((d-gS)/864e5/total*100).toFixed(1);
+    h+='<div class="gantt-mline" style="left:'+p+'%"></div>';
+    h+='<div class="gantt-mlbl" style="left:'+p+'%">'+fmt(d)+'</div>';
   });
   h+='</div></div>';
 
+  // タスク行
   progs.forEach(function(t){
-    var ms=new Date("2026-"+(t.month<10?"0":"")+t.month+"-01");
-    // 開始をupdateDateと比較して早い方を使う
-    if(t.updateDate&&new Date(t.updateDate)<ms)ms=new Date(t.updateDate);
-    var de=dur[t.size]||14;
-    var me=new Date(ms.getTime()+de*864e5);
-    // updateDateが推定終了を超えている場合は延長（まだ続いている）
-    if(t.updateDate){var ud=new Date(t.updateDate);if(ud>me)me=new Date(ud.getTime()+de*864e5);}
-    var lp=Math.max(0,(ms-gS)/864e5/total*100);
-    var rp=Math.min(100,(me-gS)/864e5/total*100);
-    var wp=Math.max(2,rp-lp);
     var pc=calcPct(t);
-    var pTxt=pc>=0?" "+pc+"%":"";
-    var endLbl=fmtDate(me)+"頃";
+    // 残サブタスク数から残日数を推定
+    var rem=t.subtasks?t.subtasks.filter(function(s){return s.indexOf("→")>=0&&s.indexOf("✓")<0;}).length:0;
+    var estRem=Math.max(5,rem*3);  // 1サブタスク≈3日、最低5日
+    if(!t.subtasks||!t.subtasks.length)estRem=dur[t.size]||14;
+    var ud=t.updateDate?new Date(t.updateDate):now;
+    var endDate=new Date(ud.getTime()+estRem*864e5);
+    // バー：左端=月初固定、右端=終了予定日
+    var rp=Math.min(100,(endDate-gS)/864e5/total*100);
+    var wp=Math.max(4,rp);
+    var overflows=endDate>=gE;
+    var endLbl=overflows?fmt(endDate)+"→":fmt(endDate)+"頃";
+    var pTxt=pc>=0?" ("+pc+"%)":"";
+
     h+='<div class="gantt-row" onclick="showM(\''+esc(t.name)+'\')">';
     h+='<div class="gantt-lbl"><div class="gantt-lbl-n" title="'+esc(t.name)+'">'+esc(t.name)+'</div>';
-    h+='<div style="display:flex;gap:3px;margin-top:2px">'+ctag(t.category)+'</div></div>';
+    h+='<div style="margin-top:2px">'+ctag(t.category)+'</div></div>';
     h+='<div class="gantt-bars">';
     h+='<div class="gantt-today-line" style="left:'+tPct+'%"></div>';
-    months.forEach(function(m){h+='<div class="gantt-mline" style="left:'+((m-gS)/864e5/total*100).toFixed(1)+'%"></div>';});
-    h+='<div class="gantt-bar gp" style="left:'+lp.toFixed(1)+'%;width:'+wp.toFixed(1)+'%">';
+    ticks.forEach(function(d){h+='<div class="gantt-mline" style="left:'+((d-gS)/864e5/total*100).toFixed(1)+'%"></div>';});
+    h+='<div class="gantt-bar gp" style="left:0%;width:'+Math.min(100,wp).toFixed(1)+'%">';
     if(pc>=0)h+='<div class="gantt-pfill" style="width:'+pc+'%"></div>';
     h+='</div>';
-    // 終了予定ラベル（バー右端の外側）
-    if(rp<96)h+='<div style="position:absolute;left:'+(lp+wp).toFixed(1)+'%;top:50%;transform:translateY(-50%);font-size:9px;color:var(--mt);white-space:nowrap;padding-left:4px">'+endLbl+pTxt+'</div>';
+    // 終了予定ラベル
+    var lblLeft=(overflows?96:Math.min(94,wp)).toFixed(1);
+    h+='<div style="position:absolute;left:'+lblLeft+'%;top:50%;transform:translateY(-50%);font-size:10px;font-weight:700;color:'+(overflows?'var(--td)':'var(--pg)')+';white-space:nowrap;padding-left:5px">'+endLbl+pTxt+'</div>';
     h+='</div></div>';
   });
   h+='</div>';
@@ -631,12 +645,11 @@ document.getElementById("ml").innerHTML=months.map(function(mo){
   var dcards=bigMed.map(function(t){
     var firstLink=(t.links&&t.links.length)?t.links[0]:null;
     if(!firstLink){var ul=UL[t.name];if(ul&&ul.length)firstLink=ul[0];}
-    var linkH=firstLink?'<a href="'+esc(firstLink.url)+'" target="_blank" class="dlink" onclick="event.stopPropagation()">🔗 確認</a>':"";
+    var linkH=firstLink?'<a href="'+esc(firstLink.url)+'" target="_blank" class="dlink" onclick="event.stopPropagation()">🔗 アウトプットを確認</a>':"";
     return '<div class="dcard" data-name="'+esc(t.name)+'" onclick="openCard(this)">'+
-      '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">'+
-      '<div class="dname">'+esc(t.name)+"</div>"+linkH+"</div>"+
+      '<div class="dname">✅ '+esc(t.name)+"</div>"+
       '<div class="dtags">'+ctag(t.category)+(t.size?sztag(t.size):"")+"</div>"+
-      "</div>";
+      linkH+"</div>";
   }).join("");
 
   // 小タスク：シンプルなテキストリスト
