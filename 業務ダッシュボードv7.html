@@ -210,6 +210,12 @@ tr.r-done{background:#f6fef8}
 .done-hd-count{background:var(--dn-bg);color:var(--dn);border:1px solid var(--dn-bd);border-radius:10px;padding:1px 9px;font-size:11px;font-weight:700}
 .done-card{background:var(--sf);border:1px solid var(--dn-bd);border-left:3px solid var(--dn);border-radius:var(--rs);padding:12px 14px;cursor:pointer;transition:all .15s}
 .done-card:hover{background:var(--sf);box-shadow:var(--shm);transform:translateY(-1px)}
+/* Recently active waiting */
+.wait-recent-wrap{background:var(--wt-bg);border:1px solid var(--wt-bd);border-top:4px solid var(--wt);border-radius:12px;padding:16px 18px 14px;margin-bottom:24px;box-shadow:0 2px 12px rgba(92,102,128,.06)}
+.wait-recent-hd{font-size:14px;font-weight:700;color:var(--wt);display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.wait-recent-count{background:var(--sf);color:var(--wt);border:1px solid var(--wt-bd);border-radius:10px;padding:1px 9px;font-size:11px;font-weight:700}
+.wait-card-r{background:var(--sf);border:1px solid var(--wt-bd);border-left:3px solid var(--wt);border-radius:var(--rs);padding:12px 14px;cursor:pointer;transition:all .15s}
+.wait-card-r:hover{box-shadow:var(--shm);transform:translateY(-1px)}
 .prog-section-hd{display:flex;align-items:center;gap:8px;margin-bottom:14px}
 .prog-section-title{font-size:13px;font-weight:700;color:var(--mid)}
 .prog-section-count{background:var(--pg-bg);color:var(--pg);border:1px solid var(--pg-bd);border-radius:10px;padding:1px 8px;font-size:11px;font-weight:700}
@@ -301,6 +307,7 @@ tr.r-done{background:#f6fef8}
 <section class="sec on" id="sec-active">
   <div id="today-section"></div>
   <div id="recent-done-section"></div>
+  <div id="recent-wait-section"></div>
   <div class="prog-section-hd">
     <span class="prog-section-title">⚡ 進行中（最終更新 新しい順）</span>
     <span class="prog-section-count" id="prog-count"></span>
@@ -519,6 +526,33 @@ if(tsec){
     +"</div>";
 })();
 
+// ── 直近3日待ち ──
+(function(){
+  var d3=new Date();d3.setDate(d3.getDate()-3);
+  var d3s=d3.toISOString().slice(0,10);
+  var rwait=T.filter(function(t){return t.status==="待ち"&&t.updateDate&&t.updateDate>=d3s;})
+    .sort(function(a,b){return (b.updateDate||"").localeCompare(a.updateDate||"");});
+  var sec=document.getElementById("recent-wait-section");
+  if(!sec)return;
+  if(!rwait.length){sec.innerHTML="";return;}
+  sec.innerHTML='<div class="wait-recent-wrap">'
+    +'<div class="wait-recent-hd">⏳ 直近3日の待ち <span class="wait-recent-count">'+rwait.length+'件</span></div>'
+    +'<div class="ag">'+rwait.map(function(t){
+      var na=calcNext(t);
+      var firstLink=(t.links&&t.links.length)?t.links[0]:null;
+      if(!firstLink){var ul=UL[t.name];if(ul&&ul.length)firstLink=ul[0];}
+      var linkH=firstLink?'<a href="'+esc(firstLink.url)+'" target="_blank" class="dlink" onclick="event.stopPropagation()">🔗 確認</a>':"";
+      return '<div class="wait-card-r" data-name="'+esc(t.name)+'" onclick="openCard(this)">'
+        +'<div class="atags">'+ctag(t.category)+" "+sztag(t.size)+"</div>"
+        +'<div class="aname" style="color:var(--wt)">'+esc(t.name)+"</div>"
+        +(na?'<div class="anext" style="color:var(--wt)">'+esc(na)+"</div>":"")
+        +(linkH?'<div style="margin-top:6px">'+linkH+'</div>':"")
+        +(t.updateDate?'<div class="adate">更新 '+esc(t.updateDate)+"</div>":"")
+        +"</div>";
+    }).join("")+"</div>"
+    +"</div>";
+})();
+
 var nonTodayT=progT.filter(function(t){return t.updateDate!==today;});
 var pcEl=document.getElementById("prog-count");
 if(pcEl) pcEl.textContent=nonTodayT.length+"件";
@@ -534,7 +568,8 @@ document.getElementById("ag").innerHTML=nonTodayT.map(function(t){
     "</div>";
 }).join("");
 
-var waitT=T.filter(function(t){return t.status==="待ち";});
+var _w3=new Date();_w3.setDate(_w3.getDate()-3);var _w3s=_w3.toISOString().slice(0,10);
+var waitT=T.filter(function(t){return t.status==="待ち"&&!(t.updateDate&&t.updateDate>=_w3s);});
 document.getElementById("wg").innerHTML=waitT.length?waitT.map(function(t){
   return '<div class="wcard" data-name="'+esc(t.name)+'" onclick="openCard(this)">'+
     '<div class="cname">⏳ '+esc(t.name)+"</div>"+
