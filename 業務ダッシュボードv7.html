@@ -198,12 +198,18 @@ tr.r-done{background:#f6fef8}
 
 /* Today highlights */
 .today-badge{display:inline-flex;align-items:center;gap:3px;background:#c2255c;color:#fff;border-radius:10px;padding:1px 7px;font-size:10px;font-weight:700}
-.today-wrap{background:linear-gradient(135deg,#fff0f6 0%,#fdf2f8 100%);border:2px solid #f9a8d4;border-radius:14px;padding:18px 18px 14px;margin-bottom:28px}
-.today-hd{margin-bottom:14px}
+.today-wrap{background:var(--sf);border:1px solid #f3b8d0;border-top:4px solid #c2255c;border-radius:12px;padding:16px 18px 14px;margin-bottom:20px;box-shadow:0 2px 16px rgba(194,37,92,.07)}
+.today-hd{margin-bottom:12px}
 .today-hd-title{font-size:15px;font-weight:800;color:#c2255c;letter-spacing:.01em;display:flex;align-items:center;gap:8px}
 .today-hd-count{background:#c2255c;color:#fff;border-radius:10px;padding:1px 9px;font-size:12px;font-weight:700}
-.acard.is-today{background:#fff5f8;border-left-color:#c2255c;border-left-width:4px;box-shadow:none}
+.acard.is-today{background:var(--sf);border-left-color:#c2255c;border-left-width:4px}
 .acard.is-today:hover{box-shadow:0 4px 12px rgba(194,37,92,.15);transform:translateY(-1px)}
+/* Recently completed */
+.done-wrap{background:var(--sf);border:1px solid var(--dn-bd);border-top:4px solid var(--dn);border-radius:12px;padding:16px 18px 14px;margin-bottom:24px;box-shadow:0 2px 12px rgba(47,158,68,.06)}
+.done-hd-title{font-size:14px;font-weight:700;color:var(--dn);display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.done-hd-count{background:var(--dn-bg);color:var(--dn);border:1px solid var(--dn-bd);border-radius:10px;padding:1px 9px;font-size:11px;font-weight:700}
+.done-card{background:var(--sf2);border:1px solid var(--dn-bd);border-left:3px solid var(--dn);border-radius:var(--rs);padding:12px 14px;cursor:pointer;transition:all .15s}
+.done-card:hover{background:var(--sf);box-shadow:var(--shm);transform:translateY(-1px)}
 .prog-section-hd{display:flex;align-items:center;gap:8px;margin-bottom:14px}
 .prog-section-title{font-size:13px;font-weight:700;color:var(--mid)}
 .prog-section-count{background:var(--pg-bg);color:var(--pg);border:1px solid var(--pg-bd);border-radius:10px;padding:1px 8px;font-size:11px;font-weight:700}
@@ -294,6 +300,7 @@ tr.r-done{background:#f6fef8}
 
 <section class="sec on" id="sec-active">
   <div id="today-section"></div>
+  <div id="recent-done-section"></div>
   <div class="prog-section-hd">
     <span class="prog-section-title">⚡ 進行中（最終更新 新しい順）</span>
     <span class="prog-section-count" id="prog-count"></span>
@@ -483,6 +490,34 @@ if(tsec){
       "</div>";
   }else{tsec.innerHTML="";}
 }
+
+// ── 直近3日完了 ──
+(function(){
+  var d3=new Date();d3.setDate(d3.getDate()-3);
+  var d3s=d3.toISOString().slice(0,10);
+  var rdone=T.filter(function(t){return t.status==="完了"&&t.updateDate&&t.updateDate>=d3s;})
+    .sort(function(a,b){return (b.updateDate||"").localeCompare(a.updateDate||"");});
+  var sec=document.getElementById("recent-done-section");
+  if(!sec)return;
+  if(!rdone.length){sec.innerHTML="";return;}
+  sec.innerHTML='<div class="done-wrap">'
+    +'<div class="done-hd-title">✅ 直近3日の完了 <span class="done-hd-count">'+rdone.length+'件</span></div>'
+    +'<div class="ag">'+rdone.map(function(t){
+      var p=calcPct(t),dn=calcDone(t);
+      var firstLink=(t.links&&t.links.length)?t.links[0]:null;
+      if(!firstLink){var ul=UL[t.name];if(ul&&ul.length)firstLink=ul[0];}
+      var linkH=firstLink?'<a href="'+esc(firstLink.url)+'" target="_blank" class="dlink" onclick="event.stopPropagation()">🔗 確認</a>':"";
+      return '<div class="done-card" data-name="'+esc(t.name)+'" onclick="openCard(this)">'
+        +'<div class="atags">'+ctag(t.category)+" "+sztag(t.size)+"</div>"
+        +'<div class="aname" style="color:var(--dn)">'+esc(t.name)+"</div>"
+        +(p>=0?'<div class="pb-wrap"><div class="pb-row"><span>工程</span><span>'+dn+"/"+t.subtasks.length+" ("+p+"%)</span></div>"
+          +'<div class="pbar"><div class="pfill" style="width:'+p+'%;background:var(--dn)"></div></div></div>':"")
+        +(linkH?'<div style="margin-top:6px">'+linkH+'</div>':"")
+        +(t.updateDate?'<div class="adate">完了 '+esc(t.updateDate)+"</div>":"")
+        +"</div>";
+    }).join("")+"</div>"
+    +"</div>";
+})();
 
 var nonTodayT=progT.filter(function(t){return t.updateDate!==today;});
 var pcEl=document.getElementById("prog-count");
