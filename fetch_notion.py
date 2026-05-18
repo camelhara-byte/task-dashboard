@@ -119,7 +119,9 @@ def get_block_children_all(api_key, block_id):
 def rich_text_to_plain(rt_array):
     if not rt_array:
         return ""
-    return "".join(item.get("plain_text", "") for item in rt_array).strip()
+    text = "".join(item.get("plain_text", "") for item in rt_array).strip()
+    # 改行・タブなどの制御文字をスペースに置換（JS埋め込み時のSyntaxError防止）
+    return " ".join(text.splitlines()).strip()
 
 
 def find_property(properties, *names):
