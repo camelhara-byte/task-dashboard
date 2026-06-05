@@ -275,7 +275,7 @@ tr.r-done{background:#f6fef8}
       <div class="logo">C</div>
       <div>
         <div class="hd-title">業務ダッシュボード</div>
-        <div class="hd-sub">キャメルグループ事務局 · 2026年3〜5月 · 担当：原</div>
+        <div class="hd-sub">キャメルグループ事務局</div>
       </div>
     </div>
     <div class="chips">
@@ -313,8 +313,10 @@ tr.r-done{background:#f6fef8}
     <span class="prog-section-count" id="prog-count"></span>
   </div>
   <div class="ag" id="ag"></div>
+  <div id="gantt-section" style="display:none">
   <div class="stitle">📅 タイムライン（進行中）</div>
   <div class="gantt-wrap" id="gantt-wrap"></div>
+  </div>
   <div class="stitle">⏳ 対応待ち・依頼中</div>
   <div class="sg" id="wg"></div>
   <div class="stitle">📋 今後着手予定</div>
@@ -714,9 +716,24 @@ renderTbl(T);
 })();
 
 // ── MONTH LOG ──
-var months=[{m:5,emoji:"✨",lbl:"2026年5月"},{m:4,emoji:"🌿",lbl:"2026年4月"},{m:3,emoji:"🌸",lbl:"2026年3月"}];
+var _MEMOJI={"1":"❄️","2":"💕","3":"🌸","4":"🌿","5":"✨","6":"☔","7":"🌻","8":"🏖️","9":"🍂","10":"🍁","11":"🎃","12":"🎄"};
+var _mSet={};
+T.forEach(function(t){
+  if(!t.updateDate||t.updateDate.length<7)return;
+  var y=t.updateDate.slice(0,4);
+  var m=parseInt(t.updateDate.slice(5,7),10);
+  var key=y+"-"+("0"+m).slice(-2);
+  if(!_mSet[key])_mSet[key]={y:parseInt(y,10),m:m,key:key};
+});
+var months=Object.keys(_mSet).sort(function(a,b){return b.localeCompare(a);}).map(function(k){
+  var x=_mSet[k];
+  return {y:x.y,m:x.m,emoji:_MEMOJI[""+x.m]||"📅",lbl:x.y+"年"+x.m+"月"};
+});
 document.getElementById("ml").innerHTML=months.map(function(mo){
-  var mt=T.filter(function(t){return t.month===mo.m;});
+  var mt=T.filter(function(t){
+    if(!t.updateDate||t.updateDate.length<7)return false;
+    return parseInt(t.updateDate.slice(0,4),10)===mo.y&&t.month===mo.m;
+  });
   var mDone=mt.filter(function(t){return t.status==="完了";});
   var bigMed=mDone.filter(function(t){return t.size==="大"||t.size==="中";});
   var small=mDone.filter(function(t){return t.size==="小";});
