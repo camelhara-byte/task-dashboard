@@ -1,0 +1,112 @@
+name: Update WFH Report
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'save or delete'
+        required: true
+        default: save
+        type: string
+      date:
+        description: 'Target date (YYYY-MM-DD)'
+        required: true
+        type: string
+      payload:
+        description: 'JSON string of {blocks, end} (for save)'
+        required: false
+        default: ''
+        type: string
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  # Step 1: wfh_reports.json を更新してコミット（キャンセルしない）
+  commit-wfh:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: wfh-commit   # pages グループとは独立
+      cancel-in-progress: false   # 複数保存が重なっても順番に実行
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Update wfh_reports.json
+        env:
+          ACTION: ${{ inputs.action }}
+          DATE: ${{ inputs.date }}
+          PAYLOAD: ${{ inputs.payload }}
+        run: python update_wfh.py
+
+      - name: Commit and push
+        run: |
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git add wfh_reports.json
+          git diff --staged --quiet || git commit -m "chore: update WFH report [${{ inputs.action }}] ${{ inputs.date }}"
+          git push
+
+  # Step 2: Notion 取得 → ビルド → デプロイ（最新の1件だけ実行）
+  build:
+    needs: commit-wfh
+    runs-on: ubuntu-latest
+    concurrency:
+      group: pages
+      cancel-in-progress: true
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main   # commit-wfh が push した最新を取得
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Fetch Notion data
+        env:
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+        run: python fetch_notion.py
+
+      - name: Build index.html
+        env:
+          SYNC_TOKEN: ${{ secrets.SYNC_TOKEN }}
+        run: python build.py
+
+      - name: Prepare site directory
+        run: |
+          mkdir -p _site
+          cp index.html _site/index.html
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    concurrency:
+      group: pages
+      cancel-in-progress: true
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

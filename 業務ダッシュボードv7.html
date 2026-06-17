@@ -265,6 +265,52 @@ tr.r-done{background:#f6fef8}
 .s-divider::after{content:"";flex:1;height:1px;background:var(--bd)}
 .si.sd{opacity:.75}
 
+/* 在宅報告 (WFH) */
+.wfh-head{margin-bottom:18px}
+.wfh-title{font-size:18px;font-weight:900;letter-spacing:-.01em;margin-bottom:6px}
+.wfh-note{font-size:12px;color:var(--mid);line-height:1.7;background:var(--ac-bg);border:1px solid var(--ac-bd);border-radius:10px;padding:10px 14px}
+.wfh-note b{color:var(--ac)}
+.wfh-addbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:12px 16px;margin-bottom:22px;box-shadow:var(--sh)}
+.wfh-addbar-lbl{font-size:13px;font-weight:700;color:var(--mid)}
+.wfh-in{font-family:inherit;font-size:13px;color:var(--tx);background:var(--sf);border:1px solid var(--bd);border-radius:7px;padding:7px 9px;outline:none;transition:border-color .15s}
+.wfh-in:focus{border-color:var(--ac)}
+.wfh-in-date{font-family:"JetBrains Mono",monospace}
+.wfh-btn{font-family:inherit;font-size:12px;font-weight:600;border-radius:7px;padding:7px 13px;cursor:pointer;border:1px solid var(--bd);background:var(--sf);color:var(--mid);transition:all .15s;white-space:nowrap}
+.wfh-btn:hover{background:var(--sf2)}
+.wfh-btn-pri{background:var(--ac);color:#fff;border-color:var(--ac)}
+.wfh-btn-pri:hover{background:#2f4bc4;color:#fff}
+.wfh-btn-pri:disabled{opacity:.55;cursor:default}
+.wfh-day{background:var(--sf);border:1px solid var(--bd);border-radius:14px;box-shadow:var(--sh);margin-bottom:18px;overflow:hidden}
+.wfh-day-hd{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 18px;border-bottom:1px solid var(--bd);background:var(--sf2)}
+.wfh-day-date{font-size:16px;font-weight:800;font-family:"JetBrains Mono",monospace}
+.wfh-badge{font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px}
+.wfh-badge-draft{background:var(--pg-bg);color:var(--pg);border:1px solid var(--pg-bd)}
+.wfh-badge-shared{background:var(--dn-bg);color:var(--dn);border:1px solid var(--dn-bd)}
+.wfh-badge-wait{background:var(--ac-bg);color:var(--ac);border:1px solid var(--ac-bd)}
+.wfh-day-actions{margin-left:auto;display:flex;gap:7px;flex-wrap:wrap}
+.wfh-day-actions .wfh-btn{padding:6px 11px}
+.wfh-btn-del{color:var(--td)}
+.wfh-btn-del:hover{background:var(--td-bg)}
+.wfh-blocks{padding:8px 18px 4px}
+.wfh-block{display:flex;align-items:center;gap:9px;padding:7px 0;border-bottom:1px dashed var(--bd)}
+.wfh-block:last-child{border-bottom:none}
+.wfh-block-time{flex-shrink:0;width:96px}
+.wfh-block-time .wfh-in{width:100%;font-family:"JetBrains Mono",monospace;text-align:center}
+.wfh-block-task{flex:1.2;min-width:140px}
+.wfh-block-task .wfh-in{width:100%}
+.wfh-block-memo{flex:1.6;min-width:140px}
+.wfh-block-memo .wfh-in{width:100%}
+.wfh-block-rm{flex-shrink:0;width:26px;height:26px;border-radius:6px;border:1px solid var(--bd);background:var(--sf);color:var(--mt);font-size:15px;line-height:1;cursor:pointer;transition:all .15s}
+.wfh-block-rm:hover{background:var(--td-bg);color:var(--td);border-color:var(--td-bd)}
+.wfh-block-break{display:flex;align-items:center;gap:9px;padding:7px 0;border-bottom:1px dashed var(--bd);color:var(--mt)}
+.wfh-break-lbl{font-size:12px;font-weight:700;background:var(--wt-bg);color:var(--wt);border:1px solid var(--wt-bd);border-radius:6px;padding:4px 10px}
+.wfh-block-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:12px 18px 16px}
+.wfh-block-foot-l{display:flex;gap:8px;flex-wrap:wrap}
+.wfh-end-wrap{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:var(--mid)}
+.wfh-end-wrap .wfh-in{width:96px;font-family:"JetBrains Mono",monospace;text-align:center}
+.wfh-empty{text-align:center;color:var(--mt);font-size:13px;padding:40px 20px;background:var(--sf);border:1px dashed var(--bd);border-radius:14px}
+.wfh-status{font-size:11px;color:var(--mt);margin-left:8px}
+
 </style>
 </head>
 <body>
@@ -293,6 +339,7 @@ tr.r-done{background:#f6fef8}
 <div class="tb">
   <div class="tb-in">
     <button class="tab on" data-t="active">⚡ アクティブ</button>
+    <button class="tab" data-t="wfh">🏠 在宅報告</button>
     <button class="tab" data-t="log">📅 月別ログ</button>
     <button class="tab" data-t="overview">📊 概要</button>
   </div>
@@ -321,6 +368,20 @@ tr.r-done{background:#f6fef8}
   <div class="sg" id="wg"></div>
   <div class="stitle">📋 今後着手予定</div>
   <div class="sg" id="tg"></div>
+</section>
+
+<section class="sec" id="sec-wfh">
+  <div class="wfh-head">
+    <div class="wfh-title">🏠 在宅報告</div>
+    <div class="wfh-note">在宅勤務の日に「何時から何の作業をしたか」を記録して上司に共有します。<b>開始時刻だけ</b>入れればOK（終了時刻は次の記録の開始時刻になります）。昼休みなどは「＋休憩」で区切ってください。</div>
+  </div>
+  <div class="wfh-addbar">
+    <label class="wfh-addbar-lbl">在宅日を追加</label>
+    <input type="date" id="wfh-new-date" class="wfh-in wfh-in-date">
+    <button class="wfh-btn wfh-btn-pri" onclick="wfhAddDay()">＋ この日を追加</button>
+  </div>
+  <div id="wfh-list"></div>
+  <datalist id="wfh-tasklist"></datalist>
 </section>
 
 <section class="sec" id="sec-overview">
@@ -464,6 +525,8 @@ function showM(name){
 
 // ── USER LINKS (shared via GitHub repo) ──
 var UL = USER_LINKS_PLACEHOLDER;
+// ── 在宅報告 committed data (shared via GitHub repo) ──
+var WFH = WFH_REPORTS_PLACEHOLDER;
 var _pendingAdds = {};   // {taskName: [{label,url,id}]} — 楽観的即時表示用
 var _pendingDels = {};   // {taskName: [id, ...]}       — 楽観的即時非表示用
 
@@ -940,6 +1003,260 @@ function doSync(){
     if(btn){btn.textContent='❌ ネットワークエラー';setTimeout(function(){btn.textContent=orig;btn.disabled=false;},4000);}
   });
 }
+
+// ══════════════════════════════════════════
+//  在宅報告（WFH）
+//  - 編集はブラウザ内(localStorage)に即時保存
+//  - 「上司に共有」でリポジトリに反映（約1分）
+// ══════════════════════════════════════════
+var WFH_LS="camel_wfh_local";
+var _wfhJustShared={};   // {date:true} 共有直後の反映待ち表示用
+var _WDAY=["日","月","火","水","木","金","土"];
+
+function wfhLoadLocal(){try{return JSON.parse(localStorage.getItem(WFH_LS)||"{}");}catch(e){return {};}}
+function wfhSaveLocal(o){try{localStorage.setItem(WFH_LS,JSON.stringify(o));}catch(e){}}
+function wfhCommittedMap(){var m={};(WFH||[]).forEach(function(d){if(d&&d.date)m[d.date]=d;});return m;}
+function wfhCanon(day){return JSON.stringify({blocks:(day&&day.blocks)||[],end:(day&&day.end)||""});}
+
+// 表示用の全在宅日（local優先、日付降順）
+function wfhAllDays(){
+  var com=wfhCommittedMap(), loc=wfhLoadLocal(), seen={}, dates=[];
+  Object.keys(com).forEach(function(d){if(!seen[d]){seen[d]=1;dates.push(d);}});
+  Object.keys(loc).forEach(function(d){if(!seen[d]){seen[d]=1;dates.push(d);}});
+  dates.sort(function(a,b){return b.localeCompare(a);});
+  return dates.map(function(date){
+    var l=loc[date], c=com[date];
+    var day=l||c;
+    var shared;
+    if(_wfhJustShared[date]) shared="wait";
+    else if(c&&(!l||wfhCanon(l)===wfhCanon(c))) shared="shared";
+    else shared="draft";
+    return {date:date,blocks:(day.blocks||[]).slice(),end:day.end||"",shared:shared};
+  });
+}
+
+function wfhFmtDate(d){
+  // "2026-06-17" -> "6/17(火)"
+  var p=d.split("-");if(p.length<3)return d;
+  var dt=new Date(parseInt(p[0],10),parseInt(p[1],10)-1,parseInt(p[2],10));
+  return parseInt(p[1],10)+"/"+parseInt(p[2],10)+"("+_WDAY[dt.getDay()]+")";
+}
+
+// blocks を開始時刻でソート（空の開始は末尾）
+function wfhSortBlocks(blocks){
+  return blocks.slice().sort(function(a,b){
+    var sa=a.start||"99:99", sb=b.start||"99:99";
+    return sa.localeCompare(sb);
+  });
+}
+
+// block i の終了時刻（= 次blockの開始 or 退勤時刻）
+function wfhEndOf(blocks,i,dayEnd){
+  for(var j=i+1;j<blocks.length;j++){if(blocks[j].start)return blocks[j].start;}
+  return dayEnd||"";
+}
+
+// local の指定日を取得（なければcommittedからコピー、なければ新規）
+function wfhGetEditable(date){
+  var loc=wfhLoadLocal();
+  if(loc[date])return loc;
+  var com=wfhCommittedMap()[date];
+  loc[date]=com?JSON.parse(JSON.stringify({blocks:com.blocks||[],end:com.end||""})):{blocks:[],end:""};
+  loc[date].blocks=loc[date].blocks||[];
+  return loc;
+}
+
+function wfhAddDay(){
+  var inp=document.getElementById("wfh-new-date");
+  var date=inp&&inp.value;
+  if(!date){alert("日付を選んでください");return;}
+  var loc=wfhLoadLocal();
+  if(loc[date]||wfhCommittedMap()[date]){
+    if(!confirm(wfhFmtDate(date)+" は既に登録されています。編集しますか？")){return;}
+  }
+  if(!loc[date]&&!wfhCommittedMap()[date]){
+    loc[date]={blocks:[{start:"09:00",task:"",memo:""}],end:""};
+    wfhSaveLocal(loc);
+  }
+  delete _wfhJustShared[date];
+  wfhRender();
+  var el=document.querySelector('.wfh-day[data-date="'+date+'"]');
+  if(el)el.scrollIntoView({behavior:"smooth",block:"center"});
+}
+
+function wfhAddBlock(date){
+  var loc=wfhGetEditable(date);
+  loc[date].blocks.push({start:"",task:"",memo:""});
+  wfhSaveLocal(loc);delete _wfhJustShared[date];wfhRender();
+}
+function wfhAddBreak(date){
+  var loc=wfhGetEditable(date);
+  loc[date].blocks.push({start:"",brk:true});
+  wfhSaveLocal(loc);delete _wfhJustShared[date];wfhRender();
+}
+function wfhRemoveBlock(date,i){
+  var loc=wfhGetEditable(date);
+  loc[date].blocks.splice(i,1);
+  wfhSaveLocal(loc);delete _wfhJustShared[date];wfhRender();
+}
+function wfhEditBlock(date,i,field,val){
+  var loc=wfhGetEditable(date);
+  if(!loc[date].blocks[i])return;
+  loc[date].blocks[i][field]=val;
+  // 開始時刻が変わったら並べ替え
+  if(field==="start")loc[date].blocks=wfhSortBlocks(loc[date].blocks);
+  wfhSaveLocal(loc);delete _wfhJustShared[date];
+  if(field==="start")wfhRender();else wfhUpdateBadge(date);
+}
+function wfhEditEnd(date,val){
+  var loc=wfhGetEditable(date);
+  loc[date].end=val;
+  wfhSaveLocal(loc);delete _wfhJustShared[date];wfhUpdateBadge(date);
+}
+
+function wfhDeleteDay(date){
+  if(!confirm(wfhFmtDate(date)+" の在宅報告を削除しますか？"))return;
+  var com=wfhCommittedMap()[date];
+  var loc=wfhLoadLocal();delete loc[date];wfhSaveLocal(loc);delete _wfhJustShared[date];
+  if(com){
+    // 共有済み → リポジトリからも削除
+    _callWfhWorkflow({action:"delete",date:date,payload:""},function(){},function(e){alert("削除リクエスト失敗: "+e);});
+  }
+  wfhRender();
+}
+
+function wfhShareDay(date){
+  var day=null, all=wfhAllDays();
+  for(var i=0;i<all.length;i++){if(all[i].date===date){day=all[i];break;}}
+  if(!day)return;
+  if(!day.blocks.length){alert("作業が1件もありません");return;}
+  var btn=document.querySelector('.wfh-day[data-date="'+date+'"] .wfh-share-btn');
+  if(btn){btn.disabled=true;btn.textContent="⏳ 共有中...";}
+  var payload=JSON.stringify({blocks:day.blocks,end:day.end});
+  _callWfhWorkflow({action:"save",date:date,payload:payload},function(){
+    _wfhJustShared[date]=true;
+    if(btn){btn.textContent="✅ 共有しました";}
+    setTimeout(function(){wfhRender();},1500);
+  },function(e){
+    if(btn){btn.disabled=false;btn.textContent="❌ "+e;setTimeout(function(){wfhRender();},3000);}
+  });
+}
+
+function wfhCopyDay(date){
+  var day=null, all=wfhAllDays();
+  for(var i=0;i<all.length;i++){if(all[i].date===date){day=all[i];break;}}
+  if(!day)return;
+  var txt=wfhDayText(day);
+  var btn=document.querySelector('.wfh-day[data-date="'+date+'"] .wfh-copy-btn');
+  function done(){if(btn){var o=btn.textContent;btn.textContent="✅ コピー済み";setTimeout(function(){btn.textContent=o;},1800);}}
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(done,function(){alert(txt);});}
+  else{alert(txt);}
+}
+
+// 報告テキスト生成
+function wfhDayText(day){
+  var blocks=wfhSortBlocks(day.blocks);
+  var lines=["【"+wfhFmtDate(day.date)+" 在宅勤務】"];
+  blocks.forEach(function(b,i){
+    var end=wfhEndOf(blocks,i,day.end);
+    var rng=(b.start||"??:??")+(end?"-"+end:"〜");
+    if(b.brk){lines.push(rng+" 休憩");return;}
+    var body=(b.task||"（作業未入力）");
+    if(b.memo)body+="｜"+b.memo;
+    lines.push(rng+" "+body);
+  });
+  return lines.join("\n");
+}
+
+function _callWfhWorkflow(inputs,onSuccess,onError){
+  fetch('https://api.github.com/repos/camelhara-byte/task-dashboard/actions/workflows/wfh_report.yml/dispatches',{
+    method:'POST',
+    headers:{
+      'Authorization':'Bearer SYNC_TOKEN_PLACEHOLDER',
+      'Accept':'application/vnd.github+json',
+      'X-GitHub-Api-Version':'2022-11-28'
+    },
+    body:JSON.stringify({ref:'main', inputs:inputs})
+  }).then(function(res){
+    if(res.status===204){onSuccess();}else{onError('HTTP '+res.status);}
+  }).catch(function(){onError('ネットワークエラー');});
+}
+
+// バッジだけ更新（メモ編集で全再描画しないため）
+function wfhUpdateBadge(date){
+  var all=wfhAllDays(), day=null;
+  for(var i=0;i<all.length;i++){if(all[i].date===date){day=all[i];break;}}
+  var el=document.querySelector('.wfh-day[data-date="'+date+'"] .wfh-badge');
+  if(!el||!day)return;
+  el.className="wfh-badge "+wfhBadgeClass(day.shared);
+  el.textContent=wfhBadgeText(day.shared);
+}
+function wfhBadgeClass(s){return s==="shared"?"wfh-badge-shared":(s==="wait"?"wfh-badge-wait":"wfh-badge-draft");}
+function wfhBadgeText(s){return s==="shared"?"✓ 共有済み":(s==="wait"?"⏳ 共有しました（反映待ち）":"● 下書き（未共有）");}
+
+function wfhBuildTaskList(){
+  var dl=document.getElementById("wfh-tasklist");
+  if(!dl)return;
+  var active=T.filter(function(t){return t.status==="進行中"||t.status==="待ち"||t.status==="未着手";})
+    .sort(function(a,b){return (b.updateDate||"").localeCompare(a.updateDate||"");});
+  dl.innerHTML=active.map(function(t){return '<option value="'+esc(t.name)+'">';}).join("");
+}
+
+function wfhRender(){
+  var list=document.getElementById("wfh-list");
+  if(!list)return;
+  var days=wfhAllDays();
+  if(!days.length){
+    list.innerHTML='<div class="wfh-empty">まだ在宅報告がありません。<br>上の「在宅日を追加」から日付を選んで記録を始めてください。</div>';
+    return;
+  }
+  list.innerHTML=days.map(function(day){
+    var blocks=wfhSortBlocks(day.blocks);
+    var rows=blocks.map(function(b,i){
+      var end=wfhEndOf(blocks,i,day.end);
+      if(b.brk){
+        return '<div class="wfh-block-break">'+
+          '<div class="wfh-block-time"><input type="time" class="wfh-in" value="'+esc(b.start||"")+'" onchange="wfhEditBlock(\''+day.date+'\','+i+',\'start\',this.value)"></div>'+
+          '<span class="wfh-break-lbl">☕ 休憩'+(end?'（〜'+esc(end)+'）':'')+'</span>'+
+          '<button class="wfh-block-rm" style="margin-left:auto" onclick="wfhRemoveBlock(\''+day.date+'\','+i+')" title="削除">×</button>'+
+          '</div>';
+      }
+      return '<div class="wfh-block">'+
+        '<div class="wfh-block-time"><input type="time" class="wfh-in" value="'+esc(b.start||"")+'" onchange="wfhEditBlock(\''+day.date+'\','+i+',\'start\',this.value)"></div>'+
+        '<div class="wfh-block-task"><input type="text" class="wfh-in" list="wfh-tasklist" placeholder="作業（タスク名）" value="'+esc(b.task||"")+'" onchange="wfhEditBlock(\''+day.date+'\','+i+',\'task\',this.value)"></div>'+
+        '<div class="wfh-block-memo"><input type="text" class="wfh-in" placeholder="メモ（何を進めたか）" value="'+esc(b.memo||"")+'" onchange="wfhEditBlock(\''+day.date+'\','+i+',\'memo\',this.value)"></div>'+
+        '<button class="wfh-block-rm" onclick="wfhRemoveBlock(\''+day.date+'\','+i+')" title="削除">×</button>'+
+        '</div>';
+    }).join("");
+    return '<div class="wfh-day" data-date="'+day.date+'">'+
+      '<div class="wfh-day-hd">'+
+        '<div class="wfh-day-date">📅 '+esc(wfhFmtDate(day.date))+'</div>'+
+        '<span class="wfh-badge '+wfhBadgeClass(day.shared)+'">'+wfhBadgeText(day.shared)+'</span>'+
+        '<div class="wfh-day-actions">'+
+          '<button class="wfh-btn wfh-btn-pri wfh-share-btn" onclick="wfhShareDay(\''+day.date+'\')">📤 上司に共有</button>'+
+          '<button class="wfh-btn wfh-copy-btn" onclick="wfhCopyDay(\''+day.date+'\')">📋 コピー</button>'+
+          '<button class="wfh-btn wfh-btn-del" onclick="wfhDeleteDay(\''+day.date+'\')">削除</button>'+
+        '</div>'+
+      '</div>'+
+      '<div class="wfh-blocks">'+(rows||'<div style="padding:14px 0;color:var(--mt);font-size:12px">作業を追加してください</div>')+'</div>'+
+      '<div class="wfh-block-foot">'+
+        '<div class="wfh-block-foot-l">'+
+          '<button class="wfh-btn" onclick="wfhAddBlock(\''+day.date+'\')">＋ 作業を追加</button>'+
+          '<button class="wfh-btn" onclick="wfhAddBreak(\''+day.date+'\')">＋ 休憩</button>'+
+        '</div>'+
+        '<div class="wfh-end-wrap">🔚 退勤 <input type="time" class="wfh-in" value="'+esc(day.end||"")+'" onchange="wfhEditEnd(\''+day.date+'\',this.value)"></div>'+
+      '</div>'+
+      '</div>';
+  }).join("");
+}
+
+(function(){
+  // 追加欄の初期日付を今日に
+  var inp=document.getElementById("wfh-new-date");
+  if(inp&&!inp.value)inp.value=new Date().toISOString().slice(0,10);
+  wfhBuildTaskList();
+  wfhRender();
+})();
 
 </script>
 </body>
