@@ -325,6 +325,25 @@ tr.r-done{background:#f6fef8}
 .wfh-ro-break{color:var(--mt)}
 .wfh-ro-break .wfh-ro-time{color:var(--mt);font-weight:600}
 .wfh-ro-break .wfh-ro-body{font-size:12.5px;color:var(--mt)}
+/* 編集中：タスク（メインタスク＋中に作業メモ複数） */
+.wfh-task-block{border:1px solid var(--bd);border-radius:10px;padding:10px 12px 8px;margin:0 0 10px;background:var(--sf2)}
+.wfh-task-hd{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.wfh-task-hd .wfh-in{flex:1;font-weight:700}
+.wfh-task-tag{font-size:10px;font-weight:700;color:var(--ac);background:var(--ac-bg);border:1px solid var(--ac-bd);border-radius:5px;padding:3px 8px;flex-shrink:0}
+.wfh-sub{display:flex;align-items:center;gap:9px;padding:4px 0 4px 6px}
+.wfh-sub-memo{flex:1;min-width:120px}
+.wfh-sub-memo .wfh-in{width:100%}
+.wfh-addsub{padding:2px 0 2px 6px}
+.wfh-addsub-btn{font-family:inherit;font-size:11px;font-weight:600;color:var(--ac);background:none;border:1px dashed var(--ac-bd);border-radius:6px;padding:4px 11px;cursor:pointer;transition:background .15s}
+.wfh-addsub-btn:hover{background:var(--ac-bg)}
+/* 確定済み：タスク見出し＋中に時間割 */
+.wfh-ro-task{padding:10px 0 6px;border-bottom:1px solid rgba(0,0,0,.05)}
+.wfh-ro-task:last-child{border-bottom:none}
+.wfh-ro-taskhd{font-size:14.5px;font-weight:800;color:var(--tx);margin-bottom:3px}
+.wfh-ro-taskhd::before{content:"■ ";color:var(--ac)}
+.wfh-ro-sub{display:flex;gap:12px;align-items:baseline;padding:3px 0 3px 16px;line-height:1.5}
+.wfh-ro-sub .wfh-ro-time{flex-shrink:0;width:118px;font-family:"JetBrains Mono",monospace;font-size:12.5px;font-weight:700;color:var(--mid)}
+.wfh-ro-sub-memo{font-size:13.5px;color:var(--tx)}
 
 </style>
 </head>
@@ -1026,6 +1045,10 @@ function doSync(){
 // ══════════════════════════════════════════
 var WFH_LS="camel_wfh_local";
 var _WDAY=["日","月","火","水","木","金","土"];
+// データ構造:
+//   day = { date, end, confirmed, blocks:[ Item ] }
+//   Item(タスク) = { task:"名前", subs:[ {start,memo}, ... ] }
+//   Item(休憩)   = { brk:true, start:"HH:MM" }
 
 function wfhLoadLocal(){try{return JSON.parse(localStorage.getItem(WFH_LS)||"{}");}catch(e){return {};}}
 function wfhSaveLocal(o){try{localStorage.setItem(WFH_LS,JSON.stringify(o));}catch(e){}}
@@ -1033,8 +1056,7 @@ function wfhCommittedMap(){var m={};(WFH||[]).forEach(function(d){if(d&&d.date)m
 function wfhCanon(day){return JSON.stringify({blocks:(day&&day.blocks)||[],end:(day&&day.end)||""});}
 
 // 表示用の全在宅日（local優先、日付降順）
-//   confirmed: 確定済み（読み取り専用ログ）か
-//   pending  : 確定したがリポジトリ反映待ちか
+//   confirmed: 確定済み（読み取り専用ログ）か / pending: 反映待ちか
 function wfhAllDays(){
   var com=wfhCommittedMap(), loc=wfhLoadLocal(), seen={}, dates=[];
   Object.keys(com).forEach(function(d){if(!seen[d]){seen[d]=1;dates.push(d);}});
@@ -1057,26 +1079,39 @@ function wfhFmtDate(d){
   return parseInt(p[1],10)+"/"+parseInt(p[2],10)+"("+_WDAY[dt.getDay()]+")";
 }
 
-// blocks を開始時刻でソート（空の開始は末尾）
-function wfhSortBlocks(blocks){
-  return blocks.slice().sort(function(a,b){
-    var sa=a.start||"99:99", sb=b.start||"99:99";
-    return sa.localeCompare(sb);
-  });
+// ブロックの開始時刻（タスクは最小sub開始、休憩はstart）
+function wfhBlockStart(b){
+  if(b.brk)return b.start||"99:99";
+  var min="99:99";(b.subs||[]).forEach(function(s){if(s.start&&s.start<min)min=s.start;});return min;
 }
-
-// block i の終了時刻（= 次blockの開始 or 退勤時刻）
-function wfhEndOf(blocks,i,dayEnd){
-  for(var j=i+1;j<blocks.length;j++){if(blocks[j].start)return blocks[j].start;}
+// 日内の全開始時刻を昇順で（終了時刻の算出用）
+function wfhAllStarts(day){
+  var arr=[];
+  (day.blocks||[]).forEach(function(b){
+    if(b.brk){if(b.start)arr.push(b.start);}
+    else (b.subs||[]).forEach(function(s){if(s.start)arr.push(s.start);});
+  });
+  arr.sort(function(a,b){return a.localeCompare(b);});
+  return arr;
+}
+// 開始 start の終了時刻（= それより後の最初の開始 or 退勤）
+function wfhEndForStart(starts,start,dayEnd){
+  if(!start)return "";
+  for(var i=0;i<starts.length;i++){if(starts[i]>start)return starts[i];}
   return dayEnd||"";
 }
-
+// 並べ替え：各タスク内のsubを開始順、ブロックを開始順
+function wfhNormalize(day){
+  (day.blocks||[]).forEach(function(b){
+    if(!b.brk&&b.subs)b.subs.sort(function(a,c){return (a.start||"99:99").localeCompare(c.start||"99:99");});
+  });
+  (day.blocks||[]).sort(function(a,b){return wfhBlockStart(a).localeCompare(wfhBlockStart(b));});
+}
 // その日の勤務時間（最初の開始〜退勤）
 function wfhWorkHours(day){
-  var blocks=wfhSortBlocks(day.blocks), first="";
-  for(var i=0;i<blocks.length;i++){if(blocks[i].start){first=blocks[i].start;break;}}
-  if(!first)return "";
-  return first+"〜"+(day.end||"");
+  var starts=wfhAllStarts(day);
+  if(!starts.length)return "";
+  return starts[0]+"〜"+(day.end||"");
 }
 
 // local の指定日を取得（なければcommittedからコピー、なければ新規）
@@ -1102,40 +1137,70 @@ function wfhAddDay(){
     if(ex)ex.scrollIntoView({behavior:"smooth",block:"center"});
     return;
   }
-  loc[date]={blocks:[{start:"09:00",task:"",memo:""}],end:"",confirmed:false};
+  loc[date]={blocks:[{task:"",subs:[{start:"09:00",memo:""}]}],end:"",confirmed:false};
   wfhSaveLocal(loc);
   wfhRender();
   var el=document.querySelector('.wfh-day[data-date="'+date+'"]');
   if(el)el.scrollIntoView({behavior:"smooth",block:"center"});
 }
 
-function wfhAddBlock(date){
+// ── 編集操作（すべてnormalize後にsave） ──
+function wfhAddTask(date){
   var loc=wfhGetEditable(date);
-  loc[date].blocks.push({start:"",task:"",memo:""});
-  wfhSaveLocal(loc);wfhRender();
+  loc[date].blocks.push({task:"",subs:[{start:"",memo:""}]});
+  wfhNormalize(loc[date]);wfhSaveLocal(loc);wfhRender();
 }
 function wfhAddBreak(date){
   var loc=wfhGetEditable(date);
-  loc[date].blocks.push({start:"",brk:true});
-  wfhSaveLocal(loc);wfhRender();
+  loc[date].blocks.push({brk:true,start:""});
+  wfhNormalize(loc[date]);wfhSaveLocal(loc);wfhRender();
 }
-function wfhRemoveBlock(date,i){
-  var loc=wfhGetEditable(date);
-  loc[date].blocks.splice(i,1);
-  wfhSaveLocal(loc);wfhRender();
+function wfhAddSub(date,bi){
+  var loc=wfhGetEditable(date), b=loc[date].blocks[bi];
+  if(!b||b.brk)return;
+  b.subs=b.subs||[];b.subs.push({start:"",memo:""});
+  wfhNormalize(loc[date]);wfhSaveLocal(loc);wfhRender();
 }
-function wfhEditBlock(date,i,field,val){
+function wfhRemoveSub(date,bi,si){
+  var loc=wfhGetEditable(date), b=loc[date].blocks[bi];
+  if(!b||b.brk)return;
+  b.subs.splice(si,1);
+  if(!b.subs.length)loc[date].blocks.splice(bi,1);   // 空タスクは削除
+  wfhNormalize(loc[date]);wfhSaveLocal(loc);wfhRender();
+}
+function wfhRemoveBlock(date,bi){
   var loc=wfhGetEditable(date);
-  if(!loc[date].blocks[i])return;
-  loc[date].blocks[i][field]=val;
-  // 開始時刻が変わったら並べ替え＋再描画（終了時刻表示の更新のため）
-  if(field==="start"){loc[date].blocks=wfhSortBlocks(loc[date].blocks);wfhSaveLocal(loc);wfhRender();}
-  else{wfhSaveLocal(loc);}
+  loc[date].blocks.splice(bi,1);
+  wfhNormalize(loc[date]);wfhSaveLocal(loc);wfhRender();
+}
+function wfhSetTask(date,bi,val){
+  var loc=wfhGetEditable(date);
+  if(!loc[date].blocks[bi])return;
+  loc[date].blocks[bi].task=val;
+  wfhSaveLocal(loc);   // 並びは変わらない
+}
+function wfhSetSubStart(date,bi,si,val){
+  var loc=wfhGetEditable(date), b=loc[date].blocks[bi];
+  if(!b||!b.subs||!b.subs[si])return;
+  b.subs[si].start=val;
+  wfhNormalize(loc[date]);wfhSaveLocal(loc);wfhRender();   // 終了時刻表示の更新
+}
+function wfhSetSubMemo(date,bi,si,val){
+  var loc=wfhGetEditable(date), b=loc[date].blocks[bi];
+  if(!b||!b.subs||!b.subs[si])return;
+  b.subs[si].memo=val;
+  wfhSaveLocal(loc);
+}
+function wfhSetBreakStart(date,bi,val){
+  var loc=wfhGetEditable(date), b=loc[date].blocks[bi];
+  if(!b||!b.brk)return;
+  b.start=val;
+  wfhNormalize(loc[date]);wfhSaveLocal(loc);wfhRender();
 }
 function wfhEditEnd(date,val){
   var loc=wfhGetEditable(date);
   loc[date].end=val;
-  wfhSaveLocal(loc);wfhRender();   // 勤務時間・最終行の終了表示を更新
+  wfhSaveLocal(loc);wfhRender();   // 勤務時間・終了表示を更新
 }
 
 // 確定済みログを編集状態に戻す
@@ -1155,7 +1220,6 @@ function wfhDeleteDay(date){
   var com=wfhCommittedMap()[date];
   var loc=wfhLoadLocal();delete loc[date];wfhSaveLocal(loc);
   if(com){
-    // 記録済み → リポジトリからも削除
     _callWfhWorkflow({action:"delete",date:date,payload:""},function(){},function(e){alert("削除リクエスト失敗: "+e);});
   }
   wfhRender();
@@ -1163,20 +1227,23 @@ function wfhDeleteDay(date){
 
 // 確定して記録（リポジトリに保存 → 読み取り専用ログ化）
 function wfhConfirmDay(date){
-  var loc=wfhGetEditable(date);
-  var blocks=(loc[date].blocks||[]).filter(function(b){return b.brk||b.start||b.task||b.memo;});
-  if(!blocks.length){alert("作業が1件もありません");return;}
-  var noTime=false;
-  blocks.forEach(function(b){if(!b.start)noTime=true;});
-  if(noTime&&!confirm("開始時刻が空の項目があります。このまま記録しますか？"))return;
-  loc[date].blocks=wfhSortBlocks(blocks);
-  loc[date].confirmed=true;
-  wfhSaveLocal(loc);
+  var loc=wfhGetEditable(date), day=loc[date];
+  var blocks=[], timed=0, missing=0;
+  (day.blocks||[]).forEach(function(b){
+    if(b.brk){ if(b.start){blocks.push({brk:true,start:b.start});timed++;} return; }
+    var subs=(b.subs||[]).filter(function(s){return s.start||s.memo;});
+    if(!subs.length)return;
+    subs.forEach(function(s){if(s.start)timed++;else missing++;});
+    blocks.push({task:b.task||"",subs:subs});
+  });
+  if(!blocks.length||!timed){alert("作業が1件もありません");return;}
+  if(missing&&!confirm("開始時刻が空のメモがあります。このまま記録しますか？"))return;
+  day.blocks=blocks;wfhNormalize(day);day.confirmed=true;wfhSaveLocal(loc);
   var btn=document.querySelector('.wfh-day[data-date="'+date+'"] .wfh-confirm-btn');
   if(btn){btn.disabled=true;btn.textContent="⏳ 記録中...";}
-  var payload=JSON.stringify({blocks:loc[date].blocks,end:loc[date].end||""});
+  var payload=JSON.stringify({blocks:day.blocks,end:day.end||""});
   _callWfhWorkflow({action:"save",date:date,payload:payload},function(){
-    wfhRender();   // 読み取り専用＋「反映待ち」表示
+    wfhRender();
   },function(e){
     var l=wfhLoadLocal();if(l[date])l[date].confirmed=false;wfhSaveLocal(l);
     alert("記録に失敗しました: "+e+"\nもう一度お試しください。");
@@ -1197,16 +1264,16 @@ function wfhCopyDay(date){
 
 // 報告テキスト生成
 function wfhDayText(day){
-  var blocks=wfhSortBlocks(day.blocks);
-  var wh=wfhWorkHours(day);
+  wfhNormalize(day);
+  var starts=wfhAllStarts(day), wh=wfhWorkHours(day);
   var lines=["【"+wfhFmtDate(day.date)+" 在宅勤務"+(wh?" "+wh:"")+"】"];
-  blocks.forEach(function(b,i){
-    var end=wfhEndOf(blocks,i,day.end);
-    var rng=(b.start||"??:??")+"〜"+(end||"");
-    if(b.brk){lines.push(rng+" 休憩");return;}
-    var body=(b.task||"（作業未入力）");
-    if(b.memo)body+="｜"+b.memo;
-    lines.push(rng+" "+body);
+  (day.blocks||[]).forEach(function(b){
+    if(b.brk){lines.push((b.start||"")+"〜"+wfhEndForStart(starts,b.start,day.end)+" 休憩");return;}
+    lines.push("■ "+(b.task||"（作業）"));
+    (b.subs||[]).forEach(function(s){
+      var rng=(s.start||"")+"〜"+wfhEndForStart(starts,s.start,day.end);
+      lines.push("　"+rng+" "+(s.memo||""));
+    });
   });
   return lines.join("\n");
 }
@@ -1241,24 +1308,35 @@ function wfhBuildTaskList(){
 
 // 編集中カード（入力フォーム）
 function wfhRenderEditing(day){
-  var blocks=wfhSortBlocks(day.blocks);
-  var rows=blocks.map(function(b,i){
-    var end=wfhEndOf(blocks,i,day.end);
-    var endTxt='<span class="wfh-endspan">〜'+esc(end||"")+'</span>';
+  wfhNormalize(day);
+  var starts=wfhAllStarts(day);
+  var body=(day.blocks||[]).map(function(b,bi){
     if(b.brk){
+      var bend=wfhEndForStart(starts,b.start,day.end);
       return '<div class="wfh-block-break">'+
-        '<div class="wfh-block-time"><input type="time" class="wfh-in" value="'+esc(b.start||"")+'" onchange="wfhEditBlock(\''+day.date+'\','+i+',\'start\',this.value)"></div>'+
-        endTxt+
+        '<div class="wfh-block-time"><input type="time" class="wfh-in" value="'+esc(b.start||"")+'" onchange="wfhSetBreakStart(\''+day.date+'\','+bi+',this.value)"></div>'+
+        '<span class="wfh-endspan">〜'+esc(bend||"")+'</span>'+
         '<span class="wfh-break-lbl">☕ 休憩</span>'+
-        '<button class="wfh-block-rm" style="margin-left:auto" onclick="wfhRemoveBlock(\''+day.date+'\','+i+')" title="削除">×</button>'+
+        '<button class="wfh-block-rm" style="margin-left:auto" onclick="wfhRemoveBlock(\''+day.date+'\','+bi+')" title="削除">×</button>'+
         '</div>';
     }
-    return '<div class="wfh-block">'+
-      '<div class="wfh-block-time"><input type="time" class="wfh-in" value="'+esc(b.start||"")+'" onchange="wfhEditBlock(\''+day.date+'\','+i+',\'start\',this.value)"></div>'+
-      endTxt+
-      '<div class="wfh-block-task"><input type="text" class="wfh-in" list="wfh-tasklist" placeholder="作業（タスク名）" value="'+esc(b.task||"")+'" onchange="wfhEditBlock(\''+day.date+'\','+i+',\'task\',this.value)"></div>'+
-      '<div class="wfh-block-memo"><input type="text" class="wfh-in" placeholder="メモ（何を進めたか）" value="'+esc(b.memo||"")+'" onchange="wfhEditBlock(\''+day.date+'\','+i+',\'memo\',this.value)"></div>'+
-      '<button class="wfh-block-rm" onclick="wfhRemoveBlock(\''+day.date+'\','+i+')" title="削除">×</button>'+
+    var subs=(b.subs||[]).map(function(s,si){
+      var send=wfhEndForStart(starts,s.start,day.end);
+      return '<div class="wfh-sub">'+
+        '<div class="wfh-block-time"><input type="time" class="wfh-in" value="'+esc(s.start||"")+'" onchange="wfhSetSubStart(\''+day.date+'\','+bi+','+si+',this.value)"></div>'+
+        '<span class="wfh-endspan">〜'+esc(send||"")+'</span>'+
+        '<div class="wfh-sub-memo"><input type="text" class="wfh-in" placeholder="作業内容（例：データ発掘）" value="'+esc(s.memo||"")+'" onchange="wfhSetSubMemo(\''+day.date+'\','+bi+','+si+',this.value)"></div>'+
+        '<button class="wfh-block-rm" onclick="wfhRemoveSub(\''+day.date+'\','+bi+','+si+')" title="このメモを削除">×</button>'+
+        '</div>';
+    }).join("");
+    return '<div class="wfh-task-block">'+
+      '<div class="wfh-task-hd">'+
+        '<span class="wfh-task-tag">タスク</span>'+
+        '<input type="text" class="wfh-in" list="wfh-tasklist" placeholder="メインタスク名" value="'+esc(b.task||"")+'" onchange="wfhSetTask(\''+day.date+'\','+bi+',this.value)">'+
+        '<button class="wfh-block-rm" onclick="wfhRemoveBlock(\''+day.date+'\','+bi+')" title="タスクごと削除">×</button>'+
+      '</div>'+
+      subs+
+      '<div class="wfh-addsub"><button class="wfh-addsub-btn" onclick="wfhAddSub(\''+day.date+'\','+bi+')">＋ 作業メモを追加</button></div>'+
       '</div>';
   }).join("");
   var wh=wfhWorkHours(day), bg=wfhBadge(day);
@@ -1272,10 +1350,10 @@ function wfhRenderEditing(day){
         '<button class="wfh-btn wfh-btn-del" onclick="wfhDeleteDay(\''+day.date+'\')">削除</button>'+
       '</div>'+
     '</div>'+
-    '<div class="wfh-blocks">'+(rows||'<div style="padding:14px 0;color:var(--mt);font-size:12px">作業を追加してください</div>')+'</div>'+
+    '<div class="wfh-blocks">'+(body||'<div style="padding:14px 0;color:var(--mt);font-size:12px">タスクを追加してください</div>')+'</div>'+
     '<div class="wfh-block-foot">'+
       '<div class="wfh-block-foot-l">'+
-        '<button class="wfh-btn" onclick="wfhAddBlock(\''+day.date+'\')">＋ 作業を追加</button>'+
+        '<button class="wfh-btn wfh-btn-pri" onclick="wfhAddTask(\''+day.date+'\')">＋ タスクを追加</button>'+
         '<button class="wfh-btn" onclick="wfhAddBreak(\''+day.date+'\')">＋ 休憩</button>'+
       '</div>'+
       '<div class="wfh-end-wrap">🔚 退勤 <input type="time" class="wfh-in" value="'+esc(day.end||"")+'" onchange="wfhEditEnd(\''+day.date+'\',this.value)"></div>'+
@@ -1285,16 +1363,19 @@ function wfhRenderEditing(day){
 
 // 確定済みカード（読み取り専用ログ）
 function wfhRenderConfirmed(day){
-  var blocks=wfhSortBlocks(day.blocks);
-  var rows=blocks.map(function(b,i){
-    var end=wfhEndOf(blocks,i,day.end);
-    var rng=esc((b.start||"")+"〜"+(end||""));
+  wfhNormalize(day);
+  var starts=wfhAllStarts(day);
+  var body=(day.blocks||[]).map(function(b){
     if(b.brk){
-      return '<div class="wfh-ro-row wfh-ro-break"><div class="wfh-ro-time">'+rng+'</div><div class="wfh-ro-body">休憩</div></div>';
+      var bend=wfhEndForStart(starts,b.start,day.end);
+      return '<div class="wfh-ro-row wfh-ro-break"><div class="wfh-ro-time">'+esc((b.start||"")+"〜"+(bend||""))+'</div><div class="wfh-ro-body">休憩</div></div>';
     }
-    var memo=b.memo?'<span class="wfh-ro-memo">'+esc(b.memo)+'</span>':'';
-    return '<div class="wfh-ro-row"><div class="wfh-ro-time">'+rng+'</div>'+
-      '<div class="wfh-ro-body"><span class="wfh-ro-taskname">'+esc(b.task||"（作業）")+'</span>'+memo+'</div></div>';
+    var subs=(b.subs||[]).map(function(s){
+      var send=wfhEndForStart(starts,s.start,day.end);
+      return '<div class="wfh-ro-sub"><div class="wfh-ro-time">'+esc((s.start||"")+"〜"+(send||""))+'</div>'+
+        '<div class="wfh-ro-sub-memo">'+esc(s.memo||"")+'</div></div>';
+    }).join("");
+    return '<div class="wfh-ro-task"><div class="wfh-ro-taskhd">'+esc(b.task||"（作業）")+'</div>'+subs+'</div>';
   }).join("");
   var wh=wfhWorkHours(day), bg=wfhBadge(day);
   return '<div class="wfh-day wfh-day-done" data-date="'+day.date+'">'+
@@ -1308,7 +1389,7 @@ function wfhRenderConfirmed(day){
         '<button class="wfh-btn wfh-btn-del" onclick="wfhDeleteDay(\''+day.date+'\')">削除</button>'+
       '</div>'+
     '</div>'+
-    '<div class="wfh-ro-list">'+(rows||'<div style="padding:8px 0;color:var(--mt)">記録なし</div>')+'</div>'+
+    '<div class="wfh-ro-list">'+(body||'<div style="padding:8px 0;color:var(--mt)">記録なし</div>')+'</div>'+
     '</div>';
 }
 

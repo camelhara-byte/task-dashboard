@@ -39,21 +39,32 @@ def save(data):
 
 
 def sanitize_blocks(blocks):
-    """想定外のキーを落として最小限のスキーマに整える。"""
+    """想定外のキーを落として最小限のスキーマに整える。
+
+    ブロック形式:
+      休憩   = {"brk": true, "start": "HH:MM"}
+      タスク = {"task": "名前", "subs": [{"start": "HH:MM", "memo": "..."}, ...]}
+    """
     clean = []
     if not isinstance(blocks, list):
         return clean
     for b in blocks:
         if not isinstance(b, dict):
             continue
-        start = str(b.get("start", "")).strip()
         if b.get("brk"):
-            clean.append({"start": start, "brk": True})
+            clean.append({"brk": True, "start": str(b.get("start", "")).strip()})
         else:
+            subs = []
+            for s in b.get("subs", []) or []:
+                if not isinstance(s, dict):
+                    continue
+                subs.append({
+                    "start": str(s.get("start", "")).strip(),
+                    "memo": str(s.get("memo", "")).strip(),
+                })
             clean.append({
-                "start": start,
                 "task": str(b.get("task", "")).strip(),
-                "memo": str(b.get("memo", "")).strip(),
+                "subs": subs,
             })
     return clean
 
