@@ -1309,22 +1309,17 @@ function wfhBuildTaskList(){
 // 編集中カード（入力フォーム）
 function wfhRenderEditing(day){
   wfhNormalize(day);
-  var starts=wfhAllStarts(day);
   var body=(day.blocks||[]).map(function(b,bi){
     if(b.brk){
-      var bend=wfhEndForStart(starts,b.start,day.end);
       return '<div class="wfh-block-break">'+
         '<div class="wfh-block-time"><input type="time" class="wfh-in" value="'+esc(b.start||"")+'" onchange="wfhSetBreakStart(\''+day.date+'\','+bi+',this.value)"></div>'+
-        '<span class="wfh-endspan">〜'+esc(bend||"")+'</span>'+
         '<span class="wfh-break-lbl">☕ 休憩</span>'+
         '<button class="wfh-block-rm" style="margin-left:auto" onclick="wfhRemoveBlock(\''+day.date+'\','+bi+')" title="削除">×</button>'+
         '</div>';
     }
     var subs=(b.subs||[]).map(function(s,si){
-      var send=wfhEndForStart(starts,s.start,day.end);
       return '<div class="wfh-sub">'+
         '<div class="wfh-block-time"><input type="time" class="wfh-in" value="'+esc(s.start||"")+'" onchange="wfhSetSubStart(\''+day.date+'\','+bi+','+si+',this.value)"></div>'+
-        '<span class="wfh-endspan">〜'+esc(send||"")+'</span>'+
         '<div class="wfh-sub-memo"><input type="text" class="wfh-in" placeholder="作業内容（例：データ発掘）" value="'+esc(s.memo||"")+'" onchange="wfhSetSubMemo(\''+day.date+'\','+bi+','+si+',this.value)"></div>'+
         '<button class="wfh-block-rm" onclick="wfhRemoveSub(\''+day.date+'\','+bi+','+si+')" title="このメモを削除">×</button>'+
         '</div>';
