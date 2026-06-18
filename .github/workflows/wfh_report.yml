@@ -55,7 +55,9 @@ jobs:
           git diff --staged --quiet || git commit -m "chore: update WFH report [${{ inputs.action }}] ${{ inputs.date }}"
           git push
 
-  # Step 2: Notion 取得 → ビルド → デプロイ（最新の1件だけ実行）
+  # Step 2: ビルド → デプロイ（最新の1件だけ実行）
+  # 在宅報告の保存ではNotion再取得は不要なため、コミット済みの tasks.json を
+  # そのまま使う（高速化）。タスクの最新化は日次デプロイ・同期ボタンが担う。
   build:
     needs: commit-wfh
     runs-on: ubuntu-latest
@@ -74,15 +76,7 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install dependencies
-        run: pip install -r requirements.txt
-
-      - name: Fetch Notion data
-        env:
-          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
-        run: python fetch_notion.py
-
-      - name: Build index.html
+      - name: Build index.html (Notion再取得なし・キャッシュ済みtasks.json使用)
         env:
           SYNC_TOKEN: ${{ secrets.SYNC_TOKEN }}
         run: python build.py

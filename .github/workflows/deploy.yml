@@ -13,7 +13,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write   # 取得した tasks.json をキャッシュとしてコミットするため
   pages: write
   id-token: write
 
@@ -45,6 +45,17 @@ jobs:
         env:
           SYNC_TOKEN: ${{ secrets.SYNC_TOKEN }}
         run: python build.py
+
+      # 取得したタスクデータをリポジトリにキャッシュ（在宅報告の高速ビルド用）。
+      # 失敗してもデプロイは止めない。
+      - name: Cache tasks.json back to repo
+        continue-on-error: true
+        run: |
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git add tasks.json
+          git diff --staged --quiet || git commit -m "chore: cache tasks.json [skip ci]"
+          git push origin HEAD:main || true
 
       - name: Prepare site directory
         run: |
