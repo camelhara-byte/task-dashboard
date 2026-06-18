@@ -1179,11 +1179,22 @@ function wfhSetTask(date,bi,val){
   loc[date].blocks[bi].task=val;
   wfhSaveLocal(loc);   // 並びは変わらない
 }
+// 勤務時間チップだけをその場で更新（入力中に全体を再描画しないため）
+function wfhRefreshWorkHours(date){
+  var loc=wfhLoadLocal(); var day=loc[date]; if(!day)return;
+  var card=document.querySelector('.wfh-day[data-date="'+date+'"]');
+  if(!card)return;
+  var chip=card.querySelector('.wfh-workhours');
+  if(chip)chip.textContent='🕐 '+wfhWorkHours(day);
+}
 function wfhSetSubStart(date,bi,si,val){
   var loc=wfhGetEditable(date), b=loc[date].blocks[bi];
   if(!b||!b.subs||!b.subs[si])return;
   b.subs[si].start=val;
-  wfhNormalize(loc[date]);wfhSaveLocal(loc);wfhRender();   // 終了時刻表示の更新
+  // 入力中は並べ替え・再描画をしない（フォーカスを奪わないため）。
+  // 並べ替えは確定時／次回描画時にまとめて行う。
+  wfhSaveLocal(loc);
+  wfhRefreshWorkHours(date);
 }
 function wfhSetSubMemo(date,bi,si,val){
   var loc=wfhGetEditable(date), b=loc[date].blocks[bi];
@@ -1195,12 +1206,14 @@ function wfhSetBreakStart(date,bi,val){
   var loc=wfhGetEditable(date), b=loc[date].blocks[bi];
   if(!b||!b.brk)return;
   b.start=val;
-  wfhNormalize(loc[date]);wfhSaveLocal(loc);wfhRender();
+  wfhSaveLocal(loc);
+  wfhRefreshWorkHours(date);
 }
 function wfhEditEnd(date,val){
   var loc=wfhGetEditable(date);
   loc[date].end=val;
-  wfhSaveLocal(loc);wfhRender();   // 勤務時間・終了表示を更新
+  wfhSaveLocal(loc);
+  wfhRefreshWorkHours(date);
 }
 
 // 確定済みログを編集状態に戻す
