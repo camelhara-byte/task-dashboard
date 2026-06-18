@@ -40,6 +40,11 @@ def main():
     html = html_path.read_text(encoding="utf-8")
     with tasks_path.open("r", encoding="utf-8") as f:
         tasks = json.load(f)
+    # 差分同期用の内部フィールドは公開HTML(var T)には出さない
+    for t in tasks:
+        if isinstance(t, dict):
+            t.pop("_id", None)
+            t.pop("_lastEdited", None)
     tasks_json = json.dumps(tasks, ensure_ascii=False)
 
     if PLACEHOLDER in html:

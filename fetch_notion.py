@@ -253,7 +253,12 @@ def extract_subtasks(api_key, page_id):
     return subtasks
 
 
-def transform_page(api_key, page):
+def transform_page(api_key, page, cached_subtasks=None):
+    """1ページをタスクdictに変換。
+
+    cached_subtasks が渡された場合（前回と最終更新日時が同じ）はサブタスクの
+    再取得（API呼び出し）を行わず、それを再利用する（差分同期の高速化）。
+    """
     properties = page.get("properties", {})
 
     name = get_title(properties)
@@ -282,7 +287,10 @@ def transform_page(api_key, page):
 
     url_field = get_url(find_property(properties, "URL", "Url", "リンク"))
 
-    subtasks = extract_subtasks(api_key, page["id"])
+    if cached_subtasks is not None:
+        subtasks = cached_subtasks
+    else:
+        subtasks = extract_subtasks(api_key, page["id"])
 
     size = normalize_size(raw_size, len(subtasks))
     status = normalize_status(raw_status)
@@ -311,7 +319,30 @@ def transform_page(api_key, page):
         "subtasks": subtasks,
         "links": links,
         "url": url_field or "",
+        # 差分同期用の内部フィールド（build.pyがvar Tからは除外して公開しない）
+        "_id": page.get("id", ""),
+        "_lastEdited": page.get("last_edited_time", ""),
     }
+
+
+def load_subtask_cache(path="tasks.json"):
+    """前回の tasks.json から {ページID: {lastEdited, subtasks}} のキャッシュを作る。"""
+    cache = {}
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            prev = json.load(f)
+    except (OSError, json.JSONDecodeError):
+        return cache
+    if not isinstance(prev, list):
+        return cache
+    for t in prev:
+        pid = t.get("_id")
+        if pid and "_lastEdited" in t:
+            cache[pid] = {
+                "lastEdited": t.get("_lastEdited", ""),
+                "subtasks": t.get("subtasks", []),
+            }
+    return cache
 
 
 def main():
@@ -325,16 +356,31 @@ def main():
     pages = query_database_all(api_key)
     print(f"  fetched {len(pages)} pages", file=sys.stderr)
 
+    # 差分同期: 前回のキャッシュを読み、最終更新日時が同じタスクは
+    # サブタスクの再取得をスキップする。
+    cache = load_subtask_cache()
+    reused = 0
+
     tasks = []
     for i, page in enumerate(pages, 1):
-        print(f"  [{i}/{len(pages)}] processing {page['id']}",
+        pid = page.get("id", "")
+        last_edited = page.get("last_edited_time", "")
+        cached = cache.get(pid)
+        if cached is not None and cached.get("lastEdited") == last_edited:
+            cached_subtasks = cached.get("subtasks", [])
+            reused += 1
+        else:
+            cached_subtasks = None
+        print(f"  [{i}/{len(pages)}] {'cache' if cached_subtasks is not None else 'fetch'} {pid}",
               file=sys.stderr)
-        tasks.append(transform_page(api_key, page))
+        tasks.append(transform_page(api_key, page, cached_subtasks))
 
     with open("tasks.json", "w", encoding="utf-8") as f:
         json.dump(tasks, f, ensure_ascii=False, indent=2)
 
-    print(f"Wrote tasks.json ({len(tasks)} tasks)", file=sys.stderr)
+    print(f"Wrote tasks.json ({len(tasks)} tasks, "
+          f"{reused} reused from cache, {len(tasks) - reused} fetched)",
+          file=sys.stderr)
 
 
 if __name__ == "__main__":
