@@ -1,5 +1,22 @@
 [
   {
+    "name": "年間スケジュール完成",
+    "category": "その他",
+    "status": "進行中",
+    "size": "小",
+    "priority": null,
+    "updateDate": "2026-06-24",
+    "dueDate": null,
+    "month": 6,
+    "subtasks": [
+      "ミーティング日程入力 →未"
+    ],
+    "links": [],
+    "url": "",
+    "_id": "389b5de8-e036-8060-9237-c0dba3cab93b",
+    "_lastEdited": "2026-06-24T03:03:00.000Z"
+  },
+  {
     "name": "無呼吸症候群パンフレット",
     "category": "その他",
     "status": "進行中",
@@ -232,10 +249,10 @@
   {
     "name": "東京都物価高騰助成金申請",
     "category": "助成金・申請",
-    "status": "進行中",
+    "status": "待ち",
     "size": "小",
     "priority": null,
-    "updateDate": "2026-06-12",
+    "updateDate": "2026-06-24",
     "dueDate": null,
     "month": 6,
     "subtasks": [
@@ -245,7 +262,7 @@
     "links": [],
     "url": "",
     "_id": "37bb5de8-e036-808d-8698-efd388d97c20",
-    "_lastEdited": "2026-06-12T07:07:00.000Z"
+    "_lastEdited": "2026-06-24T01:38:00.000Z"
   },
   {
     "name": "クオキャリア",
@@ -308,18 +325,21 @@
     "name": "助成金対象診断ヒアリングシート",
     "category": "助成金・申請",
     "status": "進行中",
-    "size": "小",
+    "size": "中",
     "priority": null,
-    "updateDate": "2026-06-16",
+    "updateDate": "2026-06-24",
     "dueDate": null,
     "month": 6,
     "subtasks": [
-      "上記フォームからの申し込み →未"
+      "上記フォームからの申し込み →未",
+      "7月6日　19：00〜　オンライン参加 →未",
+      "議事録作成 →未",
+      "共有 →未"
     ],
     "links": [],
     "url": "",
     "_id": "37bb5de8-e036-80fb-a9d9-c8917499202b",
-    "_lastEdited": "2026-06-16T08:44:00.000Z"
+    "_lastEdited": "2026-06-24T01:18:00.000Z"
   },
   {
     "name": "手術同意書データ統一",
@@ -1405,7 +1425,7 @@
   {
     "name": "口腔スキャナ助成金申請",
     "category": "助成金・申請",
-    "status": "進行中",
+    "status": "待ち",
     "size": "大",
     "priority": "高",
     "updateDate": "2026-06-24",
@@ -1425,7 +1445,7 @@
     "links": [],
     "url": "",
     "_id": "35ab5de8-e036-8011-8d35-c4a13a53a63f",
-    "_lastEdited": "2026-06-24T00:52:00.000Z"
+    "_lastEdited": "2026-06-24T03:04:00.000Z"
   },
   {
     "name": "Be Real炎上対応",
@@ -1512,10 +1532,10 @@
   {
     "name": "千葉県医療物価高騰助成金申請",
     "category": "助成金・申請",
-    "status": "進行中",
+    "status": "待ち",
     "size": "中",
     "priority": "高",
-    "updateDate": "2026-06-12",
+    "updateDate": "2026-06-24",
     "dueDate": null,
     "month": 6,
     "subtasks": [
@@ -1525,7 +1545,7 @@
     "links": [],
     "url": "",
     "_id": "34fb5de8-e036-8029-a794-ed43dd5050a4",
-    "_lastEdited": "2026-06-12T07:07:00.000Z"
+    "_lastEdited": "2026-06-24T01:38:00.000Z"
   },
   {
     "name": "GoogleマップGW休日入力",
@@ -2859,12 +2879,12 @@
   {
     "name": "企業型DC申請",
     "category": "助成金・申請",
-    "status": "待ち",
+    "status": "進行中",
     "size": "大",
     "priority": "中",
-    "updateDate": "2026-05-11",
+    "updateDate": "2026-06-24",
     "dueDate": null,
-    "month": 5,
+    "month": 6,
     "subtasks": [
       "ChatWorks登録・グループ参加 ✓",
       "申し込みフォーム入力（医療法人社団スマイルズ/株式会社キャメル） ✓",
@@ -2892,12 +2912,14 @@
       "パート・アルバイト用規則提出用に校正・提出 ✓",
       "申請書類発送済み（オアシス）　確認後要返送5/7まで ✓",
       "従業員説明日設定（7/10 14:30-15:30） ✓",
+      "従業員説明会について連絡 →未",
+      "スタッフ向けアンケート作成 →未",
       "希望者取りまとめ →未"
     ],
     "links": [],
     "url": "",
     "_id": "31eb5de8-e036-800a-a2f0-f73f8391cdc3",
-    "_lastEdited": "2026-05-11T08:43:00.000Z"
+    "_lastEdited": "2026-06-24T01:31:00.000Z"
   },
   {
     "name": "Note book LMマニュアル連携",
