@@ -2,10 +2,10 @@
   {
     "name": "年間スケジュール完成",
     "category": "その他",
-    "status": "進行中",
+    "status": "完了",
     "size": "小",
     "priority": null,
-    "updateDate": "2026-06-24",
+    "updateDate": "2026-06-25",
     "dueDate": null,
     "month": 6,
     "subtasks": [
@@ -16,7 +16,7 @@
     "links": [],
     "url": "",
     "_id": "389b5de8-e036-8060-9237-c0dba3cab93b",
-    "_lastEdited": "2026-06-24T07:46:00.000Z"
+    "_lastEdited": "2026-06-25T02:43:00.000Z"
   },
   {
     "name": "無呼吸症候群パンフレット",
@@ -2383,17 +2383,17 @@
   {
     "name": "鎌ヶ谷課題抽出",
     "category": "その他",
-    "status": "待ち",
+    "status": "完了",
     "size": "中",
     "priority": null,
-    "updateDate": "2026-05-11",
+    "updateDate": "2026-06-25",
     "dueDate": null,
-    "month": 5,
+    "month": 6,
     "subtasks": [
       "HPのURL変更・リニューアルHPの移管 ✓",
       "駐車場案内動画の作成・配置 ✓",
-      "グループ間連携の準備（データ抽出） →未",
-      "SNSターゲットの絞り込み →未"
+      "グループ間連携の準備（データ抽出） ✓",
+      "SNSターゲットの絞り込み ✓"
     ],
     "links": [
       {
@@ -2403,7 +2403,7 @@
     ],
     "url": "https://docs.google.com/document/d/13naIBF2F_qdSjWlkFsiHsCgXCpUWvmXee7dXug52Jr4/edit?usp=sharing",
     "_id": "333b5de8-e036-8076-bdae-f538013c7bea",
-    "_lastEdited": "2026-05-11T02:44:00.000Z"
+    "_lastEdited": "2026-06-25T02:40:00.000Z"
   },
   {
     "name": "キャメル勤怠管理システム構築",
