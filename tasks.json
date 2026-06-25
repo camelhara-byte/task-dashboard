@@ -120,7 +120,7 @@
     "status": "進行中",
     "size": "中",
     "priority": "高",
-    "updateDate": "2026-06-24",
+    "updateDate": "2026-06-25",
     "dueDate": null,
     "month": 6,
     "subtasks": [
@@ -150,7 +150,7 @@
     "links": [],
     "url": "",
     "_id": "381b5de8-e036-800d-91bb-c780db914a5e",
-    "_lastEdited": "2026-06-24T00:52:00.000Z"
+    "_lastEdited": "2026-06-25T05:32:00.000Z"
   },
   {
     "name": "マニュアルテスト成績管理",
