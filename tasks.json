@@ -1,5 +1,64 @@
 [
   {
+    "name": "口腔機能低下症診断基準表制作",
+    "category": "その他",
+    "status": "進行中",
+    "size": "小",
+    "priority": null,
+    "updateDate": "2026-06-26",
+    "dueDate": null,
+    "month": 6,
+    "subtasks": [
+      "表をデータに変換 ✓",
+      "印刷 ✓",
+      "内容間違えないか確認 ✓",
+      "縮小印刷 →未",
+      "ラミネート →未",
+      "設置 →未"
+    ],
+    "links": [],
+    "url": "",
+    "_id": "38bb5de8-e036-8019-a495-d84c50a37fc7",
+    "_lastEdited": "2026-06-26T02:21:00.000Z"
+  },
+  {
+    "name": "守秘義務動画",
+    "category": "マーケティング",
+    "status": "完了",
+    "size": "小",
+    "priority": null,
+    "updateDate": "2026-06-26",
+    "dueDate": null,
+    "month": 6,
+    "subtasks": [
+      "動画youtubeにアップ ✓",
+      "説明文 ✓",
+      "ポータルに追加 ✓",
+      "共有 ✓"
+    ],
+    "links": [],
+    "url": "",
+    "_id": "38bb5de8-e036-80cf-9da3-e433ff5dc533",
+    "_lastEdited": "2026-06-26T02:19:00.000Z"
+  },
+  {
+    "name": "LWメンバー管理",
+    "category": "その他",
+    "status": "進行中",
+    "size": "小",
+    "priority": null,
+    "updateDate": "2026-06-26",
+    "dueDate": null,
+    "month": 6,
+    "subtasks": [
+      "技工所グループに大竹さん追加 →未"
+    ],
+    "links": [],
+    "url": "",
+    "_id": "38bb5de8-e036-806b-ac90-cf627f6d9e3e",
+    "_lastEdited": "2026-06-26T01:27:00.000Z"
+  },
+  {
     "name": "年間スケジュール完成",
     "category": "その他",
     "status": "完了",
@@ -24,7 +83,7 @@
     "status": "待ち",
     "size": "中",
     "priority": null,
-    "updateDate": "2026-06-25",
+    "updateDate": "2026-06-26",
     "dueDate": null,
     "month": 6,
     "subtasks": [
@@ -40,12 +99,19 @@
       "入稿 ✓",
       "印刷受取 ✓",
       "支払い ✓",
-      "発送待ち（6/25） →未"
+      "発送待ち（6/25） ✓",
+      "受け取り、確認 ✓",
+      "錦糸町スタンプ押し ✓",
+      "設置 ✓",
+      "アナウンス ✓",
+      "錦糸町設置 ✓",
+      "オアシス設置 →未",
+      "鎌ヶ谷設置 →未"
     ],
     "links": [],
     "url": "",
     "_id": "388b5de8-e036-80c7-a11b-c2193ce842f7",
-    "_lastEdited": "2026-06-25T02:35:00.000Z"
+    "_lastEdited": "2026-06-26T02:18:00.000Z"
   },
   {
     "name": "LINEスタッフ表更新",
@@ -120,7 +186,7 @@
     "status": "進行中",
     "size": "中",
     "priority": "高",
-    "updateDate": "2026-06-25",
+    "updateDate": "2026-06-26",
     "dueDate": null,
     "month": 6,
     "subtasks": [
@@ -151,7 +217,7 @@
     "links": [],
     "url": "",
     "_id": "381b5de8-e036-800d-91bb-c780db914a5e",
-    "_lastEdited": "2026-06-25T05:58:00.000Z"
+    "_lastEdited": "2026-06-26T02:19:00.000Z"
   },
   {
     "name": "マニュアルテスト成績管理",
