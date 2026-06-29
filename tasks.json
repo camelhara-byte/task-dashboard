@@ -1,22 +1,48 @@
 [
   {
+    "name": "名札発注",
+    "category": "その他",
+    "status": "進行中",
+    "size": "中",
+    "priority": null,
+    "updateDate": "2026-06-29",
+    "dueDate": null,
+    "month": 6,
+    "subtasks": [
+      "手順、納期、流れ確認 ✓",
+      "各院の名称表記確認 ✓",
+      "発注予定者確認 →未",
+      "発注 →未",
+      "レイアウト確認 →未",
+      "振込依頼 →未",
+      "納品確認 →未",
+      "各人へお届け →未"
+    ],
+    "links": [],
+    "url": "",
+    "_id": "38eb5de8-e036-806e-963f-d02b1114cc13",
+    "_lastEdited": "2026-06-29T01:47:00.000Z"
+  },
+  {
     "name": "ポータル修正",
     "category": "その他",
     "status": "進行中",
     "size": "中",
     "priority": null,
-    "updateDate": "2026-06-26",
+    "updateDate": "2026-06-29",
     "dueDate": null,
     "month": 6,
     "subtasks": [
       "キャッシュフロー実装 ✓",
       "固定費入力 ✓",
-      "支出保留 →未"
+      "支出保留 ✓",
+      "雑費等収入が連携されるよう修正 ✓",
+      "確認中 →未"
     ],
     "links": [],
     "url": "",
     "_id": "38bb5de8-e036-8003-a8df-cedadacbfc35",
-    "_lastEdited": "2026-06-26T07:44:00.000Z"
+    "_lastEdited": "2026-06-29T01:00:00.000Z"
   },
   {
     "name": "省力化補助金",
@@ -24,20 +50,21 @@
     "status": "進行中",
     "size": "大",
     "priority": null,
-    "updateDate": "2026-06-26",
+    "updateDate": "2026-06-29",
     "dueDate": null,
     "month": 6,
     "subtasks": [
       "栃木さんに詳細確認 ✓",
       "zoomでの説明希望 ✓",
       "日程調整 ✓",
+      "栃木さんとの打ち合わせ日程決定 ✓",
       "栃木さんと打ち合わせ、詳細案内 →未",
       "検討 →未"
     ],
     "links": [],
     "url": "",
     "_id": "38bb5de8-e036-80b1-9cc5-cf3779ccf099",
-    "_lastEdited": "2026-06-26T07:37:00.000Z"
+    "_lastEdited": "2026-06-29T01:00:00.000Z"
   },
   {
     "name": "口腔機能低下症診断基準表制作",
@@ -45,7 +72,7 @@
     "status": "進行中",
     "size": "小",
     "priority": null,
-    "updateDate": "2026-06-26",
+    "updateDate": "2026-06-29",
     "dueDate": null,
     "month": 6,
     "subtasks": [
@@ -57,12 +84,12 @@
       "舌圧計マニュアルがケースサイズ外のためデータ作成 ✓",
       "縮小印刷 ✓",
       "ラミネート ✓",
-      "設置 →未"
+      "設置 ✓"
     ],
     "links": [],
     "url": "",
     "_id": "38bb5de8-e036-8019-a495-d84c50a37fc7",
-    "_lastEdited": "2026-06-26T10:14:00.000Z"
+    "_lastEdited": "2026-06-29T00:55:00.000Z"
   },
   {
     "name": "守秘義務動画",
@@ -87,19 +114,19 @@
   {
     "name": "LWメンバー管理",
     "category": "その他",
-    "status": "進行中",
+    "status": "完了",
     "size": "小",
     "priority": null,
-    "updateDate": "2026-06-26",
+    "updateDate": "2026-06-29",
     "dueDate": null,
     "month": 6,
     "subtasks": [
-      "技工所グループに大竹さん追加 →未"
+      "技工所グループに大竹さん追加 ✓"
     ],
     "links": [],
     "url": "",
     "_id": "38bb5de8-e036-806b-ac90-cf627f6d9e3e",
-    "_lastEdited": "2026-06-26T01:27:00.000Z"
+    "_lastEdited": "2026-06-29T01:00:00.000Z"
   },
   {
     "name": "年間スケジュール完成",
@@ -123,10 +150,10 @@
   {
     "name": "無呼吸症候群パンフレット",
     "category": "その他",
-    "status": "待ち",
+    "status": "完了",
     "size": "中",
     "priority": null,
-    "updateDate": "2026-06-26",
+    "updateDate": "2026-06-29",
     "dueDate": null,
     "month": 6,
     "subtasks": [
@@ -148,13 +175,13 @@
       "設置 ✓",
       "アナウンス ✓",
       "錦糸町設置 ✓",
-      "オアシス設置 →未",
-      "鎌ヶ谷設置 →未"
+      "オアシス設置 ✓",
+      "鎌ヶ谷設置 ✓"
     ],
     "links": [],
     "url": "",
     "_id": "388b5de8-e036-80c7-a11b-c2193ce842f7",
-    "_lastEdited": "2026-06-26T02:18:00.000Z"
+    "_lastEdited": "2026-06-29T01:52:00.000Z"
   },
   {
     "name": "LINEスタッフ表更新",
@@ -226,10 +253,10 @@
   {
     "name": "マニュアルテスト実施後関連",
     "category": "マニュアル・教育",
-    "status": "進行中",
-    "size": "中",
+    "status": "完了",
+    "size": "大",
     "priority": "高",
-    "updateDate": "2026-06-26",
+    "updateDate": "2026-06-29",
     "dueDate": null,
     "month": 6,
     "subtasks": [
@@ -255,12 +282,12 @@
       "立花さん：完了報告・結果参照・差分抽出・報告共有 ✓",
       "関先生：リマインド：入力・レポート作成・送信・共有 ✓",
       "呉さん：完了報告・結果参照・差分抽出・報告共有 ✓",
-      "追加受験点数入力 →未"
+      "追加受験点数入力 ✓"
     ],
     "links": [],
     "url": "",
     "_id": "381b5de8-e036-800d-91bb-c780db914a5e",
-    "_lastEdited": "2026-06-26T02:19:00.000Z"
+    "_lastEdited": "2026-06-29T01:02:00.000Z"
   },
   {
     "name": "マニュアルテスト成績管理",
@@ -364,19 +391,21 @@
     "name": "東京都物価高騰助成金申請",
     "category": "助成金・申請",
     "status": "待ち",
-    "size": "小",
+    "size": "中",
     "priority": null,
-    "updateDate": "2026-06-24",
+    "updateDate": "2026-06-29",
     "dueDate": null,
     "month": 6,
     "subtasks": [
-      "概要調査 →未",
-      "書類集め →未"
+      "概要調査 ✓",
+      "書類集め ✓",
+      "誓約書入力 ✓",
+      "受領確認 →未"
     ],
     "links": [],
     "url": "",
     "_id": "37bb5de8-e036-808d-8698-efd388d97c20",
-    "_lastEdited": "2026-06-24T01:38:00.000Z"
+    "_lastEdited": "2026-06-29T01:56:00.000Z"
   },
   {
     "name": "クオキャリア",
@@ -763,20 +792,20 @@
   {
     "name": "フルリール営業対応",
     "category": "その他",
-    "status": "待ち",
+    "status": "完了",
     "size": "小",
     "priority": null,
-    "updateDate": "2026-06-05",
+    "updateDate": "2026-06-29",
     "dueDate": null,
     "month": 6,
     "subtasks": [
       "平野さんへ日程調整 ✓",
-      "zoomMTG対応 →未"
+      "zoomMTG対応 ✓"
     ],
     "links": [],
     "url": "",
     "_id": "373b5de8-e036-8066-87f8-de9d3bf60317",
-    "_lastEdited": "2026-06-05T06:14:00.000Z"
+    "_lastEdited": "2026-06-29T01:57:00.000Z"
   },
   {
     "name": "オアシス矯正説明動画アプリ化",
@@ -1359,7 +1388,7 @@
     "status": "待ち",
     "size": "中",
     "priority": "高",
-    "updateDate": "2026-06-25",
+    "updateDate": "2026-06-29",
     "dueDate": null,
     "month": 6,
     "subtasks": [
@@ -1375,7 +1404,7 @@
     "links": [],
     "url": "",
     "_id": "35fb5de8-e036-8014-a444-c6fe8e506dd9",
-    "_lastEdited": "2026-06-25T02:39:00.000Z"
+    "_lastEdited": "2026-06-29T01:56:00.000Z"
   },
   {
     "name": "適性検査分析・共有",
@@ -1548,7 +1577,7 @@
     "status": "待ち",
     "size": "大",
     "priority": "高",
-    "updateDate": "2026-06-26",
+    "updateDate": "2026-06-29",
     "dueDate": null,
     "month": 6,
     "subtasks": [
@@ -1565,7 +1594,7 @@
     "links": [],
     "url": "",
     "_id": "35ab5de8-e036-8011-8d35-c4a13a53a63f",
-    "_lastEdited": "2026-06-26T06:22:00.000Z"
+    "_lastEdited": "2026-06-29T01:56:00.000Z"
   },
   {
     "name": "Be Real炎上対応",
@@ -1655,17 +1684,18 @@
     "status": "待ち",
     "size": "中",
     "priority": "高",
-    "updateDate": "2026-06-24",
+    "updateDate": "2026-06-29",
     "dueDate": null,
     "month": 6,
     "subtasks": [
       "申請必要書類確認 ✓",
-      "誓約書入力 ✓"
+      "誓約書入力 ✓",
+      "受領確認 →未"
     ],
     "links": [],
     "url": "",
     "_id": "34fb5de8-e036-8029-a794-ed43dd5050a4",
-    "_lastEdited": "2026-06-24T01:38:00.000Z"
+    "_lastEdited": "2026-06-29T01:56:00.000Z"
   },
   {
     "name": "GoogleマップGW休日入力",
@@ -2342,7 +2372,7 @@
     "status": "進行中",
     "size": "中",
     "priority": "低",
-    "updateDate": "2026-06-25",
+    "updateDate": "2026-06-29",
     "dueDate": null,
     "month": 6,
     "subtasks": [
@@ -2354,7 +2384,7 @@
       "大幅変更・指示出し ✓",
       "校正 ✓",
       "裏面修正 ✓",
-      "確認 →未",
+      "東先生確認中 →未",
       "印刷・ラミネート →未",
       "設置 →未",
       "運用・アナウンス →未"
@@ -2362,7 +2392,7 @@
     "links": [],
     "url": "",
     "_id": "337b5de8-e036-80c4-8291-f66ae990d521",
-    "_lastEdited": "2026-06-25T05:30:00.000Z"
+    "_lastEdited": "2026-06-29T01:02:00.000Z"
   },
   {
     "name": "各院googleアカウント連携",
