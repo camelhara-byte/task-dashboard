@@ -3,16 +3,20 @@
     "name": "千葉県物価高騰助成金",
     "category": "助成金・申請",
     "status": "進行中",
-    "size": "小",
+    "size": "中",
     "priority": null,
     "updateDate": "2026-07-01",
     "dueDate": null,
     "month": 7,
-    "subtasks": [],
+    "subtasks": [
+      "書類準備 →未",
+      "フォーム入力 →未",
+      "提出 →未"
+    ],
     "links": [],
     "url": "",
     "_id": "390b5de8-e036-8098-8a21-f0d757f1f78e",
-    "_lastEdited": "2026-07-01T05:41:00.000Z"
+    "_lastEdited": "2026-07-01T05:43:00.000Z"
   },
   {
     "name": "【6月】交通費精算",
