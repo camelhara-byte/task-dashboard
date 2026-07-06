@@ -1,5 +1,66 @@
 [
   {
+    "name": "破損報告フォームポータル追加",
+    "category": "その他",
+    "status": "進行中",
+    "size": "中",
+    "priority": null,
+    "updateDate": "2026-07-06",
+    "dueDate": null,
+    "month": 7,
+    "subtasks": [
+      "Googleフォームの内容吸い上げ →未",
+      "運用設計考案 →未",
+      "ポータルに項目追加 →未",
+      "フォーム開発 →未",
+      "リリース →未",
+      "共有 →未"
+    ],
+    "links": [],
+    "url": "",
+    "_id": "395b5de8-e036-8023-a437-c3773bfbc95e",
+    "_lastEdited": "2026-07-06T03:08:00.000Z"
+  },
+  {
+    "name": "助成金関係書類追加",
+    "category": "助成金・申請",
+    "status": "進行中",
+    "size": "小",
+    "priority": null,
+    "updateDate": "2026-07-06",
+    "dueDate": null,
+    "month": 7,
+    "subtasks": [
+      "まとめてLWフォルダへ追加 →未",
+      "共有 →未"
+    ],
+    "links": [],
+    "url": "",
+    "_id": "395b5de8-e036-80eb-8e02-c4c19d085fb5",
+    "_lastEdited": "2026-07-06T03:07:00.000Z"
+  },
+  {
+    "name": "マニュアル変形労働記載追加",
+    "category": "マニュアル・教育",
+    "status": "進行中",
+    "size": "中",
+    "priority": null,
+    "updateDate": "2026-07-06",
+    "dueDate": null,
+    "month": 7,
+    "subtasks": [
+      "詳細確認 →未",
+      "変形労働詳細調査 →未",
+      "マニュアル追記 →未",
+      "社労士・聡子先生確認 →未",
+      "展開 →未"
+    ],
+    "links": [],
+    "url": "",
+    "_id": "395b5de8-e036-80e2-9b05-f64c507a7b6d",
+    "_lastEdited": "2026-07-06T03:05:00.000Z"
+  },
+  {
     "name": "スタッフ評価通知表・面談",
     "category": "その他",
     "status": "待ち",
@@ -28,20 +89,20 @@
     "status": "進行中",
     "size": "中",
     "priority": null,
-    "updateDate": "2026-07-03",
+    "updateDate": "2026-07-06",
     "dueDate": null,
     "month": 7,
     "subtasks": [
       "岡本先生・柚木崎先生は新たに支給 ✓",
       "支給状況集約により未支給発覚 ✓",
       "ドクターグループにて制服希望調査　7/5まで ✓",
-      "名札→ポータルより吸い上げ　7/3〆",
+      "名札→ポータルより吸い上げ　7/3〆 ✓",
       "取りまとめて追加制作 →未"
     ],
     "links": [],
     "url": "",
     "_id": "391b5de8-e036-80dd-a1c7-fb9e1d9b116a",
-    "_lastEdited": "2026-07-03T01:27:00.000Z"
+    "_lastEdited": "2026-07-06T02:25:00.000Z"
   },
   {
     "name": "【7月】売上レセプト表更新",
@@ -188,7 +249,7 @@
     "status": "待ち",
     "size": "小",
     "priority": null,
-    "updateDate": "2026-07-02",
+    "updateDate": "2026-07-06",
     "dueDate": null,
     "month": 7,
     "subtasks": [
@@ -209,7 +270,7 @@
     "links": [],
     "url": "",
     "_id": "38eb5de8-e036-806e-963f-d02b1114cc13",
-    "_lastEdited": "2026-07-02T05:53:00.000Z"
+    "_lastEdited": "2026-07-06T02:25:00.000Z"
   },
   {
     "name": "名札・制服ポータル集約",
@@ -1032,7 +1093,7 @@
     "status": "進行中",
     "size": "中",
     "priority": "中",
-    "updateDate": "2026-07-03",
+    "updateDate": "2026-07-06",
     "dueDate": null,
     "month": 7,
     "subtasks": [
@@ -1046,7 +1107,7 @@
     "links": [],
     "url": "",
     "_id": "36fb5de8-e036-8004-9712-df703599ce04",
-    "_lastEdited": "2026-07-03T01:28:00.000Z"
+    "_lastEdited": "2026-07-06T02:24:00.000Z"
   },
   {
     "name": "Googleアカウントグループ変更",
@@ -2576,7 +2637,7 @@
     "status": "進行中",
     "size": "中",
     "priority": "低",
-    "updateDate": "2026-07-02",
+    "updateDate": "2026-07-06",
     "dueDate": null,
     "month": 7,
     "subtasks": [
@@ -2588,7 +2649,7 @@
       "大幅変更・指示出し ✓",
       "校正 ✓",
       "裏面修正 ✓",
-      "東先生確認中 →未",
+      "東先生確認中 ✓",
       "印刷・ラミネート →未",
       "設置 →未",
       "運用・アナウンス →未"
@@ -2596,7 +2657,7 @@
     "links": [],
     "url": "",
     "_id": "337b5de8-e036-80c4-8291-f66ae990d521",
-    "_lastEdited": "2026-07-02T09:05:00.000Z"
+    "_lastEdited": "2026-07-06T02:24:00.000Z"
   },
   {
     "name": "各院googleアカウント連携",
