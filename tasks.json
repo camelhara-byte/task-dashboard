@@ -45,7 +45,7 @@
     "status": "進行中",
     "size": "中",
     "priority": "高",
-    "updateDate": "2026-07-06",
+    "updateDate": "2026-07-07",
     "dueDate": null,
     "month": 7,
     "subtasks": [
@@ -63,7 +63,7 @@
     "links": [],
     "url": "",
     "_id": "395b5de8-e036-80e2-9b05-f64c507a7b6d",
-    "_lastEdited": "2026-07-06T10:36:00.000Z"
+    "_lastEdited": "2026-07-07T01:16:00.000Z"
   },
   {
     "name": "スタッフ評価通知表・面談",
@@ -94,7 +94,7 @@
     "status": "進行中",
     "size": "中",
     "priority": null,
-    "updateDate": "2026-07-06",
+    "updateDate": "2026-07-07",
     "dueDate": null,
     "month": 7,
     "subtasks": [
@@ -107,7 +107,7 @@
     "links": [],
     "url": "",
     "_id": "391b5de8-e036-80dd-a1c7-fb9e1d9b116a",
-    "_lastEdited": "2026-07-06T02:25:00.000Z"
+    "_lastEdited": "2026-07-07T09:19:00.000Z"
   },
   {
     "name": "【7月】売上レセプト表更新",
@@ -174,7 +174,7 @@
     "status": "進行中",
     "size": "小",
     "priority": null,
-    "updateDate": "2026-07-02",
+    "updateDate": "2026-07-07",
     "dueDate": null,
     "month": 7,
     "subtasks": [
@@ -184,7 +184,7 @@
     "links": [],
     "url": "",
     "_id": "390b5de8-e036-8031-a9e1-c58b002ea210",
-    "_lastEdited": "2026-07-02T02:25:00.000Z"
+    "_lastEdited": "2026-07-07T09:19:00.000Z"
   },
   {
     "name": "千葉県物価高騰助成金",
@@ -283,7 +283,7 @@
     "status": "進行中",
     "size": "中",
     "priority": "高",
-    "updateDate": "2026-07-02",
+    "updateDate": "2026-07-07",
     "dueDate": null,
     "month": 7,
     "subtasks": [
@@ -310,7 +310,7 @@
     "links": [],
     "url": "",
     "_id": "38bb5de8-e036-8003-a8df-cedadacbfc35",
-    "_lastEdited": "2026-07-02T05:47:00.000Z"
+    "_lastEdited": "2026-07-07T09:19:00.000Z"
   },
   {
     "name": "省力化補助金",
@@ -1670,10 +1670,10 @@
   {
     "name": "適性検査分析・共有",
     "category": "労務・人事",
-    "status": "進行中",
+    "status": "完了",
     "size": "大",
     "priority": "高",
-    "updateDate": "2026-07-06",
+    "updateDate": "2026-07-07",
     "dueDate": null,
     "month": 7,
     "subtasks": [
@@ -1691,12 +1691,12 @@
       "管理者のみの閲覧に制限 ✓",
       "セキュリティ強化 ✓",
       "実装確認 ✓",
-      "展開 →未"
+      "展開 ✓"
     ],
     "links": [],
     "url": "",
     "_id": "35fb5de8-e036-8021-8ae1-e3504bec2ce1",
-    "_lastEdited": "2026-07-06T10:39:00.000Z"
+    "_lastEdited": "2026-07-07T09:20:00.000Z"
   },
   {
     "name": "【月次】全体会議",
@@ -2234,12 +2234,12 @@
     "_lastEdited": "2026-04-24T03:31:00.000Z"
   },
   {
-    "name": "錦糸町スタッフ表の整理",
+    "name": "錦糸町スタッフ表の刷新",
     "category": "労務・人事",
-    "status": "進行中",
+    "status": "完了",
     "size": "中",
     "priority": "低",
-    "updateDate": "2026-07-06",
+    "updateDate": "2026-07-07",
     "dueDate": null,
     "month": 7,
     "subtasks": [
@@ -2262,13 +2262,14 @@
       "入金処理 ✓",
       "データ詳細確認対応 ✓",
       "発送連絡 ✓",
-      "商品確認 →未",
-      "シール貼り作業、パネル刷新 →未"
+      "商品確認 ✓",
+      "シール貼り作業、パネル刷新 ✓",
+      "共有 ✓"
     ],
     "links": [],
     "url": "",
     "_id": "349b5de8-e036-80af-b022-ca37a4800461",
-    "_lastEdited": "2026-07-06T09:11:00.000Z"
+    "_lastEdited": "2026-07-07T01:16:00.000Z"
   },
   {
     "name": "デントネットデータ連携",
