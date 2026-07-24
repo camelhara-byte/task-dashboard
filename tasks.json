@@ -5,7 +5,7 @@
     "status": "進行中",
     "size": "中",
     "priority": null,
-    "updateDate": "2026-07-23",
+    "updateDate": "2026-07-24",
     "dueDate": null,
     "month": 7,
     "subtasks": [
@@ -16,7 +16,7 @@
     "links": [],
     "url": "",
     "_id": "3a0b5de8-e036-8063-a5c2-f0f244ea77f6",
-    "_lastEdited": "2026-07-23T01:32:00.000Z"
+    "_lastEdited": "2026-07-24T01:22:00.000Z"
   },
   {
     "name": "助成金セミナー受講",
@@ -74,7 +74,7 @@
     "status": "進行中",
     "size": "中",
     "priority": null,
-    "updateDate": "2026-07-23",
+    "updateDate": "2026-07-24",
     "dueDate": null,
     "month": 7,
     "subtasks": [
@@ -89,7 +89,7 @@
     "links": [],
     "url": "",
     "_id": "39db5de8-e036-804d-be39-fe580c2d4ff5",
-    "_lastEdited": "2026-07-23T08:20:00.000Z"
+    "_lastEdited": "2026-07-24T01:22:00.000Z"
   },
   {
     "name": "テルミナ防災書類",
@@ -164,7 +164,7 @@
     "status": "進行中",
     "size": "小",
     "priority": "高",
-    "updateDate": "2026-07-17",
+    "updateDate": "2026-07-24",
     "dueDate": null,
     "month": 7,
     "subtasks": [
@@ -177,12 +177,13 @@
       "オンライン締切のため現地参加調整 ✓",
       "今澤さん× 次回開催調整 ✓",
       "錦糸町参加声掛け→早川先生 ✓",
+      "参加者・参加日程一覧 →未",
       "次回開催調整者一覧化 →未"
     ],
     "links": [],
     "url": "",
     "_id": "399b5de8-e036-80b4-a269-c0ad7106c344",
-    "_lastEdited": "2026-07-17T05:46:00.000Z"
+    "_lastEdited": "2026-07-24T01:23:00.000Z"
   },
   {
     "name": "鎌ヶ谷棚修理連絡関係",
@@ -324,7 +325,7 @@
     "status": "進行中",
     "size": "大",
     "priority": "高",
-    "updateDate": "2026-07-10",
+    "updateDate": "2026-07-24",
     "dueDate": null,
     "month": 7,
     "subtasks": [
@@ -345,12 +346,13 @@
       "反映 ✓",
       "データ確認 ✓",
       "籠林さん最終確認 ✓",
+      "新マニュアルに追記・反映作業 →未",
       "展開 →未"
     ],
     "links": [],
     "url": "",
     "_id": "395b5de8-e036-80e2-9b05-f64c507a7b6d",
-    "_lastEdited": "2026-07-10T03:12:00.000Z"
+    "_lastEdited": "2026-07-24T01:24:00.000Z"
   },
   {
     "name": "スタッフ評価通知表・面談",
@@ -393,7 +395,7 @@
     "status": "進行中",
     "size": "中",
     "priority": "高",
-    "updateDate": "2026-07-23",
+    "updateDate": "2026-07-24",
     "dueDate": null,
     "month": 7,
     "subtasks": [
@@ -414,7 +416,7 @@
     "links": [],
     "url": "",
     "_id": "391b5de8-e036-80dd-a1c7-fb9e1d9b116a",
-    "_lastEdited": "2026-07-23T00:59:00.000Z"
+    "_lastEdited": "2026-07-24T01:22:00.000Z"
   },
   {
     "name": "【7月】売上レセプト表更新",
@@ -3629,7 +3631,7 @@
     "status": "進行中",
     "size": "大",
     "priority": "中",
-    "updateDate": "2026-07-15",
+    "updateDate": "2026-07-24",
     "dueDate": null,
     "month": 7,
     "subtasks": [
@@ -3665,6 +3667,8 @@
       "動画共有 ✓",
       "必要書類・今後の流れを宇山さんへ確認 ✓",
       "スタッフ向け告知 ✓",
+      "参加者把握のためのアンケート作成・告知 ✓",
+      "アンケートリマインド →未",
       "希望者書類取りまとめ（8/7〆） →未",
       "提出用書類作成 →未",
       "提出（8/15〆） →未"
@@ -3672,7 +3676,7 @@
     "links": [],
     "url": "",
     "_id": "31eb5de8-e036-800a-a2f0-f73f8391cdc3",
-    "_lastEdited": "2026-07-15T01:38:00.000Z"
+    "_lastEdited": "2026-07-24T01:23:00.000Z"
   },
   {
     "name": "Note book LMマニュアル連携",
