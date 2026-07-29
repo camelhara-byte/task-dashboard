@@ -38,7 +38,7 @@
     "status": "進行中",
     "size": "中",
     "priority": "高",
-    "updateDate": "2026-07-28",
+    "updateDate": "2026-07-29",
     "dueDate": null,
     "month": 7,
     "subtasks": [
@@ -49,31 +49,36 @@
       "電気系統不良の可能性 ✓",
       "鎌ヶ谷7/29午後ブロック ✓",
       "井田先生予定確認 ✓",
+      "監視カメラ充電→使用確認（ブルペン） ✓",
       "現地配線の確認 →未"
     ],
     "links": [],
     "url": "",
     "_id": "3abb5de8-e036-804e-a2a2-cbe6fd397321",
-    "_lastEdited": "2026-07-28T09:59:00.000Z"
+    "_lastEdited": "2026-07-29T06:23:00.000Z"
   },
   {
     "name": "千葉県物価高騰コール対応",
     "category": "その他",
-    "status": "進行中",
+    "status": "完了",
     "size": "小",
     "priority": null,
-    "updateDate": "2026-07-28",
+    "updateDate": "2026-07-29",
     "dueDate": null,
     "month": 7,
     "subtasks": [
       "折り返しTEL ✓",
       "電話番号が存在しないアナウンス　詳細確認 ✓",
-      "7/29再度TEL →未"
+      "7/29再度TEL ✓",
+      "電話対応 ✓",
+      "書類修正 ✓",
+      "再提出 ✓",
+      "メール確認 ✓"
     ],
     "links": [],
     "url": "",
     "_id": "3abb5de8-e036-8027-ba61-deb6cb3dfce6",
-    "_lastEdited": "2026-07-28T08:16:00.000Z"
+    "_lastEdited": "2026-07-29T08:54:00.000Z"
   },
   {
     "name": "電子的歯科診療情報連携体制整備加算の提出",
