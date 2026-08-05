@@ -2459,7 +2459,7 @@
     "status": "進行中",
     "size": "大",
     "priority": "高",
-    "updateDate": "2026-08-03",
+    "updateDate": "2026-08-05",
     "dueDate": null,
     "month": 8,
     "subtasks": [
@@ -2476,7 +2476,7 @@
     "links": [],
     "url": "",
     "_id": "35ab5de8-e036-8011-8d35-c4a13a53a63f",
-    "_lastEdited": "2026-08-03T06:12:00.000Z"
+    "_lastEdited": "2026-08-05T02:20:00.000Z"
   },
   {
     "name": "Be Real炎上対応",
